@@ -2,8 +2,11 @@ from datetime import timedelta
 from fastapi import APIRouter, Body, Depends, HTTPException
 from redis.asyncio import Redis
 
-from app.utils.reset_password import generate_password_reset_token, send_reset_password_email, \
-    verify_password_reset_token
+from app.utils.reset_password import (
+    generate_password_reset_token,
+    send_reset_password_email,
+    verify_password_reset_token,
+)
 from app.utils.token import get_valid_tokens
 from app.utils.token import delete_tokens
 from app.utils.token import add_token_to_redis
@@ -228,7 +231,7 @@ async def login_access_token(
 
 @router.post("/password-recovery/{email}")
 async def recover_password(
-        email: EmailStr = Body(...),
+    email: EmailStr = Body(...),
 ) -> dict[str, str]:
     """
     Password Recovery
@@ -252,8 +255,8 @@ async def recover_password(
 
 @router.post("/reset-password/")
 async def reset_password(
-        token: str = Body(...),
-        new_password: str = Body(...),
+    token: str = Body(...),
+    new_password: str = Body(...),
 ) -> dict[str, str]:
     """
     Reset password

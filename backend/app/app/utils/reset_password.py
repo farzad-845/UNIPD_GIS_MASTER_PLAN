@@ -31,6 +31,7 @@ def send_reset_password_email(email_to: str, email: str, token: str) -> None:
         },
     )
 
+
 def send_new_account_email(email_to: str, username: str, password: str) -> None:
     project_name = settings.PROJECT_NAME
     subject = f"{project_name} - New account for user {username}"
@@ -50,6 +51,7 @@ def send_new_account_email(email_to: str, username: str, password: str) -> None:
             "link": link,
         },
     )
+
 
 def generate_password_reset_token(email: str) -> str:
     delta = timedelta(hours=settings.EMAIL_RESET_TOKEN_EXPIRE_HOURS)

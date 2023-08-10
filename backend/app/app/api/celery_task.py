@@ -56,6 +56,7 @@ class PredictTransformersPipelineTask(Task):
 # celery_session.commit()
 # return {"message": "Task created"}
 
+
 @celery.task(
     ignore_result=False,
     bind=True,

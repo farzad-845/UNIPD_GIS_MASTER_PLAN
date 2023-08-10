@@ -10,7 +10,6 @@ from app.crud.base_crud import CRUDBase
 
 
 class CRUDNote(CRUDBase[Note, INoteCreate, INoteUpdate]):
-
     async def update_photo(
         self,
         *,

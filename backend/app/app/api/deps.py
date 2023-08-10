@@ -48,7 +48,9 @@ async def get_general_meta() -> IMetaGeneral:
     return IMetaGeneral(roles=current_roles)
 
 
-def get_current_user(required_roles: list[str] = None) -> Callable[[str, Redis], Coroutine[Any, Any, User]]:
+def get_current_user(
+    required_roles: list[str] = None,
+) -> Callable[[str, Redis], Coroutine[Any, Any, User]]:
     async def current_user(
         token: str = Depends(reusable_oauth2),
         redis_client: Redis = Depends(get_redis_client),

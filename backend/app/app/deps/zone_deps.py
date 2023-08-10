@@ -10,7 +10,7 @@ from app.utils.uuid6 import UUID
 
 
 async def get_zone_by_id(
-        zone_id: Annotated[UUID, Path(title="The UUID id of the zone")]
+    zone_id: Annotated[UUID, Path(title="The UUID id of the zone")]
 ) -> Prg:
     zone = await crud.note.get(id=zone_id)
     if not zone:

@@ -128,6 +128,7 @@ async def get_user_list_order_by_created_at(
     )
     return create_response(data=users)
 
+
 @router.get("/{user_id}")
 async def get_user_by_id(
     user: User = Depends(user_deps.is_valid_user),

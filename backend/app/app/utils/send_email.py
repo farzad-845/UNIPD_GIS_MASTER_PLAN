@@ -8,10 +8,10 @@ from app.core.config import settings
 
 
 def send_email(
-        email_to: str,
-        subject_template: str = "",
-        html_template: str = "",
-        environment: Dict[str, Any] = {},
+    email_to: str,
+    subject_template: str = "",
+    html_template: str = "",
+    environment: Dict[str, Any] = {},
 ) -> None:
     assert settings.EMAILS_ENABLED, "no provided configuration for email variables"
 

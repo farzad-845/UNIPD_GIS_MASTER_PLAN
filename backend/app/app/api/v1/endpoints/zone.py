@@ -22,11 +22,10 @@ from app.schemas.role_schema import IRoleEnum
 router = APIRouter()
 
 
-
 @router.get("/{zone_id}")
 async def get_zone_by_id(
-        zone: Prg = Depends(zone_deps.get_zone_by_id),
-        current_user: User = Depends(deps.get_current_user()),
+    zone: Prg = Depends(zone_deps.get_zone_by_id),
+    current_user: User = Depends(deps.get_current_user()),
 ) -> IGetResponseBase[IPrgRead]:
     """
     Gets a role by its id
@@ -36,10 +35,10 @@ async def get_zone_by_id(
 
 @router.post("", status_code=status.HTTP_201_CREATED)
 async def create_zone(
-        zone: IPrgCreate,
-        current_user: User = Depends(
-            deps.get_current_user(required_roles=[IRoleEnum.admin])
-        ),
+    zone: IPrgCreate,
+    current_user: User = Depends(
+        deps.get_current_user(required_roles=[IRoleEnum.admin])
+    ),
 ) -> IPostResponseBase[IPrgRead]:
     """
     Create a new role
@@ -57,11 +56,11 @@ async def create_zone(
 
 @router.put("/{zone_id}")
 async def update_zone(
-        zone: IPrgUpdate,
-        current_zone: Prg = Depends(zone_deps.get_zone_by_id),
-        current_user: User = Depends(
-            deps.get_current_user(required_roles=[IRoleEnum.admin])
-        ),
+    zone: IPrgUpdate,
+    current_zone: Prg = Depends(zone_deps.get_zone_by_id),
+    current_user: User = Depends(
+        deps.get_current_user(required_roles=[IRoleEnum.admin])
+    ),
 ) -> IPutResponseBase[IPrgRead]:
     """
     Updates a role by its id

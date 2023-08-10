@@ -9,16 +9,16 @@ from app.schemas.prg_schema import IPrgUpdate, IPrgCreate
 
 class CRUDPrg(CRUDBase[Prg, IPrgCreate, IPrgUpdate]):
     async def create_variant(
-            self,
-            *,
-            obj_in,
+        self,
+        *,
+        obj_in,
     ) -> Prg:
         pass
 
     async def update_variant(
-            self,
-            obj_current: Prg,
-            obj_new: IPrgUpdate | dict[str, Any] | Prg,
+        self,
+        obj_current: Prg,
+        obj_new: IPrgUpdate | dict[str, Any] | Prg,
     ) -> Prg:
         db_session = super().get_db().session
         obj_data = jsonable_encoder(obj_current)

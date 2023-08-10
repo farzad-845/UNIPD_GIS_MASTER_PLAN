@@ -20,7 +20,6 @@ class IUserUpdate(UserBase):
     pass
 
 
-
 class IUserRead(UserBase):
     id: UUID
     role: IRoleRead | None = None

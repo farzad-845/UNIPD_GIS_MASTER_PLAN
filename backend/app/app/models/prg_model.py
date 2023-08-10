@@ -12,9 +12,11 @@ from app.schemas.prg_schema import IPrgStatusEnum
 
 class PrgBase(SQLModel):
     status: str = Field(default=IPrgStatusEnum.in_progress)
-    geom: Any = Field(sa_column=Column(Geometry('MULTIPOLYGON')))
+    geom: Any = Field(sa_column=Column(Geometry("MULTIPOLYGON")))
 
 
 make_versioned(user_cls=None)
+
+
 class Prg(BaseUUIDModel, PrgBase, table=True):
     __versioned__ = {}
