@@ -1,0 +1,46 @@
+%!TEX TS-program = xelatex
+%!TEX encoding = UTF-8 Unicode
+
+% Load Thesis Class
+\documentclass{DEIThesis}
+
+\title{Master Plan}
+
+\author{Farzad Shami}
+\studentId{2090160}
+
+% Advisor
+\advisor{Prof. Massimo Rumor }
+\coadvisor{Prof. Sandro Savino}
+
+\university{University of Padova}
+\mastername{Geographic Information Systems}
+\academicYear{2022/2023}
+
+\begin{filecontents*}[overwrite]{\jobname.xmpdata}
+    \Title{Master Plan}
+    \Author{Farzad Shami}
+    \Language{en-EN}
+    \Keywords{Computer Engineering\sep LaTeX}
+\end{filecontents*}
+
+% Document
+
+\begin{document}
+    % The front matter (Cover, ToC, Abstract, etc...)
+    \frontmatter
+
+    % The main content
+    \mainmatter
+    
+    \include{chapters/01_introduction}
+    \include{chapters/02_analysis}
+    \include{chapters/03_situation}
+    \include{chapters/04_hypotesis}
+    \include{chapters/05_project_draft}
+    \include{chapters/06_guidlines}
+    \include{chapters/99_conclusions}
+    
+    % Bibliography, appendix, acknowledges, etc...
+    \backmatter
+\end{document}

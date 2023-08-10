@@ -1,0 +1,44 @@
+%!TEX root = ../main.tex
+
+\chapter{Analysis of Requirements}
+\label{chp:Analysis of Requirements}
+
+
+This phase encompasses the identification and definition of both functional and data-related needs, alongside the elucidation of nonfunctional requirements that will shape the architecture and features of the system.
+
+\section{Functional Requirements}
+\begin{enumerate}
+  \item Seamless Visualization of Master Plan and Variants
+  \begin{enumerate}
+      \item Users: Planning technicians, public
+      \item Interface for exploring plan details
+      \item Tracking changes and observing evolving variants over time
+  \end{enumerate}
+  \item Empowerment of Municipal Planning Technicians
+  \begin{enumerate}
+      \item Efficient creation and management of plan variants
+      \item Design new zoning geometries
+      \item Assign intended land uses
+      \item Transition between variant statuses
+  \end{enumerate}
+  \item Variant Status Management
+  \begin{enumerate}
+      \item Change variant status (e.g., "in progress," "planned," "in force," "not approved")
+      \item Capture relevant dates
+      \item Comprehensive tracking of plan variant evolution
+  \end{enumerate}
+  \item Query Application with Cadastral Identification Codes
+  \begin{enumerate}
+      \item Superimpose cadastral parcels on the Master Plan
+      \item Generate printable documents certifying permissible land uses
+      \item Certify intended purposes based on plan specifications
+  \end{enumerate}
+\end{enumerate}
+
+\section{Data Requirements}
+
+The data requirements encompass the information necessary for the application's functionality and effectiveness. Geographical data, primarily in the form of shapefiles, will be crucial for representing plan zones and variants. Additionally, cadastral parcel data, which is regularly updated and available in shape format, will be integrated to support the identification of specific land parcels and their attributes. The application will leverage attributes associated with the Master Plan, including intended land use types and status information for plan variants. Furthermore, users will be able to generate and store notes and communications, which will be tied to specific geographical areas and contribute to an enriched understanding of plan-related concerns.
+
+\section{Nonfunctional Requirements}
+The proposed solution should leverage existing municipal software components including PostgreSQL, PostGIS, and GeoServer where possible, use additional open source components as needed, comply with applicable standards and regulations including national geospatial data standards, respect all applicable laws, and the web-based application portal should be compatible across desktop, tablet, and mobile devices. Overall the system should integrate with the municipality's existing IT infrastructure and geospatial data while meeting legal requirements.
+

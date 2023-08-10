@@ -1,0 +1,98 @@
+%!TEX root = ../main.tex
+
+\chapter{Working Hypotheses}
+\label{chp:working_hypotheses}
+
+The working hypothesis is that a web-based GIS application can be developed to meet the requirements for master plan viewing and querying. This application will leverage the municipality's existing GeoServer, PostgreSQL, and PostGIS components to serve the master plan data through a web mapping interface. Open-source JavaScript libraries like OpenLayers or Leaflet can be used for the interactive map client. The application server can connect to the PostGIS database to retrieve master plan data filtered by parcel ID for zoning lookups.
+
+Additionally, an editing plugin can be developed for the open source OpenJUMP GIS desktop application. This would allow municipal technicians to create and edit new master plan variant geometries and attributes. The plugin can connect to the PostGIS database to load existing plan data, and save any edits made back to the database. Integrating these two components - the web portal and OpenJUMP plugin - will provide both public viewing and internal editing capabilities for managing master plan data.
+
+% \section{Goals}
+% \subsection{Overarching Goals}
+% \subsection{Intermediate Goals}
+
+% \section{Technological Components}
+% \subsection{Database}
+% \subsection{Desktop GIS System}
+% \subsection{Web GIS System}
+% \subsection{Hardware Requirements}
+% \subsection{Software Requirements}
+% \subsection{Components Schema}
+
+% \section{Functional Aspects of the System}
+% \subsection{Web GIS Application}
+% \subsection{OpenJUMP plugin}
+% \subsection{Developing Plan}
+
+% \section{Database}
+% \subsection{ER Schema}
+% \subsection{Description of Entities and Relationships}
+% \subsection{Data Volumes}
+% \subsection{Final Considerations}
+
+% \tikzset{vertex style/.style={
+%     draw=#1,
+%     thick,
+%     fill=#1!70,
+%     text=white,
+%     ellipse,
+%     minimum width=2cm,
+%     minimum height=0.75cm,
+%     font=\small,
+%     outer sep=3pt,
+%   },
+%   text style/.style={
+%     sloped,
+%     text=black,
+%     font=\footnotesize,
+%     above
+%   }
+% }
+
+% \begin{figure}[ht]
+%     \centering
+%     \begin{tikzpicture}[node distance=2.75cm,>={Stealth[]}]
+%         \node[vertex style=cyan] (Rk) {Righteous Kill};
+%         \node[vertex style=orange, above of=Rk,xshift=2em] (BD) {Bryan Dennehy}
+%         edge [<-,cyan!60!blue] node[text style,above]{starring} (Rk);
+%     \end{tikzpicture}
+    
+%     \caption{Image created with TikZ} \label{fig:T1}
+% \end{figure}
+
+% \paragraph{}
+% Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+
+% \begin{lstlisting}[language=Python, caption=Code snippet example]
+% import numpy as np
+    
+% def incmatrix(genl1,genl2):
+%     m = len(genl1)
+%     n = len(genl2)
+%     M = None #to become the incidence matrix
+%     VT = np.zeros((n*m,1), int)  #dummy variable
+
+%     test = "String"
+    
+%     #compute the bitwise xor matrix
+%     M1 = bitxormatrix(genl1)
+%     M2 = np.triu(bitxormatrix(genl2),1) 
+
+%     for i in range(m-1):
+%         for j in range(i+1, m):
+%             [r,c] = np.where(M2 == M1[i,j])
+%             for k in range(len(r)):
+%                 VT[(i)*n + r[k]] = 1;
+%                 VT[(i)*n + c[k]] = 1;
+%                 VT[(j)*n + r[k]] = 1;
+%                 VT[(j)*n + c[k]] = 1;
+                
+%                 if M is None:
+%                     M = np.copy(VT)
+%                 else:
+%                     M = np.concatenate((M, VT), 1)
+                
+%                 VT = np.zeros((n*m,1), int)
+    
+%     return M
+% \end{lstlisting}

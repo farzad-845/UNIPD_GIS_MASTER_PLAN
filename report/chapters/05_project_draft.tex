@@ -1,0 +1,82 @@
+%!TEX root = ../main.tex
+
+\chapter{Project Draft}
+\label{chp:working_hypotheses}
+
+\section{Goals}
+The overall goal of the project is to develop a GIS-based system for managing and providing public access to the master plan data for the municipality of Fano.
+
+\subsection{Detailed Goals:}
+\begin{enumerate}
+    \item Create an interactive web map application that allows citizens to view the current master plan and look up zoning information for specific parcels
+    \item Develop an editing plugin for municipal technicians to create, edit, and manage master plan variants
+    \item Integrate parcel/cadastral data to support parcel ID lookups and displaying zoning on individual parcels
+    \item Implement a central PostGIS database for master plan data and integrate with existing municipal IT infrastructure
+    \item Follow best practices for web mapping architecture, data standards, and security
+\end{enumerate}
+
+\subsection{Intermediate Goals:}
+\begin{enumerate}
+    \item Complete market analysis and requirements gathering
+    \item Design system architecture and draft plan for integration with municipal IT environment
+    \item Develop prototype web map application for public zoning lookups
+    \item Develop prototype OpenJUMP plugin for master plan variant editing
+    \item Integrate sample datasets and test parcel lookup and zoning identification functionality
+    \item Deliver prototypes to the customer for approval
+    \item Develop full web map application and OpenJUMP plugin based on prototypes
+    \item Deploy integrated system to municipal infrastructure
+    \item Load final master plan dataset into PostGIS database
+    \item Train municipal technicians on using OpenJUMP plugin
+    \item Promote web map application access to public
+\end{enumerate}
+
+
+The intermediate goals aim to break the project into manageable milestones, deliver incremental prototypes for feedback, and ensure the final system meets the requirements identified early in the process. The prototypes provide an opportunity for validating functionality and usability before committing to full system development.
+
+
+\section{Technological Components}
+The technological components of our GIS project are instrumental in realizing the vision of an efficient and user-friendly Master Plan management application. These components encompass both software and hardware aspects, with careful consideration given to the tools that facilitate seamless interaction, data management, and system performance.
+
+\subsection{Database}
+
+\subsection{OpenJUMP Plugin}
+\subsection{WebGIS Application}
+
+\subsection{Software Requirements}
+Many softwares needs to be used to set up the system:
+\begin{enumerate}
+    \item Database: !!EMPTY (POSTGRESQL) !!
+    
+    \item Docker, is a platform that allows you to develop, deploy, and run applications in isolated containers. Containers are lightweight, portable, and self-sufficient units that encapsulate an application along with its dependencies, enabling consistent and efficient deployment across different environments.
+    
+    \item Web Map Service (WMS), a system capable of delivering web maps is needed: for this, Geoserver is the best solution available.
+    
+    \item Backend:
+    \begin{enumerate}
+        \item caddyserver: Caddy 2 is a powerful, enterprise-ready, open source web server with automatic HTTPS written in Go and used as a reverse proxy, which uses namespaces routing,
+        
+        \item Minio server: This template allows users can upload their photos. The images are stored using the open source Object Storage Service (OSS) minio, which provides storage of images using buckets in a secure way through presigned URLs.
+    
+        \item Celery: Celery is a distributed task queue that allows developers to run asynchronous tasks in their applications. It is particularly useful for tasks that are time-consuming, require heavy computation or access external services, and can be run independently of the main application. It also offers features such as task scheduling, task prioritization, and retries in case of failure.
+        
+        Celery Beat is an additional component of Celery that allows developers to schedule periodic tasks and intervals for their Celery workers. It provides an easy-to-use interface for defining task schedules and supports several scheduling options such as crontab, interval, and relative.
+    
+        \item SonarQube: SonarQube is an automatic code review tool that detects bugs, vulnerabilities, and code smells in a project. You can read this post in order to have a better understanding about what SonarQube can do.
+    \end{enumerate}
+
+    \item Frontend !! EMPTY !!
+    
+
+\end{enumerate}
+\subsection{Hardware Requirements}
+When considering the hardware requirements for our GIS application, the choice of utilizing cloud services presents a strategic advantage. Cloud services, such as those provided by platforms like Amazon Web Services (AWS), Microsoft Azure, and Google Cloud Platform (GCP), offer scalable and flexible infrastructure that can adapt to the changing demands of the application.
+
+With cloud services, the hardware resources required to host the application can be provisioned dynamically based on usage, ensuring optimal performance during peak times and efficient resource utilization during periods of lower demand. This elasticity eliminates the need for substantial upfront investments in physical hardware and allows us to scale resources up or down as needed, resulting in cost savings and improved efficiency.
+
+\subsubsection{Docker Image Deployment and Resource Efficiency}
+
+In conjunction with cloud services, the deployment of Docker images further optimizes hardware resource utilization. Docker containers encapsulate applications along with their dependencies, enabling consistent deployment across different environments. By deploying applications as Docker images, we achieve resource efficiency, as each container operates in an isolated environment, utilizing only the resources required for the specific application. 
+
+\subsection{Components Schema}
+
+\section{Functional Aspects of the System}
