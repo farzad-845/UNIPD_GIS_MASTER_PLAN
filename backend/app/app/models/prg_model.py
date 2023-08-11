@@ -5,9 +5,9 @@ from sqlalchemy import String
 from sqlalchemy_utils import ChoiceType
 from sqlmodel import SQLModel, Field, Relationship, Column
 from app.models.base_uuid_model import BaseUUIDModel
-from sqlalchemy_history import make_versioned
 
 from app.schemas.common_schema import IPrgStatusEnum, IPrgTypeEnum
+from app.utils.uuid6 import UUID
 
 
 class PrgBase(SQLModel):
@@ -21,6 +21,8 @@ class PrgBase(SQLModel):
     )
 
     geom: Any = Field(sa_column=Column(Geometry("MULTIPOLYGON")))
+    user_id: UUID | None = Field(default=None, foreign_key="User.id")
+
 
 
 class Prg(BaseUUIDModel, PrgBase, table=True):

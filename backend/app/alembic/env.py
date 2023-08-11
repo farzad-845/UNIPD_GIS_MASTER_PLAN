@@ -30,7 +30,7 @@ target_metadata = SQLModel.metadata
 # ... etc.
 
 def include_object(object, name, type_, reflected, compare_to):
-    if type_ == "table" and name == 'spatial_ref_sys':
+    if type_ == "table" and name in ['spatial_ref_sys', 'Particelle']:
         return False
     else:
         return True
