@@ -24,3 +24,10 @@ class IPrgStatusEnum(str, Enum):
     approved = "approved"
     rejected = "rejected"
     in_progress = "in_progress"
+
+
+class IPrgTypeEnum(str, Enum):
+    commercial = "commercial"
+    industrial = "industrial"
+    residential = "residential"
+    public_green = "public green"
