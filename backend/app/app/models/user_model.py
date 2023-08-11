@@ -1,10 +1,8 @@
 from app.models.base_uuid_model import BaseUUIDModel
 from app.models.image_media_model import ImageMedia
-from app.schemas.common_schema import IGenderEnum
 from datetime import datetime
 from sqlmodel import Field, SQLModel, Relationship, Column, DateTime, String
 from typing import Optional
-from sqlalchemy_utils import ChoiceType
 from pydantic import EmailStr
 from uuid import UUID
 
@@ -22,10 +20,6 @@ class UserBase(SQLModel):
     )  # birthday with timezone
     role_id: UUID | None = Field(default=None, foreign_key="Role.id")
     phone: str | None
-    gender: IGenderEnum | None = Field(
-        default=IGenderEnum.other,
-        sa_column=Column(ChoiceType(IGenderEnum, impl=String())),
-    )
     state: str | None
     country: str | None
     address: str | None
@@ -42,4 +36,8 @@ class User(BaseUUIDModel, UserBase, table=True):
             "lazy": "joined",
             "primaryjoin": "User.image_id==ImageMedia.id",
         }
+    )
+
+    notes: list["Note"] = Relationship(  # noqa: F821
+        back_populates="user", sa_relationship_kwargs={"lazy": "selectin"}
     )

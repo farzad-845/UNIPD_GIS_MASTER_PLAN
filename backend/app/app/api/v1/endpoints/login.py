@@ -229,7 +229,7 @@ async def login_access_token(
     }
 
 
-@router.post("/password-recovery/{email}")
+@router.post("/password-recovery")
 async def recover_password(
     email: EmailStr = Body(...),
 ) -> dict[str, str]:

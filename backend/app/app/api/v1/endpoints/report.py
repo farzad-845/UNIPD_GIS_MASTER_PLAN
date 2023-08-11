@@ -1,9 +1,6 @@
 from typing import Annotated
 from app import crud
 from app.api import deps
-from app.schemas.hero_schema import (
-    IHeroRead,
-)
 from app.models import User
 from fastapi import APIRouter, Depends, Query
 from app.schemas.role_schema import IRoleEnum
@@ -88,7 +85,7 @@ async def export_heroes_list(
     """
     heroes = await crud.hero.get_multi_ordered(limit=1000, order_by="id")
     heroes_list = [
-        IHeroRead.from_orm(hero) for hero in heroes
+        # IHeroRead.from_orm(hero) for hero in heroes
     ]  # Creates a pydantic list of object
     heroes_df = pd.DataFrame([s.__dict__ for s in heroes_list])
     if file_extension == FileExtensionEnum.xls:

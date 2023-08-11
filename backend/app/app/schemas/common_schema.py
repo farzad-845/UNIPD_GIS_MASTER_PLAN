@@ -5,12 +5,6 @@ from enum import Enum
 from app.schemas.role_schema import IRoleRead
 
 
-class IGenderEnum(str, Enum):
-    female = "female"
-    male = "male"
-    other = "other"
-
-
 class IMetaGeneral(BaseModel):
     roles: list[IRoleRead]
 
@@ -25,34 +19,8 @@ class TokenType(str, Enum):
     REFRESH = "refresh_token"
 
 
-class IUserMessage(BaseModel):
-    """User message schema."""
-
-    user_id: UUID | None
-    message: str
-
-
-class IChatResponse(BaseModel):
-    """Chat response schema."""
-
-    id: str
-    message_id: str
-    sender: str
-    message: str
-    type: str
-
-    @validator("id", "message_id", pre=True, allow_reuse=True)
-    def check_ids(cls, v):
-        return str(uuid7()) if v == "" or v is None else v
-
-    @validator("sender")
-    def sender_must_be_bot_or_you(cls, v):
-        if v not in ["bot", "you"]:
-            raise ValueError("sender must be bot or you")
-        return v
-
-    @validator("type")
-    def validate_message_type(cls, v):
-        if v not in ["start", "stream", "end", "error", "info"]:
-            raise ValueError("type must be start, stream or end")
-        return v
+class IPrgStatusEnum(str, Enum):
+    planned = "planned"
+    approved = "approved"
+    rejected = "rejected"
+    in_progress = "in_progress"

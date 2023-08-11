@@ -1,14 +1,14 @@
 import asyncio
 import time
-from uuid import UUID
 from app import crud
 from app.core.celery import celery
-from app.models.hero_model import Hero
 from app.db.session import SessionLocal
 from asyncer import runnify
 import logging
 from celery import Task
-from transformers import pipeline
+
+from app.models.prg_model import Prg
+from app.utils.uuid6 import UUID
 
 
 class PredictTransformersPipelineTask(Task):
@@ -31,7 +31,7 @@ class PredictTransformersPipelineTask(Task):
         """
         if not self.pipeline:
             logging.info("Loading pipeline...")
-            self.pipeline = pipeline(self.task_name, model=self.model_name)
+            # self.pipeline = pipeline(self.task_name, model=self.model_name)
             logging.info("Pipeline loaded")
         return self.run(*args, **kwargs)
 
@@ -80,14 +80,14 @@ def increment(value: int) -> int:
     return new_value
 
 
-async def get_hero(hero_id: UUID) -> Hero:
+async def get_hero(hero_id: UUID) -> Prg:
     async with SessionLocal() as session:
         await asyncio.sleep(5)  # Add a delay of 5 seconds
-        hero = await crud.hero.get(id=hero_id, db_session=session)
+        hero = await crud.prg.get(id=hero_id, db_session=session)
         return hero
 
 
 @celery.task(name="tasks.print_hero")
-def print_hero(hero_id: UUID) -> None:
+def print_hero(hero_id: UUID) -> UUID:
     hero = runnify(get_hero)(hero_id=hero_id)
     return hero.id

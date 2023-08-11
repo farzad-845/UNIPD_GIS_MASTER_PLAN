@@ -1,5 +1,5 @@
-from pydantic import Field
-from sqlmodel import SQLModel, Relationship
+from typing import Optional
+from sqlmodel import SQLModel, Field, Relationship
 
 from app.utils.uuid6 import UUID
 from app.models import ImageMedia

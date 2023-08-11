@@ -29,6 +29,11 @@ target_metadata = SQLModel.metadata
 # my_important_option = config.get_main_option("my_important_option")
 # ... etc.
 
+def include_object(object, name, type_, reflected, compare_to):
+    if type_ == "table" and name == 'spatial_ref_sys':
+        return False
+    else:
+        return True
 
 def run_migrations_offline():
     """Run migrations in 'offline' mode.
@@ -41,7 +46,12 @@ def run_migrations_offline():
     """
     url = settings.ASYNC_DATABASE_URI
     context.configure(
-        url=url, target_metadata=target_metadata, literal_binds=True, compare_type=True, dialect_opts={"paramstyle": "named"}
+        url=url,
+        target_metadata=target_metadata,
+        literal_binds=True,
+        compare_type=True,
+        dialect_opts={"paramstyle": "named"},
+        include_object=include_object
     )
 
     with context.begin_transaction():
