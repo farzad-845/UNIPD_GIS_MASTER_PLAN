@@ -197,3 +197,6 @@ sonarqube/logs
 *blx.bib
 .bak
 .mtc
+
+# OpenJump Plugin
+!plugin/plugins.xml
