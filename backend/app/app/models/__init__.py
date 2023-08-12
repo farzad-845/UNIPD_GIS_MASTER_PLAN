@@ -4,3 +4,4 @@ from .media_model import Media
 from .image_media_model import ImageMedia
 from .note_model import Note
 from .prg_model import Prg
+from .particelle_model import Particelle
