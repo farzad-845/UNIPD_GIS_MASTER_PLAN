@@ -1,12 +1,12 @@
 %!TEX root = ../main.tex
 
 \chapter{Project Draft}
-\label{chp:working_hypotheses}
+\label{ch:project_draft}
 
-\section{Goals}
+\section{Goals}\label{sec:goals}
 The overall goal of the project is to develop a GIS-based system for managing and providing public access to the master plan data for the municipality of Fano.
 
-\subsection{Detailed Goals:}
+\subsection{Detailed Goals:}\label{subsec:detailed-goals:}
 \begin{enumerate}
     \item Create an interactive web map application that allows citizens to view the current master plan and look up zoning information for specific parcels
     \item Develop an editing plugin for municipal technicians to create, edit, and manage master plan variants
@@ -15,7 +15,7 @@ The overall goal of the project is to develop a GIS-based system for managing an
     \item Follow best practices for web mapping architecture, data standards, and security
 \end{enumerate}
 
-\subsection{Intermediate Goals:}
+\subsection{Intermediate Goals:}\label{subsec:intermediate-goals:}
 \begin{enumerate}
     \item Complete market analysis and requirements gathering
     \item Design system architecture and draft plan for integration with municipal IT environment
@@ -34,26 +34,27 @@ The overall goal of the project is to develop a GIS-based system for managing an
 The intermediate goals aim to break the project into manageable milestones, deliver incremental prototypes for feedback, and ensure the final system meets the requirements identified early in the process. The prototypes provide an opportunity for validating functionality and usability before committing to full system development.
 
 
-\section{Technological Components}
+\section{Technological Components}\label{sec:technological-components}
 The technological components of our GIS project are instrumental in realizing the vision of an efficient and user-friendly Master Plan management application. These components encompass both software and hardware aspects, with careful consideration given to the tools that facilitate seamless interaction, data management, and system performance.
 
-\subsection{Database}
+\subsection{Database}\label{subsec:database}
 
-\subsection{OpenJUMP Plugin}
-\subsection{WebGIS Application}
+\subsection{OpenJUMP Plugin}\label{subsec:openjump-plugin}
 
-\subsection{Software Requirements}
+\subsection{WebGIS Application}\label{subsec:webgis-application}
+
+\subsection{Software Requirements}\label{subsec:software-requirements}
 Many softwares needs to be used to set up the system:
 \begin{enumerate}
-    \item Database: !!EMPTY (POSTGRESQL) !!
-    
+    \item Database, utilize PostgreSQL 15 as the relational database management system (RDBMS), chosen for its stability, performance, and support for geospatial data manipulation. Additionally, the system shall incorporate the PostGIS extension 2.5.2 into the PostgreSQL database.
+
     \item Docker, is a platform that allows you to develop, deploy, and run applications in isolated containers. Containers are lightweight, portable, and self-sufficient units that encapsulate an application along with its dependencies, enabling consistent and efficient deployment across different environments.
     
     \item Web Map Service (WMS), a system capable of delivering web maps is needed: for this, Geoserver is the best solution available.
     
     \item Backend:
     \begin{enumerate}
-        \item caddyserver: Caddy 2 is a powerful, enterprise-ready, open source web server with automatic HTTPS written in Go and used as a reverse proxy, which uses namespaces routing,
+        \item caddy-server: Caddy 2 is a powerful, enterprise-ready, open source web server with automatic HTTPS written in Go and used as a reverse proxy, which uses namespaces routing,
         
         \item Minio server: This template allows users can upload their photos. The images are stored using the open source Object Storage Service (OSS) minio, which provides storage of images using buckets in a secure way through presigned URLs.
     
@@ -68,7 +69,9 @@ Many softwares needs to be used to set up the system:
     
 
 \end{enumerate}
-\subsection{Hardware Requirements}
+
+
+\subsection{Hardware Requirements}\label{subsec:hardware-requirements}
 When considering the hardware requirements for our GIS application, the choice of utilizing cloud services presents a strategic advantage. Cloud services, such as those provided by platforms like Amazon Web Services (AWS), Microsoft Azure, and Google Cloud Platform (GCP), offer scalable and flexible infrastructure that can adapt to the changing demands of the application.
 
 With cloud services, the hardware resources required to host the application can be provisioned dynamically based on usage, ensuring optimal performance during peak times and efficient resource utilization during periods of lower demand. This elasticity eliminates the need for substantial upfront investments in physical hardware and allows us to scale resources up or down as needed, resulting in cost savings and improved efficiency.
@@ -77,6 +80,72 @@ With cloud services, the hardware resources required to host the application can
 
 In conjunction with cloud services, the deployment of Docker images further optimizes hardware resource utilization. Docker containers encapsulate applications along with their dependencies, enabling consistent deployment across different environments. By deploying applications as Docker images, we achieve resource efficiency, as each container operates in an isolated environment, utilizing only the resources required for the specific application. 
 
-\subsection{Components Schema}
+\subsection{Components Schema}\label{subsec:components-schema}
 
-\section{Functional Aspects of the System}
+
+\section{Functional Aspects of the System}\label{sec:functional-aspects-of-the-system}
+
+\section{Database}\label{sec:database}
+\subsection{Initialize Database}\label{subsec:database-implementation}
+Given data for Particelle data are provided in cadaster mode that relies on local reference points, we need to transform them into a global reference system.
+To successfully carry out the conversion process, I meticulously followed a step-by-step procedure.
+Initially, I identified the nearest \("\)punti fiduciali\("\) in proximity to the specific geographic area of interest, which in this case was in the vicinity of Fano.
+These reference points held coordinates in both the Cassini Soldner and Gauss Braga coordinate reference systems (CRS).
+By leveraging these paired coordinates, I constructed an Affine Transformation, a mathematical model capable of accurately converting coordinates from the Cassini Soldner system to the Gauss Boaga system.
+This transformation was then methodically applied to the target cadastral data, facilitating a seamless and accurate conversion to the desired Gauss Boaga CRS.
+The integration of these steps culminated in a robust and precise conversion process that was integral to the success of my research project.
+The \("\)punti fiduciali\("\) dataset provided in OpenJump format was pivotal in enabling the smooth execution of this technique, reaffirming its value in overcoming the challenges associated with coordinate system conversions.
+
+The Algorithm used to convert the coordinates is the following:
+\begin{algorithm}[H]
+    \caption{Calculate Transformation Matrix}
+    \begin{algorithmic}[1]
+        \REQUIRE $primary$, $secondary$
+        \STATE $n \gets \text{shape of } primary[0]$
+        \STATE $pad \gets \text{function that adds a column of ones to a given array}$
+        \STATE $unpad \gets \text{function that removes the last column of a given array}$
+        \STATE $X \gets pad(primary)$
+        \STATE $Y \gets pad(secondary)$
+        \STATE $A, res, rank, s \gets \text{result of solving least squares problem } X * A = Y$
+        \STATE $transform \gets \text{function that applies the transformation matrix A to a given array}$
+        \RETURN $transform$
+    \end{algorithmic}
+\end{algorithm}
+
+Now we're ready to create the database, we need to create a new database in PostgreSQL, and then we need to create the schema, the tables and the views.
+We use shp2sql to import the shapefiles into the database.
+
+\subsection{Database Schema}\label{subsec:database-schema}
+\begin{figure}[H]
+    \includegraphics[width=\textwidth]{res/db_schema}
+    \caption{db schema}
+    \label{fig:dbschema}
+\end{figure}
+
+\subsection{Description of Entities and Relationships}\label{subsec:database-entity-relationship}
+The relationships established between the tables in database schema play a crucial role in making the GIS project app work seamlessly. Let's delve deeper into how these relationships contribute to the functionality of the application:
+
+\subsubsection{ImageMedia and Media Relationship}
+The \texttt{ImageMedia} table contains information about image media files, while the \texttt{Media} table holds general media data. This relationship allows you to associate specific images with general media records. For example, you can link a particular image to a video or other media content. It enables the app to manage different types of media assets and efficiently retrieve associated images when needed.
+
+\subsubsection{Note, ImageMedia, Prg, and User Relationships}
+The \texttt{Note} table is at the core of the app, storing notes related to land usage. The relationships with \texttt{ImageMedia}, \texttt{Prg}, and \texttt{User} are fundamental for organizing and contextualizing the notes. The connection with \texttt{ImageMedia} allows users to associate images with their notes, enhancing the visual representation of the content. The link to \texttt{Prg} helps tie notes to specific land usage plans, enabling users to provide location-specific information and feedback. The relationship with \texttt{User} ensures that each note is attributed to a specific user, facilitating accountability and user-specific access to notes.
+
+\subsubsection{Prg and User Relationship}
+The \texttt{Prg} table represents urban recovery and redevelopment plans. The relationship with \texttt{User} is essential for assigning responsibility for the plans to specific users. This connection allows administrators and designated users to manage and update the details of the plans they are responsible for.
+
+\subsubsection{User and ImageMedia, Role Relationships}
+The \texttt{User} table represents app users, including administrators and regular users. The relationship with \texttt{ImageMedia} allows users to have profile images associated with their accounts. This enhances the user experience by enabling users to personalize their profiles and providing a visual identification. The connection with \texttt{Role} defines user roles and permissions, making it possible to differentiate between administrators and regular users. Role-based access control ensures that only authorized users can perform certain actions, enhancing security and data integrity.
+
+\subsubsection{Overall Functionality}
+These relationships collectively enable the GIS project app to provide the following functionalities:
+
+\begin{itemize}
+    \item User Authentication and Authorization
+    \item Land Usage Notes and Planning
+    \item Media Management
+    \item User Profiles
+    \item Responsibility Assignment
+\end{itemize}
+
+In summary, the well-defined relationships in the database schema are the backbone of the GIS project app, enabling seamless interactions between different entities, data organization, user authentication, access control, and efficient management of land usage data for the city.
