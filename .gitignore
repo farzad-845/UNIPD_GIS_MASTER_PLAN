@@ -144,5 +144,56 @@ sonarqube/logs
 
 .terraform
 
+# IDE settings
 .vscode/*
 .idea/*
+
+# LaTex temp files
+*.out
+*.loa
+*.xmpi
+*.xmpdata
+*.aux
+*.toc
+*.synctex.gz
+*.bbl
+*.blg
+*.acn
+*.acr
+*.alg
+*.bak
+*.bcf
+*.brf
+*.bst
+*.dvi
+*.fdb_latexmk
+*.fls
+*.glg
+*.glo
+*.gls
+*.idx
+*.ilg
+*.ind
+*.ist
+*.lof
+*.lol
+*.lot
+*.maf
+*.mtc
+*.mtc1
+*.nav
+*.nlo
+*.nls
+#*.pdf
+*.pyg
+*.run.xml
+*.snm
+*.tex.backup
+*.tex~
+*.thm
+*.vrb
+*.xdy
+*.xml
+*blx.bib
+.bak
+.mtc
