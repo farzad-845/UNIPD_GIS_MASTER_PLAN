@@ -2,5 +2,4 @@
     <plug-in>master_plan.Plugin</plug-in>
     <plug-in>master_plan.Variant</plug-in>
     <plug-in>master_plan.Boundary</plug-in>
-    <plug-in>master_plan.Gap</plug-in>
 </workbench>

@@ -44,12 +44,9 @@ public class Variant extends AbstractPlugIn {
         if (!mid.wasOKPressed()) return false;
 
         String variantID = mid.getText(_variantID);
-        ;
-
-        System.out.println("Variant ID: " + variantID);
 
         FeatureCollection effectedVariant = db.getEffectedParticelleByVariant(variantID);
-        context.getLayerManager().addLayer("Master Plan", "Effected Variant - " + variantID, effectedVariant);
+        context.getLayerManager().addLayer("Variant", "Effected Variant - " + variantID, effectedVariant);
 
         db.close();
         return false;

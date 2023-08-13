@@ -15,7 +15,7 @@ public class Database {
 
     public Database() {
         try {
-            conn = DriverManager.getConnection(connection, "postgres", "password");
+            conn = DriverManager.getConnection(connection, "postgres", "sbadmin912");
             System.out.println("Connected to the PostgreSQL server successfully.");
         } catch (SQLException e) {
             e.printStackTrace();
@@ -31,7 +31,6 @@ public class Database {
         GeometryFactory gf = new GeometryFactory();
         WKTReader wkt = new WKTReader(gf);
 
-//        String query = "SELECT  ST_ASTEXT(ST_TRANSFORM(geom, 3003)) as geometry, * FROM " + tableName;
         String query = "SELECT  ST_ASTEXT(geom) as geometry, * FROM " + tableName;
 
         try (Statement stmt = conn.createStatement()) {
@@ -58,7 +57,7 @@ public class Database {
 
     }
 
-    public FeatureCollection getEffectedParticelleByVariant(String varaientId) {
+    public FeatureCollection getEffectedParticelleByVariant(String variantId) {
         FeatureSchema fs = new FeatureSchema();
         fs.addAttribute("geom", AttributeType.GEOMETRY);
 
@@ -66,13 +65,15 @@ public class Database {
         GeometryFactory gf = new GeometryFactory();
         WKTReader wkt = new WKTReader(gf);
 
-        String query = "SELECT ST_ASTEXT(pa.geom) as geometry FROM particelle pa JOIN prg pr ON ST_Intersects(pr.geom, pa.geom) WHERE pr.id = '" + varaientId + "'";
+        String query = "SELECT ST_ASTEXT(pa.geom) as geometry FROM particelle pa JOIN prg pr ON ST_Intersects(pr.geom, pa.geom) WHERE pr.id = '" + variantId + "'";
 
         try (Statement stmt = conn.createStatement()) {
             ResultSet rs = stmt.executeQuery(query);
             while (rs.next()) {
                 Feature f = new BasicFeature(fs);
+
                 f.setGeometry(wkt.read(rs.getString("geometry")));
+
                 fc.add(f);
             }
         } catch (SQLException e) {
@@ -108,13 +109,13 @@ public class Database {
      *
      * @return FeatureCollection
      */
-    public FeatureCollection checkBoundary() {
+    public FeatureCollection getParticelleNotCompletelyIncluded() {
         String query = """
-                    SELECT p.*
-                    FROM particellee p
-                    LEFT JOIN prg v ON ST_Intersects(v.geom, p.geom)
-                    WHERE NOT ST_Within(p.geom, v.geom) AND NOT ST_Disjoint(p.geom, v.geom);
-                """;
+            SELECT ST_ASTEXT(p.geom) as boundary, p.*
+            FROM particelle p
+            LEFT JOIN prg v ON ST_Intersects(v.geom, p.geom)
+            WHERE NOT ST_Within(p.geom, v.geom) AND NOT ST_Disjoint(p.geom, v.geom);
+        """;
 
         FeatureSchema fs = new FeatureSchema();
         fs.addAttribute("geom", AttributeType.GEOMETRY);
@@ -127,7 +128,43 @@ public class Database {
             ResultSet rs = stmt.executeQuery(query);
             while (rs.next()) {
                 Feature f = new BasicFeature(fs);
-                f.setGeometry(wkt.read(rs.getString("highlighted_boundary")));
+
+                f.setGeometry(wkt.read(rs.getString("boundary")));
+
+                fc.add(f);
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        } catch (org.locationtech.jts.io.ParseException e) {
+            throw new RuntimeException(e);
+        }
+
+
+        return fc;
+    }
+
+    public FeatureCollection getParticelleExcluded() {
+        String query = """
+            SELECT ST_ASTEXT(p.geom) as boundary, p.*
+            FROM particelle p
+            LEFT JOIN prg v ON ST_Intersects(v.geom, p.geom)
+            WHERE v.id IS NULL;
+        """;
+
+        FeatureSchema fs = new FeatureSchema();
+        fs.addAttribute("geom", AttributeType.GEOMETRY);
+
+        FeatureCollection fc = new FeatureDataset(fs);
+        GeometryFactory gf = new GeometryFactory();
+        WKTReader wkt = new WKTReader(gf);
+
+        try (Statement stmt = conn.createStatement()) {
+            ResultSet rs = stmt.executeQuery(query);
+            while (rs.next()) {
+                Feature f = new BasicFeature(fs);
+
+                f.setGeometry(wkt.read(rs.getString("boundary")));
+
                 fc.add(f);
             }
         } catch (SQLException e) {
@@ -151,16 +188,12 @@ public class Database {
      */
     public FeatureCollection getGapsMoreThanOne() {
         String query = """
-                    SELECT
-                        v.id,
-                        ST_Distance(ST_Boundary(p.geom), v.geom) as distance,
-                        ST_HausdorffDistance(ST_Boundary(p.geom), v.geom),
-                        ST_ASTEXT(ST_Difference(v.geom, p.geom)) AS highlighted_boundary
-                    FROM prg v
-                    JOIN particellee p ON ST_Intersects(v.geom, p.geom)
-                    WHERE NOT ST_Within(p.geom, v.geom) AND NOT ST_Disjoint(p.geom, v.geom)
-                    AND ST_HausdorffDistance(ST_Boundary(p.geom), v.geom) >= 1;
-                """;
+        SELECT
+           ST_ASTEXT(ST_DIFFERENCE(v.geom, p.geom)) AS highlighted_boundary
+        FROM particelle p
+        JOIN prg v ON ST_Intersects(v.geom, p.geom)
+        WHERE NOT ST_Within(p.geom, ST_Buffer(v.geom, 500)) AND NOT ST_Disjoint(p.geom, v.geom);
+        """;
 
         FeatureSchema fs = new FeatureSchema();
         fs.addAttribute("geom", AttributeType.GEOMETRY);

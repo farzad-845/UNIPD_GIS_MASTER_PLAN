@@ -28,17 +28,18 @@ public class Plugin extends AbstractPlugIn {
                 this.getName(),
                 false,
                 null,
-                null);
+                null
+        );
     }
 
     @Override
     public boolean execute(PlugInContext context) throws Exception {
-
         Database db = new Database();
+
         FeatureCollection prg = db.loadMap("prg");
         context.getLayerManager().addLayer("Master Plan", "prg", prg);
 
-        FeatureCollection particelle = db.loadMap("particellee");
+        FeatureCollection particelle = db.loadMap("particelle");
         context.getLayerManager().addLayer("Master Plan", "particelle", particelle);
 
         db.close();
