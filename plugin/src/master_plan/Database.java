@@ -15,7 +15,7 @@ public class Database {
 
     public Database() {
         try {
-            conn = DriverManager.getConnection(connection, "postgres", "sbadmin912");
+            conn = DriverManager.getConnection(connection, "postgres", "postgres");
             System.out.println("Connected to the PostgreSQL server successfully.");
         } catch (SQLException e) {
             e.printStackTrace();

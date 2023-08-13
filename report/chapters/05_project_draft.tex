@@ -39,7 +39,10 @@ The technological components of our GIS project are instrumental in realizing th
 
 \subsection{Database}\label{subsec:database}
 
-\subsection{OpenJUMP Plugin}\label{subsec:openjump-plugin}
+\subsection{Desktop GIS System (Plugin)}\label{subsec:openjump-plugin}
+In accordance with specified criteria, the OpenJUMP plugin operates and helps by loading plan and variant layers, visualizing affected cadastral particles, identifying misaligned boundaries, and showcasing excluded or partially included parcels.
+Moreover, it accurately measures gaps between variant and cadastral parcel edges, highlighting sections within a 1-meter threshold in a new layer.
+This systematic process efficiently addresses functional requirements, facilitating precise geospatial analysis.
 
 \subsection{WebGIS Application}\label{subsec:webgis-application}
 
@@ -84,6 +87,58 @@ In conjunction with cloud services, the deployment of Docker images further opti
 
 
 \section{Functional Aspects of the System}\label{sec:functional-aspects-of-the-system}
+\subsubsection{WebGIS Application}\label{subsec:fa-webgis-application}
+\subsubsection{OpenJUMP plugin}\label{subsec:fa-openjump-plugin}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{res/plugin/01-menu}
+    \caption{Menu of the plugin}
+    \label{fig:dbschema}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{res/plugin/02-load-data}
+    \caption{Load data from the database}
+    \label{fig:dbschema}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{res/plugin/03-show-areas}
+    \caption{Show fffect areas - Choose a variant}
+    \label{fig:dbschema}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{res/plugin/04-show-areas}
+    \caption{Show Effect Areas}
+    \label{fig:dbschema}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{res/plugin/05-boundary}
+    \caption{Parcels excluded}
+    \label{fig:dbschema}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{res/plugin/06-boundary.png}
+    \caption{Parcels partially included}
+    \label{fig:dbschema}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{res/plugin/07-boundary.png}
+    \caption{Gap between parcels that partially included}
+    \label{fig:dbschema}
+\end{figure}
+
 
 \section{Database}\label{sec:database}
 \subsection{Initialize Database}\label{subsec:database-implementation}
