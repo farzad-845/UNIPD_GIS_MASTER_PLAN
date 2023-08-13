@@ -1,22 +1,17 @@
 package master_plan;
 
-import com.vividsolutions.jump.feature.Feature;
 import com.vividsolutions.jump.feature.FeatureCollection;
-import com.vividsolutions.jump.workbench.model.Layer;
 import com.vividsolutions.jump.workbench.plugin.AbstractPlugIn;
 import com.vividsolutions.jump.workbench.plugin.PlugInContext;
+import com.vividsolutions.jump.workbench.ui.MultiInputDialog;
 import com.vividsolutions.jump.workbench.ui.plugin.FeatureInstaller;
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.LineSegment;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
-public class Plugin extends AbstractPlugIn {
+public class Variant extends AbstractPlugIn {
 
-    public Plugin() throws SQLException {
+    public Variant() throws SQLException {
     }
 
     @Override
@@ -35,11 +30,26 @@ public class Plugin extends AbstractPlugIn {
     public boolean execute(PlugInContext context) throws Exception {
 
         Database db = new Database();
-        FeatureCollection prg = db.loadMap("prg");
-        context.getLayerManager().addLayer("Master Plan", "prg", prg);
 
-        FeatureCollection particelle = db.loadMap("particellee");
-        context.getLayerManager().addLayer("Master Plan", "particelle", particelle);
+        MultiInputDialog mid = new MultiInputDialog(
+                context.getWorkbenchFrame(),
+                this.getName(), true
+        );
+
+        List<String> variantsIDs = db.getVariantIDs();
+        String _variantID = "Choose the variant ID to process";
+
+        mid.addComboBox(_variantID, variantsIDs.get(0), variantsIDs, "yes");
+        mid.setVisible(true); // modal dialog
+        if (!mid.wasOKPressed()) return false;
+
+        String variantID = mid.getText(_variantID);
+        ;
+
+        System.out.println("Variant ID: " + variantID);
+
+        FeatureCollection effectedVariant = db.getEffectedParticelleByVariant(variantID);
+        context.getLayerManager().addLayer("Master Plan", "Effected Variant - " + variantID, effectedVariant);
 
         db.close();
         return false;
@@ -47,6 +57,6 @@ public class Plugin extends AbstractPlugIn {
 
     @Override
     public String getName() {
-        return "Load Data";
+        return "Show Effected Areas";
     }
 }
