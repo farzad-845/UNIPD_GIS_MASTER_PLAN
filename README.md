@@ -55,7 +55,6 @@ Inside the `app` folder we have the main application + the `initial_data.py` scr
 App
 ├── app
 │   ├── api
-│   │   ├── reset_cache -> endpoint to reset the cache
 │   │   ├── v1 -> endpoint to get the data (content)
 │   ├── core (contains config)
 │   ├── crud (contains crud operations)
@@ -114,7 +113,13 @@ For adding environment variables to the docker-compose.yml or your application y
 
 ### Built With
 
-* [![FastApi][FastApi]][FastApi-url]
+[![FastApi][FastApi]][FastApi-url]
+[![OpenJump][OpenJump]][OpenJump-url]
+[![GeoServer][GeoServer]][GeoServer-url]
+[![Docker][Docker]][Docker-url]
+[![PostgreSQL][PostgreSQL]][PostgreSQL-url]
+[![Leaflet][Leaflet]][Leaflet-url]
+
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -145,8 +150,16 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 [product-screenshot]: images/screenshot.png
 [FastApi]: https://img.shields.io/badge/fastapi-000000?style=for-the-badge&logo=fastapi&logoColor=white
 [FastApi-url]: https://fastapi.tiangolo.com/
-
-
+[Leaflet]: https://img.shields.io/badge/leaflet-199900?style=for-the-badge&logo=leaflet&logoColor=white
+[Leaflet-url]: https://leafletjs.com/
+[Docker]: https://img.shields.io/badge/docker-2496ED?style=for-the-badge&logo=docker&logoColor=white
+[Docker-url]: https://www.docker.com/
+[PostgreSQL]: https://img.shields.io/badge/postgresql-336791?style=for-the-badge&logo=postgresql&logoColor=white
+[PostgreSQL-url]: https://www.postgresql.org/
+[OpenJump]: https://img.shields.io/badge/openjump-66023C?style=for-the-badge&logo=openjump&logoColor=white
+[OpenJump-url]: https://www.openjump.org/
+[GeoServer]: https://img.shields.io/badge/geoserver-FF5E0E?style=for-the-badge&logo=geoserver&logoColor=white
+[GeoServer-url]: https://geoserver.org/
 
 ---
 
