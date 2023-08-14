@@ -49,27 +49,26 @@ This systematic process efficiently addresses functional requirements, facilitat
 \subsection{Software Requirements}\label{subsec:software-requirements}
 Many softwares needs to be used to set up the system:
 \begin{enumerate}
-    \item Database, utilize PostgreSQL 15 as the relational database management system (RDBMS), chosen for its stability, performance, and support for geospatial data manipulation. Additionally, the system shall incorporate the PostGIS extension 2.5.2 into the PostgreSQL database.
+    \item \textbf{Database}, utilize PostgreSQL 15 as the relational database management system (RDBMS), chosen for its stability, performance, and support for geospatial data manipulation. Additionally, the system shall incorporate the PostGIS extension 2.5.2 into the PostgreSQL database.
 
-    \item Docker, is a platform that allows you to develop, deploy, and run applications in isolated containers. Containers are lightweight, portable, and self-sufficient units that encapsulate an application along with its dependencies, enabling consistent and efficient deployment across different environments.
+    \item \textbf{Docker}, is a platform that allows you to develop, deploy, and run applications in isolated containers. Containers are lightweight, portable, and self-sufficient units that encapsulate an application along with its dependencies, enabling consistent and efficient deployment across different environments.
     
-    \item Web Map Service (WMS), a system capable of delivering web maps is needed: for this, Geoserver is the best solution available.
+    \item \textbf{Web Map Service (WMS)}, a system capable of delivering web maps is needed: for this, Geoserver is the best solution available.
     
-    \item Backend:
+    \item \textbf{Tools, Frameworks \& Libraries:}
     \begin{enumerate}
-        \item caddy-server: Caddy 2 is a powerful, enterprise-ready, open source web server with automatic HTTPS written in Go and used as a reverse proxy, which uses namespaces routing,
-        
-        \item Minio server: This template allows users can upload their photos. The images are stored using the open source Object Storage Service (OSS) minio, which provides storage of images using buckets in a secure way through presigned URLs.
-    
-        \item Celery: Celery is a distributed task queue that allows developers to run asynchronous tasks in their applications. It is particularly useful for tasks that are time-consuming, require heavy computation or access external services, and can be run independently of the main application. It also offers features such as task scheduling, task prioritization, and retries in case of failure.
-        
-        Celery Beat is an additional component of Celery that allows developers to schedule periodic tasks and intervals for their Celery workers. It provides an easy-to-use interface for defining task schedules and supports several scheduling options such as crontab, interval, and relative.
-    
-        \item SonarQube: SonarQube is an automatic code review tool that detects bugs, vulnerabilities, and code smells in a project. You can read this post in order to have a better understanding about what SonarQube can do.
-    \end{enumerate}
+        \item \textbf{FastAPI:} FastAPI is a modern, fast (high-performance), web framework for building APIs with Python 3.6+ based on standard Python type hints.
 
-    \item Frontend !! EMPTY !!
+        \item \textbf{caddy-server:} Caddy 2 is a powerful, enterprise-ready, open source web server with automatic HTTPS written in Go and used as a reverse proxy, which uses namespaces routing,
+        
+        \item \textbf{Minio server:} This template allows users can upload their photos. The images are stored using the open source Object Storage Service (OSS) minio, which provides storage of images using buckets in a secure way through presigned URLs.
     
+        \item \textbf{Celery:} Celery is a distributed task queue that allows developers to run asynchronous tasks in their applications. It is particularly useful for tasks that are time-consuming, require heavy computation or access external services, and can be run independently of the main application. It also offers features such as task scheduling, task prioritization, and retries in case of failure.
+
+        \item \textbf{SonarQube:} SonarQube is an automatic code review tool that detects bugs, vulnerabilities, and code smells in a project. You can read this post in order to have a better understanding about what SonarQube can do.
+
+        \item \textbf{Leaflet:} Leaflet is the leading open-source JavaScript library for mobile-friendly interactive maps. It has all the mapping features most developers ever need.
+    \end{enumerate}
 
 \end{enumerate}
 
@@ -114,7 +113,7 @@ The Algorithm used to convert the coordinates is the following:
         \STATE $A, res, rank, s \gets \text{result of solving least squares problem } X * A = Y$
         \STATE $transform \gets \text{function that applies the transformation matrix A to a given array}$
         \RETURN $transform$
-    \end{algorithmic}
+    \end{algorithmic}\label{alg:algorithm}
 \end{algorithm}
 
 Now we're ready to create the database, we need to create a new database in PostgreSQL, and then we need to create the schema, the tables and the views.
