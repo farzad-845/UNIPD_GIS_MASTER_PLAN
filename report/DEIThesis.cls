@@ -85,7 +85,7 @@
 \addbibresource{references.bib}
 
 
-
+\let\cleardoublepage\clearpage
 % -- DEFINITIONS --
 
 % university
@@ -269,11 +269,11 @@
   \listofalgorithms
 
   % insert list of code snippets
-  \phantomsection
-  \setcounter{page}{13}
-  \addcontentsline{toc}{chapter}{\lstlistlistingname}
-  \lstlistoflistings
-  \cleardoublepage
+%  \phantomsection
+%  \setcounter{page}{13}
+%  \addcontentsline{toc}{chapter}{\lstlistlistingname}
+%  \lstlistoflistings
+%  \cleardoublepage
 
   % insert list of abbreviations/acronyms
   % \setcounter{page}{19}
