@@ -340,7 +340,7 @@
 
     \begin{flushleft}
       \small
-      \textsc{Master Candidate} \hfill \textsc{Supervisor} \\
+      \textsc{Master Student} \hfill \textsc{Supervisor} \\
       \large{\textbf{\@author}} \hfill \large{\textbf{\@advisor}} \\
       \small
       \textbf{Student ID \@studentId} \hfill 
