@@ -16,8 +16,11 @@
 The provided Gantt chart outlines the comprehensive timeline and sequence of tasks for the development of the GIS Master Plan Application. It serves as a visual representation of the project's progression, illustrating the major phases, activities, and their interdependencies. The Gantt chart begins with definig project scope, which entails initial planning and team coordination. It then segues into Requirements Analysis, System Design, and Database Design, where the project's fundamental groundwork is laid. Application Development, including the OpenJUMP Plugin and WebGIS Application, constitutes a significant portion of the timeline, culminating in Integration and Testing to ensure seamless operability. Subsequently, User Acceptance Testing, Documentation, and Training phases pave the way for a successful Deployment. Post-Deployment Support extends after deployment to address any issues and facilitate user adaptation. Finally, the project concludes with the Project Conclusion phase. This Gantt chart serves as a roadmap, enabling effective project management and tracking as the GIS Master Plan Application takes shape.
 
 \subsection{Delivery Time}\label{subsec:delivery-time}
-!! TODO
-%The completion of the GIS Master Plan Application, as outlined in the Gantt chart, is projected to span approximately six months. The project is set to commence on September 1, 2023, with a target completion date of March 3, 2024. This timeframe accounts for the intricate stages of the project, including requirements analysis, system design, application development, testing, documentation, and deployment. It encompasses development, testing, training, and post-deployment support phases to ensure a robust and user-ready application. By adhering to this delivery time, the project aims to ensure the seamless and timely availability of the GIS Master Plan Application, meeting the needs of planners, technicians, and citizens in the Italian province of Fano.
+The GIS Master Plan Application is scheduled for completion over a projected duration of approximately six months, as indicated in the Gantt chart.
+The project is slated to commence in mid-August 2023, with a targeted completion date set for the end of the year 2023.
+This timeline accommodates the various intricate stages of the project, encompassing requirements analysis, system design, application development, testing, documentation, and deployment.
+It encompasses phases such as development, testing, training, and post-deployment support, all aimed at ensuring the delivery of a robust and user-ready application.
+The project's adherence to this delivery timeframe is intended to ensure the punctual availability of the GIS Master Plan Application, thereby meeting the requirements of planners, technicians, and citizens within the Italian province of Fano.
 
 \subsection{Benefits Evaluation}\label{subsec:benefits-evaluation}
 This evaluation can be quantified through various metrics, including time saved in plan variant creation and approval, reduction in errors and inconsistencies, enhanced public participation, and increased efficiency in plan management. 
@@ -67,40 +70,41 @@ These costs include personnel salaries, software and hardware acquisition, third
 Additionally, costs related to quality assurance and testing, documentation, user interface design, and project management tools are considered.
 Accurate project cost evaluation provides a clear understanding of the investment required to bring the application to fruition, enabling effective budget planning and resource allocation.
 
-
 Development Team, We'll need developers with expertise in Django, Python, PostgreSQL, PostGIS, Leaflet, Geoserver, Java, and JTS.
 The estimated costs are writen per year but as we expected this projects needs around 3.5 month of development.
 
-\textbf{Django Backend Developers (2-3)}: \$60,000--\$120,000 per developer per year.
+\begin{enumerate}
+    \item \textbf{Django Backend Developers (2-3)}: \$60,000--\$120,000 per developer per year.
 
-\textbf{Front-end Developers (2-3)}: \$60,000--\$120,000 per developer per year.
+    \item \textbf{Front-end Developers (2-3)}: \$60,000--\$120,000 per developer per year.
 
-\textbf{GIS Specialists (1-2)}: \$80,000--\$150,000 per specialist per year.
+    \item \textbf{GIS Specialists (1-2)}: \$80,000--\$150,000 per specialist per year.
 
-\textbf{Java Developers (for OpenJump)}: \$70,000--\$130,000 per developer per year.
+    \item \textbf{Java Developers (for OpenJump)}: \$70,000--\$130,000 per developer per year.
 
-\textbf{Database}: PostgreSQL (PostGIS) is open-source, so there are no licensing costs, but you may need a DBA (Database Administrator) to optimize the database. A DBA's salary can range from $80,000 to $150,000 per year.
+    \item \textbf{Database}: PostgreSQL (PostGIS) is open-source, so there are no licensing costs, but you may need a DBA (Database Administrator) to optimize the database. A DBA's salary can range from $80,000 to $150,000 per year.
 
-\textbf{Leaflet and Geoserver}: These are open-source tools, so there are no licensing costs.
-However, we may need experts to configure and maintain them, which can add to personnel costs.
+    \item \textbf{Leaflet and Geoserver}: These are open-source tools, so there are no licensing costs.
+    However, we may need experts to configure and maintain them, which can add to personnel costs.
 
-\textbf{Mobile App Development}: If we want a mobile app that's compatible with both Android and iOS, we'll need mobile app developers (2-3) with expertise in React Native or Flutter.
-Each developer's salary may range from \$60,000 to \$120,000 per year.
+    \item \textbf{Mobile App Development}: If we want a mobile app that's compatible with both Android and iOS, we'll need mobile app developers (2-3) with expertise in React Native or Flutter.
+    Each developer's salary may range from \$60,000 to \$120,000 per year.
 
-\textbf{Project Management and Quality Assurance}: We should allocate a budget for project management and quality assurance (testing and debugging).
-Depending on the project's scale, this could range from \$20,000 to \$60,000 per year.
+    \item \textbf{Project Management and Quality Assurance}: We should allocate a budget for project management and quality assurance (testing and debugging).
+    Depending on the project's scale, this could range from \$20,000 to \$60,000 per year.
 
-\textbf{OpenJump Plugin}: Development and integration of the OpenJump plugin with Java and JTS could cost an additional $20,000 to $50,000, depending on complexity.
+    \item \textbf{OpenJump Plugin}: Development and integration of the OpenJump plugin with Java and JTS could cost an additional \$20,000 to \$50,000, depending on complexity.
 
-\textbf{Infrastructure}: Hosting costs depend on your project's scale and traffic.
-Consider cloud providers like AWS, Azure, or Google Cloud.
-Costs may vary widely but could range from \$1,000 to \$5,000 per month.
+    \item \textbf{Infrastructure}: Hosting costs depend on our project's scale and traffic.
+    Considering cloud providers like AWS, Azure, or Google Cloud, Costs may vary widely but could range from \$1,000 to \$5,000 per month.
 
-\textbf{Contingency}: It's advisable to have a contingency fund of 10-20\% of the total estimated budget to cover unexpected expenses.
+    \item \textbf{Contingency}: Contingency fund of 10--20\% of the total estimated budget to cover unexpected expenses.
 
-\textbf{Maintenance and Updates}: Don't forget to budget for ongoing maintenance and updates, which could be around 20-30\% of the initial development cost annually.
+    \item \textbf{Maintenance and Updates}: budget for ongoing maintenance and updates, which could be around 20--30\% of the initial development cost annually.
 
-\begin{table}[h]
+\end{enumerate}
+
+\begin{table}[ht!]
     \centering
     \begin{tabular}{|l|c|}
         \hline
@@ -116,7 +120,7 @@ Costs may vary widely but could range from \$1,000 to \$5,000 per month.
     \caption{Initial Development Costs (First Year)}\label{tab:init-develop-costs}
 \end{table}
 
-
+The price estimation based on the requirements will be estimated more precisely in the meeting with the stakeholders, these prices are considered based on the global market and an average of the legal base of technology-related companies.
 
 \subsection{Running Costs}\label{subsec:running-costs}
 The running costs encompass the ongoing operational expenses to maintain and sustain the GIS Master Plan Application.
