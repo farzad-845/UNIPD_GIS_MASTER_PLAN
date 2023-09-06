@@ -16,9 +16,10 @@ const defaultParameters = {
 };
 
 let WFSLayer = null;
-const parameters = L.Util.extend(defaultParameters);
+const particelle_parameters = L.Util.extend(defaultParameters);
 const prg_parameters = L.Util.extend({...defaultParameters, typeName: 'master_plan_pg:prg'});
-const OWS_URL = owsRootUrl + L.Util.getParamString(parameters);
+
+const OWS_URL = owsRootUrl + L.Util.getParamString(particelle_parameters);
 const OWS_URL_PRG = owsRootUrl + L.Util.getParamString(prg_parameters);
 
 // map crosshair size etc:

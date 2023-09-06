@@ -7,8 +7,6 @@ Create Date: ${create_date}
 """
 from alembic import op
 import sqlalchemy as sa
-import sqlalchemy_utils
-import sqlmodel # added
 ${imports if imports else ""}
 
 # revision identifiers, used by Alembic.
@@ -18,10 +16,9 @@ branch_labels = ${repr(branch_labels)}
 depends_on = ${repr(depends_on)}
 
 
-def upgrade():
-    op.execute("CREATE EXTENSION IF NOT EXISTS pg_trgm") 
+def upgrade() -> None:
     ${upgrades if upgrades else "pass"}
 
 
-def downgrade():
+def downgrade() -> None:
     ${downgrades if downgrades else "pass"}

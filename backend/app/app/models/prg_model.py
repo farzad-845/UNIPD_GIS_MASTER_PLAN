@@ -43,5 +43,5 @@ class PrgBase(SQLModel):
 
 class Prg(BaseUUIDModel, PrgBase, table=True):
     notes: list["Note"] = Relationship(  # noqa: F821
-        back_populates="note", sa_relationship_kwargs={"lazy": "selectin"}
+        back_populates="prg", sa_relationship_kwargs={"lazy": "selectin"}
     )
