@@ -57,7 +57,7 @@ The central component of the system will be the web application, which must offe
         \hline
         \textbf{Component} & \textbf{Description} \\
         \hline
-        \textbf{Frontend Map Management} & Integration of the OpenLayers JavaScript plugin to allow users to utilize maps within the web app. \\
+        \textbf{Frontend Map Management} & Integration of the Leaflet JavaScript plugin to allow users to utilize maps within the web app. \\
         \hline
         \textbf{Background Map} & Displaying a province-level background map using OpenStreetMap maps within the OpenLayers plugin. \\
         \hline
@@ -195,12 +195,49 @@ Our web application is mainly composed of 5 parts:
     \item \textbf{Search and Print}: Searching for parts and printing the associated area with its details.
 \end{enumerate}
 
+Main Page of the application
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{res/web/1-maste-plan intro}
+    \caption{The first page presents temporary data to help users quickly grasp the app's context}
+    \label{fig:web-main}
+\end{figure}
+
+Login and Registration procedure for users (esp: for technicians)
+\begin{figure}[H]
+    \centering
+    \begin{minipage}{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{res/web/2-register}
+        \caption{Login Page}
+        \label{fig:web-login}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{res/web/3-register}
+        \caption{Registration page}
+        \label{fig:web-register}
+    \end{minipage}
+\end{figure}
+
+
 Explore the interface where parts and their variations are showcased, accessible to both the public and technicians:
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{res/plugin/01-menu}
-    \caption{Visualizing parts and variants for public and technician access.}
-    \label{fig:web-display}
+    \begin{minipage}{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{res/web/map-data}
+        \caption{Variants}
+        \label{fig:web-map-data}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{res/web/both-map-data}
+        \caption{Parcels + Variants}
+        \label{fig:web-map-all-data}
+    \end{minipage}
 \end{figure}
 
 
@@ -208,34 +245,43 @@ Discover how users interact with the system by writing notes and comments for di
 Observe the display of public notes.
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{res/plugin/01-menu}
+    \includegraphics[width=0.9\textwidth]{res/web/5-notes}
     \caption{User interaction with notes, comments, and polygons, with public notes displayed.}
     \label{fig:web-notes}
 \end{figure}
 
-Witness technicians drawing and incorporating new areas as variants within the system. These additions are initially hidden from public view.
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{res/plugin/01-menu}
-    \caption{Technician adding new areas as variants, initially hidden from the public.}
+    \includegraphics[width=0.9\textwidth]{res/web/6-adding-notes}
+    \caption{Adding Notes}
+    \label{fig:web-add-note}
+\end{figure}
+
+Witness technicians drawing and incorporating new areas as variants within the system.
+These additions are initially hidden from public view.
++ Observe the process of modifying the status of variants and making them visible to all users for effective management.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{res/web/4-draw polygons}
+    \caption{Administering variant.}
     \label{fig:web-create-var}
 \end{figure}
 
-Observe the process of modifying the status of variants and making them visible to all users for effective management.
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.8\textwidth]{res/plugin/01-menu}
-    \caption{Administering variant status and making them visible to all users.}
-    \label{fig:web-edit-var}
-\end{figure}
+%Observe the process of modifying the status of variants and making them visible to all users for effective management.
+%\begin{figure}[H]
+%    \centering
+%    \includegraphics[width=0.8\textwidth]{res/plugin/01-menu}
+%    \caption{Administering variant status and making them visible to all users.}
+%    \label{fig:web-edit-var}
+%\end{figure}
 
-Explore the functionalities of searching for specific parts and printing detailed information along with their associated areas for convenient reference.
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.8\textwidth]{res/plugin/01-menu}
-    \caption{Utilizing search functionality and printing part details with associated areas.}
-    \label{fig:web-search}
-\end{figure}
+%Explore the functionalities of searching for specific parts and printing detailed information along with their associated areas for convenient reference.
+%\begin{figure}[H]
+%    \centering
+%    \includegraphics[width=0.8\textwidth]{res/plugin/01-menu}
+%    \caption{Utilizing search functionality and printing part details with associated areas.}
+%    \label{fig:web-search}
+%\end{figure}
 
 
 \subsection{OpenJUMP plugin}\label{subsec:fa-openjump-plugin}
