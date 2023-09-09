@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en:us">
+  <head>
+    <title>Master plan</title>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css"
+    />
+    <link
+      href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="lib/leaflet.css" />
+    <link href="lib/jquery-ui.css" rel="stylesheet" />
+    <link
+      href="lib/bootstrap.v4.0.0.min.css"
+      crossorigin="anonymous"
+      alt="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="lib/leaflet-sidebar.css" />
+    <link href="lib/tabulator.min.css" rel="stylesheet" />
+    <link href="lib/simTree.css" rel="stylesheet" />
+
+    <link href="./main.css" rel="stylesheet" />
+
+    <!-- Put the CSSs first and JSs next -->
+
+    <script src="lib/jquery-3.3.1.min.js" type="text/javascript"></script>
+    <script src="lib/jquery-ui.min.js" type="text/javascript"></script>
+    <script src="lib/leaflet.js"></script>
+    <script src="lib/leaflet-sidebar.min.js"></script>
+    <script src="lib/papaparse.min.js"></script>
+    <script src="lib/Leaflet.Control.Custom.js"></script>
+    <script src="lib/leaflet-providers.js"></script>
+    <script src="lib/tabulator.min.js" type="text/javascript"></script>
+    <script src="lib/leaflet-hash.min.js"></script>
+    <script src="lib/simTree.js"></script>
+  </head>
+  <body>
+    <section class="notes__container">
+      <button class="notes__button--open">
+        <i class="ti ti-bell"></i>
+        <span class="notes__title">Citizen Inputs</span>
+      </button>
+      <div class="list__container list__container--hidden">
+        <header class="list__header">
+          <h3 class="notes__title">Citizen Inputs</h3>
+          <button class="notes__button--close">
+            <i class="ti ti-chevron-right"></i>
+          </button>
+          <p class="list__count">
+            Total inputs: <span class="count__number">0</span>
+          </p>
+        </header>
+        <ul id="notes-list" class="notes__list"></ul>
+      </div>
+    </section>
+
+    <section class="form__container form__container--hidden">
+      <header class="container__header">
+        <h3 class="container__title">Add Note</h3>
+        <button class="cancel__btn">
+          <i class="ti ti-x"></i>
+        </button>
+      </header>
+      <form action="" id="note-form" class="notes__form">
+        <fieldset class="form__fieldset text__fieldset location__fieldset">
+          <label for="location-input" class="form__label">Location</label>
+          <input
+            type="text"
+            name="location"
+            id="location-input"
+            class="form__input location__input"
+            disabled
+          />
+        </fieldset>
+
+        <fieldset class="form__fieldset dropdown__fieldset">
+          <label for="type" class="form__label">type</label>
+          <select name="type" id="type" class="form__dropdown">
+            <option value="comment" class="form__option">comment</option>
+            <option value="tip" class="form__option">tip</option>
+            <option value="report" class="form__option">report</option>
+          </select>
+        </fieldset>
+
+        <fieldset class="form__fieldset textarea__fieldset">
+          <label for="description" class="form__label"
+            >description <span class="form__required">*</span></label
+          >
+          <textarea
+            name="description"
+            id="description"
+            cols="30"
+            rows="3"
+            class="form__textarea"
+          ></textarea>
+        </fieldset>
+
+        <fieldset class="form__fieldset file__fieldset">
+          <label for="attachment" class="form__label"
+            >attachment <span class="form__optional">(optional)</span></label
+          >
+          <input
+            id="attachment"
+            type="file"
+            name="attachment"
+            class="file__input"
+          />
+          <button type="button" id="attachment-btn" class="btn file__btn">
+            Upload
+          </button>
+        </fieldset>
+
+        <div class="form__btns">
+          <button type="button" id="form-cancel-btn" class="btn cancel__btn">
+            Cancel
+          </button>
+          <button
+            type="submit"
+            id="note-submit-btn"
+            class="btn submit__btn btn--disabled"
+          >
+            Submit
+          </button>
+        </div>
+      </form>
+    </section>
+
+    <section class="menu__container">
+      <button id="menu-open-btn" class="menu__btn">
+        <object
+          data="./assets/images/pencil_plus_icon.svg"
+          width="32"
+          height="32"
+          class="btn__icon"
+        ></object>
+      </button>
+
+      <ul class="menu__list menu__list--closed">
+        <li class="menu__item">
+          <button id="add-point-btn" class="item__btn">
+            <object
+              data="./assets/images/plus_icon.svg"
+              width="32"
+              height="32"
+              class="btn__icon"
+            ></object>
+          </button>
+        </li>
+        <li class="menu__item">
+          <button id="clear-points-btn" class="item__btn">
+            <object
+              data="./assets/images/eraser_icon.svg"
+              width="32"
+              height="32"
+              class="btn__icon"
+            ></object>
+          </button>
+        </li>
+        <li class="menu__item">
+          <button id="submit-points-btn" class="item__btn">
+            <object
+              data="./assets/images/check_icon.svg"
+              width="32"
+              height="32"
+              class="btn__icon"
+            ></object>
+          </button>
+        </li>
+
+        <li class="menu__item close__btn">
+          <button id="menu-close-btn" class="item__btn">
+            <i class="ti ti-chevron-right"></i>
+          </button>
+        </li>
+      </ul>
+    </section>
+
+    <div class="alert__container alert__container--hidden">
+      <div class="alert">
+        <i class="ti ti-alert-triangle alert__icon"></i>
+        <p class="alert__text"></p>
+      </div>
+    </div>
+
+    <div id="map" class="map sidebar-map"></div>
+
+    <script src="config.js"></script>
+    <script src="js/map.js?n=4"></script>
+    <script src="js/alert.js"></script>
+    <script src="js/api.js?n=3"></script>
+    <script src="js/noteForm.js"></script>
+    <script src="js/attachment.js"></script>
+    <script src="js/polygon.js"></script>
+    <script src="js/menu.js"></script>
+    <script src="js/notesList.js"></script>
+  </body>
+</html>

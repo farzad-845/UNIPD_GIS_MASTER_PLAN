@@ -1,0 +1,65 @@
+.form__fieldset {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  border: none;
+
+  &.text__fieldset:focus-within {
+    .form__label {
+      font-weight: 500;
+      transform: translateY(-1rem);
+      color: $primary-color;
+    }
+
+    .form__input {
+      outline: none;
+      box-shadow: 0 0.275rem 0 -0.1rem $primary-color;
+    }
+  }
+
+  &.textarea__fieldset:focus-within {
+    .form__label {
+      color: $primary-color;
+    }
+
+    .form__textarea {
+      outline: none;
+      box-shadow: 0 0 0 0.15rem $primary-color;
+    }
+  }
+}
+
+.form__label {
+  color: $secondary-color-gray-500;
+  text-transform: capitalize;
+  transform: translateY(0);
+  transition: color 200ms ease-in-out, transform 200ms ease-in-out;
+}
+
+.form__required {
+  color: $primary-color;
+}
+
+.form__optional {
+  color: $secondary-color-gray-500;
+  font-size: 80%;
+  opacity: 0.9;
+}
+
+.form__input {
+  border: none;
+  padding: 1.25rem 0.5rem;
+  font-weight: 400;
+  font-size: 110%;
+  background-color: transparent;
+  box-shadow: 0 0.2rem 0 -0.1rem $dark-color;
+  transition: box-shadow 100ms ease-in-out;
+}
+
+.form__textarea {
+  @extend .form__input;
+
+  resize: none;
+  box-shadow: 0 0 0 0.1rem $secondary-color-gray-500;
+  border-radius: 1rem;
+}

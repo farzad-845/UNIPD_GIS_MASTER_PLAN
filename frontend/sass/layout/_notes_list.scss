@@ -1,0 +1,180 @@
+.notes__container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  overflow: hidden;
+
+  .notes__title {
+    font-weight: 500;
+  }
+
+  .notes__button--open {
+    @extend .btn;
+    position: fixed;
+    bottom: Min(5vw, 4rem);
+    left: Min(5vw, 4rem);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.5rem;
+    background-color: transparent;
+    color: $dark-color;
+    box-shadow: 0 0 0 0.15rem $dark-color;
+    font-size: 105%;
+    z-index: 10000;
+
+    &:hover {
+      opacity: unset;
+    }
+  }
+
+  .list__container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: Min(90%, 40rem);
+    height: 100%;
+    padding: Min(5vw, 1.5rem);
+    box-shadow: 0 0 10rem 1rem rgba($dark-color, 0.1);
+    background-color: $light-color;
+    z-index: 10000;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    transition: transform 200ms ease-in-out;
+
+    &.list__container--hidden {
+      transform: translateX(-100%);
+    }
+
+    .list__header {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      gap: 1rem;
+
+      .notes__button--close {
+        background-color: transparent;
+        border: none;
+        font-size: 150%;
+        transform: rotateZ(180deg);
+      }
+
+      .list__count {
+        color: $secondary-color-gray-500;
+      }
+    }
+
+    .notes__list {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      overflow: auto;
+      padding-right: Min(5vw, 1rem);
+
+      .note__item {
+        $type: "comment";
+
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        padding: Min(5vw, 2rem) Min(5vw, 1.5rem);
+        background-color: $light-color;
+        border-radius: 0.5rem;
+        cursor: pointer;
+        box-shadow: rgba($secondary-color-gray-500, 0.15) 2.4px 2.4px 6.2px;
+        transition: box-shadow 200ms ease-in-out,
+          background-color 200ms ease-in-out;
+
+        &:hover {
+          box-shadow: rgba($secondary-color-gray-500, 0.25) 2.4px 2.4px 6.2px;
+        }
+
+        &.note__item--visible {
+          background-color: rgba($dark-color, 0.035);
+        }
+
+        .item__header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          gap: 1rem;
+          font-size: 95%;
+
+          .item__type {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-weight: 500;
+            text-transform: capitalize;
+          }
+
+          .item__user {
+            color: $secondary-color-gray-500;
+
+            span {
+              text-decoration: underline;
+              transition: color 200ms ease-in-out;
+
+              &:hover {
+                color: $dark-color;
+              }
+            }
+          }
+        }
+
+        .item__img {
+          width: Min(100%, 7rem);
+          border-radius: 0.5rem;
+        }
+
+        .item__text {
+          text-align: justify;
+          color: $dark-color;
+        }
+
+        footer {
+          display: grid;
+          grid-template-columns: 1.5fr 2fr;
+          align-items: center;
+          gap: 1rem;
+
+          .item__btn {
+            width: 100%;
+            padding: 0.5rem 1rem;
+            background-color: transparent;
+            border: none;
+            border-radius: 0.5rem;
+            text-transform: capitalize;
+            transition: background-color 200ms ease-in-out;
+
+            &.item__btn--discard {
+              color: $secondary-color-red;
+              box-shadow: 0 0 0 0.1rem $secondary-color-red;
+
+              &:hover {
+                background-color: rgba($secondary-color-red, 0.05);
+              }
+            }
+
+            &.item__btn--approve {
+              color: $secondary-color-green;
+              box-shadow: 0 0 0 0.1rem $secondary-color-green;
+
+              &:hover {
+                background-color: rgba($secondary-color-green, 0.05);
+              }
+            }
+          }
+        }
+      }
+
+      @include note-type("comment");
+      @include note-type("tip");
+      @include note-type("report");
+    }
+  }
+}

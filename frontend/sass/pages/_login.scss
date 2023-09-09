@@ -1,0 +1,135 @@
+.login {
+  min-height: 100vh;
+  min-height: -webkit-fill-available;
+  display: grid;
+  place-items: center;
+  padding: min(5vw, 1rem);
+  background-image: url("../../assets/images/login_background.png");
+  background-color: $light-color;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+
+  @media screen and (min-width: 992px) {
+    height: max-content;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: minmax(0, 1fr);
+    background-image: unset;
+    padding: unset;
+  }
+}
+
+.login__image {
+  display: none;
+  height: 100%;
+  object-fit: cover;
+
+  @media screen and (min-width: 992px) {
+    display: block;
+    object-fit: cover;
+  }
+}
+
+.login__container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  width: Min(95%, 70rem);
+  padding: 5rem Min(5vw, 3rem);
+  background-color: $light-color;
+  border-radius: 2rem;
+
+  @media screen and (min-width: 992px) {
+    background-color: transparent;
+  }
+}
+
+.logo {
+  margin-bottom: Min(3vw, 1rem);
+  font-size: 300%;
+}
+
+.login__title {
+  font-size: 125%;
+  font-weight: 500;
+}
+
+.login__form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: min(5vw, 3rem);
+  margin: 3rem 0;
+  border-radius: 0.5rem;
+
+  @media screen and (min-width: 992px) {
+    width: Min(90%, 60rem);
+  }
+}
+
+.password__container {
+  display: flex;
+  box-shadow: 0 0.2rem 0 -0.1rem $dark-color;
+
+  .form__input {
+    box-shadow: unset;
+  }
+
+  .toggle__password {
+    background-color: transparent;
+    border: none;
+    font-size: 150%;
+    transition: opacity 200ms ease-in-out;
+
+    &:hover {
+      opacity: 0.85;
+    }
+  }
+
+  &:focus-within {
+    box-shadow: 0 0.275rem 0 -0.1rem $primary-color;
+
+    .form__input {
+      box-shadow: unset;
+    }
+
+    .toggle__password {
+      color: $primary-color;
+    }
+  }
+}
+
+.form__forget {
+  width: max-content;
+  align-self: flex-end;
+  color: $secondary-color-gray-500;
+  transition: opacity 150ms ease-in-out;
+
+  &:hover {
+    opacity: 0.9;
+  }
+}
+
+.form__submit {
+  margin-top: 3rem;
+  padding: 1.5rem 1rem;
+}
+
+.form__link {
+  color: $primary-color;
+  font-weight: 500;
+  transition: opacity 150ms ease-in-out;
+
+  &:hover {
+    opacity: 0.85;
+  }
+}
+
+// 576px for portrait phones
+// 768px for tablets
+// 992px for laptops
+// 1200px for large devices

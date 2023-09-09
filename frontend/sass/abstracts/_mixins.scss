@@ -1,0 +1,21 @@
+@mixin note-type($type) {
+  $color: "";
+
+  @if $type == "comment" {
+    $color: $secondary-color-blue;
+  } @else if $type == "tip" {
+    $color: $secondary-color-green;
+  } @else if $type == "report" {
+    $color: $secondary-color-red;
+  }
+
+  .note__item--#{$type} {
+    color: $color;
+
+    .item__header {
+      &::after {
+        background-color: $color;
+      }
+    }
+  }
+}

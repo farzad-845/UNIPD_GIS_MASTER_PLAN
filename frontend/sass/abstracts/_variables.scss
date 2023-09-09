@@ -1,0 +1,17 @@
+$primary-color: #f14a16;
+$secondary-color-gray-400: #ccd1e4;
+$secondary-color-gray-500: #898aa6;
+$secondary-color-green: #3e8e7e;
+$secondary-color-yellow: #fffda2;
+$secondary-color-red: #f24a72;
+$secondary-color-blue: #1f4690;
+$light-color: #fefefe;
+$dark-color: #222222;
+
+$light-background: linear-gradient(
+  45deg,
+  $light-color,
+  rgba($light-color, 0.5)
+);
+
+$font-family: "Roboto", cursive, "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;

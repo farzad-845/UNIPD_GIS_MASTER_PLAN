@@ -1,0 +1,17 @@
+.btn {
+  border: none;
+  border-radius: 10rem;
+  padding: Min(3vw, 1rem);
+  background-color: $dark-color;
+  color: $light-color;
+  transition: opacity 150ms ease-in-out;
+
+  &:hover {
+    opacity: 0.9;
+  }
+
+  &.btn--disabled {
+    pointer-events: none;
+    opacity: 0.75;
+  }
+}

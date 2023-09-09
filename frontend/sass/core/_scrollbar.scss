@@ -1,0 +1,17 @@
+::-webkit-scrollbar {
+  width: 0.5rem;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba($secondary-color-gray-400, 0.35);
+}
+
+::-webkit-scrollbar-thumb {
+  background: $secondary-color-gray-400;
+  border-radius: 5rem;
+  transition: background-color 200ms ease-in-out;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: $secondary-color-gray-500;
+}

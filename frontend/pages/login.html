@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css"
+    />
+
+    <link rel="stylesheet" href="../main.css" />
+    <title>Login</title>
+  </head>
+  <body class="login">
+    <img
+      src="../assets/images/login_background.png"
+      alt=""
+      role="presentation"
+      class="login__image"
+    />
+
+    <main class="login__container">
+      <h1 class="logo"><span class="logo__span">Master</span>Plan</h1>
+      <h2 class="login__title">Login to Your Account</h2>
+
+      <form action="" class="login__form">
+        <fieldset class="form__fieldset text__fieldset">
+          <label for="username" class="form__label">Username</label>
+          <input
+            type="text"
+            name="username"
+            id="username"
+            class="input form__input"
+          />
+        </fieldset>
+
+        <fieldset class="form__fieldset text__fieldset">
+          <label for="password" class="form__label">Password</label>
+          <div class="password__container">
+            <input
+              type="password"
+              name="password"
+              id="password"
+              class="input form__input password__input"
+            />
+            <button type="button" id="toggle-password" class="toggle__password">
+              <i class="ti ti-eye"></i>
+            </button>
+          </div>
+        </fieldset>
+
+        <a href="" class="form__forget">Forgot password?</a>
+        <button
+          type="submit"
+          id="submit-btn"
+          class="btn form__submit btn--disabled"
+        >
+          Login
+        </button>
+      </form>
+
+      <p>
+        Don't have an account?
+        <a href="./register.html" class="form__link">Sign Up here</a>
+      </p>
+    </main>
+
+    <script src="../js/login.js"></script>
+  </body>
+</html>

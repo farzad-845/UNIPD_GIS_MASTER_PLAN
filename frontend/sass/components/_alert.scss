@@ -1,0 +1,41 @@
+.alert__container {
+  position: absolute;
+  top: Min(5vw, 4rem);
+  right: Min(5vw, 4rem);
+  width: min(90%, 30rem);
+  z-index: 10000;
+  overflow: hidden;
+  opacity: 0.85;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: opacity 200ms ease-in-out, visibility 200ms ease-in-out;
+  box-shadow: 1rem 1rem 1rem 0 rgba($secondary-color-gray-500, 0.2);
+
+  .alert {
+    width: 100%;
+    display: flex;
+    gap: Min(3vw, 1.5rem);
+    padding: Min(5vw, 2rem);
+    text-align: justify;
+    font-weight: 600;
+    background-color: $secondary-color-yellow;
+    transition: transform 200ms ease-in-out;
+
+    .alert__icon {
+      font-size: 150%;
+    }
+  }
+
+  &:hover {
+    opacity: 1;
+  }
+
+  &:not(:hover).alert__container--hidden {
+    opacity: 0;
+    visibility: hidden;
+
+    .alert {
+      transform: translateX(50%);
+    }
+  }
+}

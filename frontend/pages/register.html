@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css"
+    />
+
+    <link rel="stylesheet" href="../main.css" />
+    <title>Create Account</title>
+  </head>
+  <body class="login register">
+    <img
+      src="../assets/images/login_background.png"
+      alt=""
+      role="presentation"
+      class="login__image"
+    />
+
+    <main class="login__container">
+      <h1 class="logo"><span class="logo__span">Master</span>Plan</h1>
+      <h2 class="login__title">Create an a Account</h2>
+
+      <form action="" class="login__form">
+        <fieldset class="form__fieldset text__fieldset">
+          <label for="username" class="form__label"
+            >Username <span class="form__required">*</span></label
+          >
+          <input
+            type="text"
+            name="username"
+            id="username"
+            class="input form__input"
+          />
+        </fieldset>
+
+        <fieldset class="form__fieldset text__fieldset">
+          <label for="email" class="form__label"
+            >Email <span class="form__required">*</span></label
+          >
+          <input
+            type="email"
+            name="email"
+            id="email"
+            class="input form__input"
+          />
+        </fieldset>
+
+        <fieldset class="form__fieldset text__fieldset">
+          <label for="password" class="form__label"
+            >Password <span class="form__required">*</span></label
+          >
+          <div class="password__container">
+            <input
+              type="password"
+              name="password"
+              id="password"
+              class="input form__input password__input"
+            />
+            <button type="button" id="toggle-password" class="toggle__password">
+              <i class="ti ti-eye"></i>
+            </button>
+          </div>
+        </fieldset>
+
+        <fieldset class="form__fieldset text__fieldset">
+          <label for="repeat-password" class="form__label"
+            >Repeat Password <span class="form__required">*</span></label
+          >
+          <div class="password__container">
+            <input
+              type="password"
+              name="repeatPassword"
+              id="repeat-password"
+              class="input form__input password__input"
+            />
+            <button
+              type="button"
+              id="toggle-repeat-password"
+              class="toggle__password"
+            >
+              <i class="ti ti-eye"></i>
+            </button>
+          </div>
+        </fieldset>
+
+        <button
+          type="submit"
+          id="submit-btn"
+          class="btn form__submit btn--disabled"
+        >
+          Sign Up
+        </button>
+      </form>
+
+      <p>
+        Already a user? <a href="./login.html" class="form__link">Login here</a>
+      </p>
+    </main>
+
+    <script src="../js/login.js"></script>
+  </body>
+</html>

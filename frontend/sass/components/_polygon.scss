@@ -1,0 +1,28 @@
+.polygon__popup {
+  .popup__content {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    gap: 1rem;
+    font-weight: 500;
+    font-family: $font-family;
+    text-transform: capitalize;
+
+    .popup__btn {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.5rem 1.5rem;
+      background-color: rgba($secondary-color-gray-400, 0.35);
+      text-transform: capitalize;
+      border: none;
+      border-radius: 0.5rem;
+    }
+
+    .popup__span {
+      grid-column: span 2;
+      color: $secondary-color-gray-500;
+      font-weight: 400;
+    }
+  }
+}
