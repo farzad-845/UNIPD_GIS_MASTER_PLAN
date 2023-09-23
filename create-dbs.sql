@@ -1,6 +1,8 @@
 CREATE DATABASE fastapi_db;
 CREATE DATABASE celery_schedule_jobs;
 
+CREATE EXTENSION postgis;
+
 -- --- Preprocess previous data PRG Table
 -- ALTER TABLE prg ADD COLUMN uuid_column UUID;
 -- UPDATE prg SET uuid_column = uuid_generate_v4();

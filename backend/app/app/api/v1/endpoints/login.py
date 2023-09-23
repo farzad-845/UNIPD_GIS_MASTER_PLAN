@@ -35,7 +35,7 @@ async def login(
     password: str = Body(...),
     meta_data: IMetaGeneral = Depends(deps.get_general_meta),
     redis_client: Redis = Depends(get_redis_client),
-) -> dict[str, Token] | Token:
+):
     """
     Login for all users
     """
@@ -90,7 +90,7 @@ async def change_password(
     new_password: str = Body(...),
     current_user: User = Depends(deps.get_current_user()),
     redis_client: Redis = Depends(get_redis_client),
-) -> dict[str, Token] | Token:
+):
     """
     Change password
     """
@@ -148,7 +148,7 @@ async def change_password(
 async def get_new_access_token(
     body: RefreshToken = Body(...),
     redis_client: Redis = Depends(get_redis_client),
-) -> dict[str, TokenRead] | TokenRead:
+):
     """
     Gets a new access token using the refresh token for future requests
     """
@@ -197,7 +197,7 @@ async def get_new_access_token(
 async def login_access_token(
     form_data: OAuth2PasswordRequestForm = Depends(),
     redis_client: Redis = Depends(get_redis_client),
-) -> dict[str, str]:
+):
     """
     OAuth2 compatible token login, get an access token for future requests
     """
@@ -232,7 +232,7 @@ async def login_access_token(
 @router.post("/password-recovery")
 async def recover_password(
     email: EmailStr = Body(...),
-) -> dict[str, str]:
+):
     """
     Password Recovery
     """
@@ -257,7 +257,7 @@ async def recover_password(
 async def reset_password(
     token: str = Body(...),
     new_password: str = Body(...),
-) -> dict[str, str]:
+):
     """
     Reset password
     """
