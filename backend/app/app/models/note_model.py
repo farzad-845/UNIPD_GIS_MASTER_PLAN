@@ -10,7 +10,7 @@ class NoteBase(SQLModel):
     description: str
     is_public: bool = Field(default=False)
     prg_id: UUID = Field(default=None, foreign_key="Prg.id")
-    user_id: UUID = Field(default=None, foreign_key="User.id")
+    user_id: UUID | None = Field(default=None, foreign_key="User.id")
 
 
 class Note(BaseUUIDModel, NoteBase, table=True):

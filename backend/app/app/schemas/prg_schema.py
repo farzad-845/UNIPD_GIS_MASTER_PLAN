@@ -17,3 +17,8 @@ class IPrgUpdate(PrgBase):
 
 class IPrgRead(PrgBase):
     id: UUID
+
+class IPrgReadWithWKT(PrgBase):
+    id: UUID
+    wkt: str | None = None
+

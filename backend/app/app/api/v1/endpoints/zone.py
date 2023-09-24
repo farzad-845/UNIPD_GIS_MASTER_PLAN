@@ -2,9 +2,11 @@
 # edit new zone attributes -> change the status of the zone (or the geometry of the zone)
 # delete zone
 # see the history of the zone, who created it, when, who changed it, when, who deleted it, when
+from geoalchemy2.shape import to_shape
+
 from app.deps import zone_deps
 from app.models.prg_model import Prg
-from app.schemas.prg_schema import IPrgRead, IPrgCreate, IPrgUpdate
+from app.schemas.prg_schema import IPrgRead, IPrgCreate, IPrgUpdate, IPrgReadWithWKT
 
 
 from fastapi import APIRouter, Depends, status
@@ -37,21 +39,24 @@ async def get_zone_by_id(
 async def create_zone(
     zone: IPrgCreate,
     current_user: User = Depends(
-        deps.get_current_user(required_roles=[IRoleEnum.admin])
+        deps.get_current_user(required_roles=[IRoleEnum.admin, IRoleEnum.manager])
     ),
-) -> IPostResponseBase[IPrgRead]:
+) -> IPostResponseBase[IPrgReadWithWKT]:
     """
-    Create a new role
+    Create a new zone
 
     Required roles:
     - admin
+    - manager
     """
     # zone_current = await crud.role.get_role_by_name(name=role.name)
     # if zone_current:
     #     raise NameExistException(Prg, name=zone_current.name)
 
-    new_zone = await crud.prg.create_variant(obj_in=zone)
-    return create_response(data=new_zone)
+    new_zone = await crud.prg.create_variant(obj_in=zone, current_user=current_user)
+    res = await crud.prg.get_variant(id=new_zone.id)
+    print(res)
+    return create_response(data=res)
 
 
 @router.put("/{zone_id}")

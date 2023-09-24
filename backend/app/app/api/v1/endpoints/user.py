@@ -20,7 +20,7 @@ from fastapi import (
     Query,
     Response,
     UploadFile,
-    status,
+    status, HTTPException,
 )
 from app.schemas.media_schema import IMediaCreate
 from app.schemas.response_schema import (
@@ -172,6 +172,24 @@ async def create_user(
     user = await crud.user.create_with_role(obj_in=new_user)
     return create_response(data=user)
 
+
+@router.post("/register", status_code=status.HTTP_201_CREATED)
+async def create_ordinary_user(
+        new_user: IUserCreate = Depends(user_deps.user_exists),
+) -> IPostResponseBase[IUserRead]:
+    """
+    Creates a new ordinary user
+
+    """
+    role = await crud.role.get(id=new_user.role_id)
+    if role.name != "user":
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="You can only register with an ordinary user type",
+        )
+    # TODO: send email
+    user = await crud.user.create_with_role(obj_in=new_user)
+    return create_response(data=user)
 
 @router.delete("/{user_id}")
 async def remove_user(

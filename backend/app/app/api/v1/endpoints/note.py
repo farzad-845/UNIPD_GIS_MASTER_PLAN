@@ -38,8 +38,8 @@ router = APIRouter()
 
 @router.get("")
 async def get_notes(
-    params: Params = Depends(),
-    current_user: User = Depends(deps.get_current_user()),
+        params: Params = Depends(),
+        current_user: User = Depends(deps.get_current_user()),
 ) -> IGetResponsePaginated[INoteRead]:
     """
     Gets a paginated list of notes based on user privileges
@@ -54,8 +54,8 @@ async def get_notes(
 
 @router.get("user/{user_id}")
 async def get_role_by_user_id(
-    user_id: UUID,
-    current_user: User = Depends(deps.get_current_user()),
+        user_id: UUID,
+        current_user: User = Depends(deps.get_current_user()),
 ) -> IGetResponsePaginated[INoteRead]:
     """
     Gets Notes by its user id
@@ -67,23 +67,24 @@ async def get_role_by_user_id(
 
 @router.post("", status_code=status.HTTP_201_CREATED)
 async def create_note(
-    role: INoteCreate,
-    current_user: User = Depends(deps.get_current_user()),
+        note: INoteCreate,
+        current_user: User = Depends(deps.get_current_user()),
 ) -> IPostResponseBase[INoteRead]:
     """
     Create a new Note
     """
-    new_note = await crud.note.create(obj_in=role)
+    note.user_id = current_user.id
+    new_note = await crud.note.create(obj_in=note)
     return create_response(data=new_note)
 
 
 @router.put("/{note_id}")
 async def update_note(
-    note: INoteUpdate,
-    current_note: Note = Depends(note_deps.get_note_by_id),
-    current_user: User = Depends(
-        deps.get_current_user(required_roles=[IRoleEnum.admin, IRoleEnum.manager])
-    ),
+        note: INoteUpdate,
+        current_note: Note = Depends(note_deps.get_note_by_id),
+        current_user: User = Depends(
+            deps.get_current_user(required_roles=[IRoleEnum.admin, IRoleEnum.manager])
+        ),
 ) -> IPutResponseBase[INoteRead]:
     """
     Updates a Note by its id
@@ -101,12 +102,12 @@ async def update_note(
 
 @router.post("/{note_id}/image")
 async def upload_note_image(
-    note: Note = Depends(note_deps.get_note_by_id),
-    title: str | None = Body(None),
-    description: str | None = Body(None),
-    image_file: UploadFile = File(...),
-    current_user: User = Depends(deps.get_current_user()),
-    minio_client: MinioClient = Depends(deps.minio_auth),
+        note: Note = Depends(note_deps.get_note_by_id),
+        title: str | None = Body(None),
+        description: str | None = Body(None),
+        image_file: UploadFile = File(...),
+        current_user: User = Depends(deps.get_current_user()),
+        minio_client: MinioClient = Depends(deps.minio_auth),
 ) -> IPostResponseBase[INoteRead]:
     """
     Uploads a note image by his/her id
@@ -139,11 +140,11 @@ async def upload_note_image(
         return Response("Internal server error", status_code=500)
 
 
-@router.get("/zon/{zone_id}")
+@router.get("/zone/{zone_id}")
 async def get_notes(
-    zone_id: UUID,
-    params: Params = Depends(),
-    current_user: User = Depends(deps.get_current_user()),
+        zone_id: UUID,
+        params: Params = Depends(),
+        current_user: User = Depends(deps.get_current_user()),
 ) -> IGetResponsePaginated[INoteRead]:
     """
     Gets a paginated list of notes based on zone_id

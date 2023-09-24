@@ -1,19 +1,43 @@
+import datetime
 from typing import Any
 
 from fastapi.encoders import jsonable_encoder
+from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.models import User
 from app.models.prg_model import Prg
 from app.crud.base_crud import CRUDBase
-from app.schemas.prg_schema import IPrgUpdate, IPrgCreate
+from app.schemas.common_schema import IPrgStatusEnum
+from app.schemas.prg_schema import IPrgUpdate, IPrgCreate, IPrgReadWithWKT
+from app.utils.uuid6 import UUID
 
 
 class CRUDPrg(CRUDBase[Prg, IPrgCreate, IPrgUpdate]):
     async def create_variant(
         self,
         *,
-        obj_in,
+        obj_in: IPrgCreate | dict[str, Any] | Prg,
+        current_user: User,
+        db_session: AsyncSession | None = None
     ) -> Prg:
-        pass
+        db_session = db_session or super().get_db().session
+        db_obj = Prg.from_orm(obj_in)
+        db_obj.status = IPrgStatusEnum.in_progress
+        db_obj.user_id = current_user.id
+        db_session.add(db_obj)
+        await db_session.commit()
+        await db_session.refresh(db_obj)
+        return db_obj
+
+    async def get_variant(
+                self, *, id: UUID | str, db_session: AsyncSession | None = None
+    ) -> IPrgReadWithWKT:
+        db_session = db_session or self.db.session
+        raw_query = 'SELECT *, ST_AsText("Prg".geom) AS wkt FROM "Prg" WHERE id=' + f"'{id}'"
+        response = await db_session.execute(raw_query)
+        for row in response:
+            return row
+        # return response.scalar_one_or_none()
 
     async def update_variant(
         self,

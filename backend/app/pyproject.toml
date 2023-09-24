@@ -64,7 +64,7 @@ fastapi-limiter = "^0.1.5"
 pexpect = "^4.8.0"
 emails = "^0.6"
 jinja2 = "^3.1.2"
-geoalchemy2 = "^0.14.1"
+geoalchemy2 = {extras = ["shapely"], version = "^0.14.1"}
 sqlalchemy-history = "^2.0.0"
 
 [tool.poetry.group.dev.dependencies]
