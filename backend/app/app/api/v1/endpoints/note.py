@@ -52,8 +52,8 @@ async def get_notes(
     return create_response(data=notes)
 
 
-@router.get("user/{user_id}")
-async def get_role_by_user_id(
+@router.get("/user/{user_id}")
+async def get_note_by_user_id(
         user_id: UUID,
         current_user: User = Depends(deps.get_current_user()),
 ) -> IGetResponsePaginated[INoteRead]:
@@ -130,7 +130,7 @@ async def upload_note_image(
         note = await crud.note.update_photo(
             note=note,
             image=media,
-            heigth=image_modified.height,
+            height=image_modified.height,
             width=image_modified.width,
             file_format=image_modified.file_format,
         )

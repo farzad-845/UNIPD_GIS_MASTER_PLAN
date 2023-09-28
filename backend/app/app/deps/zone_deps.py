@@ -12,7 +12,15 @@ from app.utils.uuid6 import UUID
 async def get_zone_by_id(
     zone_id: Annotated[UUID, Path(title="The UUID id of the zone")]
 ) -> Prg:
-    zone = await crud.note.get(id=zone_id)
+    zone = await crud.prg.get_variant(id=zone_id)
+    if not zone:
+        raise IdNotFoundException(Note, id=zone_id)
+    return zone
+
+async def get_zone_by_id_update(
+    zone_id: Annotated[UUID, Path(title="The UUID id of the zone")]
+) -> Prg:
+    zone = await crud.prg.get(id=zone_id)
     if not zone:
         raise IdNotFoundException(Note, id=zone_id)
     return zone

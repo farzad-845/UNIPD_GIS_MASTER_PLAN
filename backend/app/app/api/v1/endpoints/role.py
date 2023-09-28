@@ -24,7 +24,6 @@ router = APIRouter()
 @router.get("")
 async def get_roles(
     params: Params = Depends(),
-    current_user: User = Depends(deps.get_current_user()),
 ) -> IGetResponsePaginated[IRoleRead]:
     """
     Gets a paginated list of roles
@@ -36,7 +35,6 @@ async def get_roles(
 @router.get("/{role_id}")
 async def get_role_by_id(
     role: Role = Depends(role_deps.get_user_role_by_id),
-    current_user: User = Depends(deps.get_current_user()),
 ) -> IGetResponseBase[IRoleRead]:
     """
     Gets a role by its id

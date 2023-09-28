@@ -55,14 +55,13 @@ async def create_zone(
 
     new_zone = await crud.prg.create_variant(obj_in=zone, current_user=current_user)
     res = await crud.prg.get_variant(id=new_zone.id)
-    print(res)
     return create_response(data=res)
 
 
 @router.put("/{zone_id}")
 async def update_zone(
     zone: IPrgUpdate,
-    current_zone: Prg = Depends(zone_deps.get_zone_by_id),
+    current_zone: Prg = Depends(zone_deps.get_zone_by_id_update),
     current_user: User = Depends(
         deps.get_current_user(required_roles=[IRoleEnum.admin])
     ),
