@@ -31,6 +31,7 @@ class IPrgTypeEnum(str, Enum):
     industrial = "industrial"
     residential = "residential"
     public_green = "public green"
+    strada = "strada"
 
 
 class IParticelleLivelloEnum(str, Enum):
