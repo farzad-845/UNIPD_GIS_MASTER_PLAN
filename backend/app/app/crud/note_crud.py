@@ -25,7 +25,7 @@ class CRUDNote(CRUDBase[Note, INoteCreate, INoteUpdate]):
         return [
             {**dict(row), 'path': minio.presigned_get_object(
                 bucket_name=settings.MINIO_BUCKET, object_name=row.path
-            )}
+            ) if row.path else None}
             for row in response
         ]
 
