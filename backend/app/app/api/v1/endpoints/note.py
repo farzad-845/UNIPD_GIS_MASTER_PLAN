@@ -46,10 +46,10 @@ async def get_notes(
     Gets a paginated list of notes based on user privileges
     """
     if current_user.role.name in [IRoleEnum.admin, IRoleEnum.manager]:
-        query = select(Note).where(Note.geom is None)
+        query = select(Note).where(Note.geom.is_(None))
         notes = await crud.note.get_multi_paginated(params=params, query=query)
     else:
-        query = select(Note).where(Note.is_public == True and Note.geom is None)
+        query = select(Note).where(Note.is_public == True and Note.geom.is_(None))
         notes = await crud.note.get_multi_paginated(params=params, query=query)
     return create_response(data=notes)
 
