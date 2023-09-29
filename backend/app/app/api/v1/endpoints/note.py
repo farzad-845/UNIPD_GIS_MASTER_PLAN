@@ -4,7 +4,7 @@
 from io import BytesIO
 from operator import and_
 
-from app.api.v1 import api
+from app import api
 from app.deps import note_deps
 from app.utils.resize_image import modify_image
 from fastapi import (
