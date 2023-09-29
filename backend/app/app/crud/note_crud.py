@@ -23,10 +23,11 @@ class CRUDNote(CRUDBase[Note, INoteCreate, INoteUpdate]):
         response = await db_session.execute(raw_query)
         rows = []
         for row in response:
+            print(row.path)
             if row.path:
-                row.path = minio.presigned_get_object(
+                setattr(row, "path", minio.presigned_get_object(
                     bucket_name=settings.MINIO_BUCKET, object_name=row.path
-                )
+                ))
             rows.append(row)
         return rows
 
