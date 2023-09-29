@@ -16,7 +16,7 @@ services:
       database:
         condition: service_healthy
     links:
-      - caddy_reverse_proxy:storage.localhost
+      - caddy_reverse_proxy:stash.farzadshami.ir
 
   database:
     image: corpusops/postgis:latest
