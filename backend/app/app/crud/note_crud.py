@@ -7,13 +7,14 @@ from app.schemas.note_schema import INoteCreate, INoteUpdate, INoteReadWithWKT
 from app.models.media_model import Media
 from app.models.image_media_model import ImageMedia
 from app.crud.base_crud import CRUDBase
+from app.utils.minio_client import MinioClient
 from app.utils.uuid6 import UUID
 
 
 
 class CRUDNote(CRUDBase[Note, INoteCreate, INoteUpdate]):
     async def get_notes_with_geometry(
-            self, *, minio, is_admin: bool = False, db_session: AsyncSession | None = None
+            self, *, minio: MinioClient, is_admin: bool = False, db_session: AsyncSession | None = None
     ):
         db_session = db_session or self.db.session
         if not is_admin:
@@ -23,9 +24,8 @@ class CRUDNote(CRUDBase[Note, INoteCreate, INoteUpdate]):
         response = await db_session.execute(raw_query)
         rows = []
         for row in response:
-            print(row.path)
             if row.path:
-                setattr(row, "path", minio.presigned_get_object(
+                print(minio.presigned_get_object(
                     bucket_name=settings.MINIO_BUCKET, object_name=row.path
                 ))
             rows.append(row)
