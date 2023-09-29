@@ -1,15 +1,36 @@
+from sqlalchemy.ext.asyncio import AsyncSession
+
 from app.models.note_model import Note
 from app.schemas.media_schema import IMediaCreate
-from app.schemas.note_schema import INoteCreate, INoteUpdate
-from app.models.user_model import User
+from app.schemas.note_schema import INoteCreate, INoteUpdate, INoteReadWithWKT
 from app.models.media_model import Media
 from app.models.image_media_model import ImageMedia
-from app.core.security import verify_password
-from pydantic.networks import EmailStr
 from app.crud.base_crud import CRUDBase
+from app.utils.uuid6 import UUID
+
 
 
 class CRUDNote(CRUDBase[Note, INoteCreate, INoteUpdate]):
+    async def get_notes_with_geometry(
+            self, *,is_admin: bool = False, db_session: AsyncSession | None = None
+    ):
+        db_session = db_session or self.db.session
+        if not is_admin:
+            raw_query = 'SELECT *, ST_AsText("Note".geom) AS wkt FROM "Note" WHERE geom IS NOT NULL AND is_public IS TRUE;'
+        else:
+            raw_query = 'SELECT *, ST_AsText("Note".geom) AS wkt FROM "Note" WHERE geom IS NOT NULL;'
+        response = await db_session.execute(raw_query)
+        return [row for row in response]
+
+    async def get_notes_with_geometry_by_id(
+            self, *,id: UUID | str, db_session: AsyncSession | None = None
+    ) -> INoteReadWithWKT:
+        db_session = db_session or self.db.session
+        raw_query = 'SELECT *, ST_AsText("Note".geom) AS wkt FROM "Note" WHERE id=' + f"'{id}'"
+        response = await db_session.execute(raw_query)
+        for row in response:
+            return row
+
     async def update_photo(
         self,
         *,

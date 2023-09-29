@@ -17,3 +17,9 @@ class INoteUpdate(NoteBase):
 class INoteRead(NoteBase):
     id: UUID
     image: IImageMediaReadCombined | None
+
+
+class INoteReadWithWKT(NoteBase):
+    id: UUID
+    image: IImageMediaReadCombined | None
+    wkt: str | None = None

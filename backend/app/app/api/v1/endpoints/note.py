@@ -16,7 +16,7 @@ from app.schemas.media_schema import IMediaCreate
 
 from sqlmodel import select
 from app.models.note_model import Note
-from app.schemas.note_schema import INoteRead, INoteCreate, INoteUpdate
+from app.schemas.note_schema import INoteRead, INoteCreate, INoteUpdate, INoteReadWithWKT
 
 from fastapi import APIRouter, Depends, status, UploadFile
 from fastapi_pagination import Params
@@ -36,7 +36,7 @@ from app.utils.uuid6 import UUID
 router = APIRouter()
 
 
-@router.get("")
+@router.get("/prg")
 async def get_notes(
         params: Params = Depends(),
         current_user: User = Depends(deps.get_current_user()),
@@ -45,12 +45,26 @@ async def get_notes(
     Gets a paginated list of notes based on user privileges
     """
     if current_user.role.name in [IRoleEnum.admin, IRoleEnum.manager]:
-        notes = await crud.note.get_multi_paginated(params=params)
+        query = select(Note).where(Note.prg_id is not None)
+        notes = await crud.note.get_multi_paginated(params=params, query=query)
     else:
-        query = select(Note).where(Note.is_public == True)
+        query = select(Note).where(Note.is_public == True and Note.prg_id is not None)
         notes = await crud.note.get_multi_paginated(params=params, query=query)
     return create_response(data=notes)
 
+@router.get("/")
+async def get_notes(
+        params: Params = Depends(),
+        current_user: User = Depends(deps.get_current_user()),
+):
+    """
+    Gets a paginated list of notes based on user privileges
+    """
+    if current_user.role.name in [IRoleEnum.admin, IRoleEnum.manager]:
+        notes = await crud.note.get_notes_with_geometry(is_admin=True)
+    else:
+        notes = await crud.note.get_notes_with_geometry()
+    return notes
 
 @router.get("/user/{user_id}")
 async def get_note_by_user_id(
@@ -69,12 +83,15 @@ async def get_note_by_user_id(
 async def create_note(
         note: INoteCreate,
         current_user: User = Depends(deps.get_current_user()),
-) -> IPostResponseBase[INoteRead]:
+) -> IPostResponseBase[INoteRead] | IPostResponseBase[INoteReadWithWKT]:
     """
     Create a new Note
     """
     note.user_id = current_user.id
     new_note = await crud.note.create(obj_in=note)
+    if new_note.geom is not None:
+        response = await crud.note.get_notes_with_geometry_by_id(id=new_note.id)
+        return create_response(data=response)
     return create_response(data=new_note)
 
 

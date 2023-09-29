@@ -1,4 +1,7 @@
-from typing import Optional
+from typing import Optional, Any
+
+from geoalchemy2 import Geometry
+from sqlalchemy import Column
 from sqlmodel import SQLModel, Field, Relationship
 
 from app.utils.uuid6 import UUID
@@ -9,8 +12,9 @@ from app.models.base_uuid_model import BaseUUIDModel
 class NoteBase(SQLModel):
     description: str
     is_public: bool = Field(default=False)
-    prg_id: UUID = Field(default=None, foreign_key="Prg.id")
     user_id: UUID | None = Field(default=None, foreign_key="User.id")
+    prg_id: UUID | None = Field(default=None, foreign_key="Prg.id", nullable=True)
+    geom: Any | None = Field(sa_column=Column(Geometry("MULTIPOLYGON")), nullable=True)
 
 
 class Note(BaseUUIDModel, NoteBase, table=True):
