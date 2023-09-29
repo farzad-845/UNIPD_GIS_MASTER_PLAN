@@ -22,14 +22,21 @@ class CRUDNote(CRUDBase[Note, INoteCreate, INoteUpdate]):
         else:
             raw_query = 'SELECT "Note".*, "Media".*, "ImageMedia".*, ST_AsText("Note".geom) AS wkt FROM "Note" LEFT JOIN "ImageMedia" ON "Note".image_id = "ImageMedia".id LEFT JOIN "Media" ON "ImageMedia".media_id = "Media".id WHERE "Note".geom IS NOT NULL;'
         response = await db_session.execute(raw_query)
-        rows = []
-        for row in response:
-            if row.path:
-                print(minio.presigned_get_object(
-                    bucket_name=settings.MINIO_BUCKET, object_name=row.path
-                ))
-            rows.append(row)
-        return rows
+        return [
+            {**dict(row), 'path': minio.presigned_get_object(
+                bucket_name=settings.MINIO_BUCKET, object_name=row.path
+            )}
+            for row in response
+        ]
+
+        # rows = []
+        # for row in response:
+        #     if row.path:
+        #         row.path = minio.presigned_get_object(
+        #             bucket_name=settings.MINIO_BUCKET, object_name=row.path
+        #         )
+        #     rows.append(row)
+        # return rows
 
     async def get_notes_with_geometry_by_id(
             self, *,id: UUID | str, db_session: AsyncSession | None = None
