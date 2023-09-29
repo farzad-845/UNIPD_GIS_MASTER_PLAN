@@ -1,5 +1,6 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.core.config import settings
 from app.models.note_model import Note
 from app.schemas.media_schema import IMediaCreate
 from app.schemas.note_schema import INoteCreate, INoteUpdate, INoteReadWithWKT
@@ -12,7 +13,7 @@ from app.utils.uuid6 import UUID
 
 class CRUDNote(CRUDBase[Note, INoteCreate, INoteUpdate]):
     async def get_notes_with_geometry(
-            self, *,is_admin: bool = False, db_session: AsyncSession | None = None
+            self, *, minio, is_admin: bool = False, db_session: AsyncSession | None = None
     ):
         db_session = db_session or self.db.session
         if not is_admin:
@@ -20,7 +21,14 @@ class CRUDNote(CRUDBase[Note, INoteCreate, INoteUpdate]):
         else:
             raw_query = 'SELECT "Note".*, "Media".*, "ImageMedia".*, ST_AsText("Note".geom) AS wkt FROM "Note" LEFT JOIN "ImageMedia" ON "Note".image_id = "ImageMedia".id LEFT JOIN "Media" ON "ImageMedia".media_id = "Media".id WHERE "Note".geom IS NOT NULL;'
         response = await db_session.execute(raw_query)
-        return [row for row in response]
+        rows = []
+        for row in response:
+            if row.path:
+                row.path = minio.presigned_get_object(
+                    bucket_name=settings.MINIO_BUCKET, object_name=row.path
+                )
+            rows.append(row)
+        return rows
 
     async def get_notes_with_geometry_by_id(
             self, *,id: UUID | str, db_session: AsyncSession | None = None

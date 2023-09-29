@@ -4,6 +4,7 @@
 from io import BytesIO
 from operator import and_
 
+from app.api.v1 import api
 from app.deps import note_deps
 from app.utils.resize_image import modify_image
 from fastapi import (
@@ -60,10 +61,11 @@ async def get_notes(
     """
     Gets a paginated list of notes based on user privileges
     """
+    minio: MinioClient = api.deps.minio_auth()
     if current_user.role.name in [IRoleEnum.admin, IRoleEnum.manager]:
-        notes = await crud.note.get_notes_with_geometry(is_admin=True)
+        notes = await crud.note.get_notes_with_geometry(minio=minio, is_admin=True)
     else:
-        notes = await crud.note.get_notes_with_geometry()
+        notes = await crud.note.get_notes_with_geometry(minio=minio, is_admin=False)
     return notes
 
 @router.get("/user/{user_id}")
