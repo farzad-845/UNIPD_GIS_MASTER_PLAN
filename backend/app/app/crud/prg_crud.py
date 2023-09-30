@@ -44,7 +44,7 @@ class CRUDPrg(CRUDBase[Prg, IPrgCreate, IPrgUpdate]):
             self, *, numero: str, db_session: AsyncSession | None = None
     ) -> IPrgReadWithWKT:
         db_session = db_session or self.db.session
-        raw_query = 'SELECT * FROM "Prg" WHERE ST_Intersects("Prg".geom, (SELECT ST_SetSRID(geom, 4326) FROM "Particelle" WHERE numero=' + f"'{numero}'" + '))'
+        raw_query = 'SELECT *, ST_AsText("Prg".geom) AS wkt FROM "Prg" WHERE ST_Intersects("Prg".geom, (SELECT ST_SetSRID(geom, 4326) FROM "Particelle" WHERE numero=' + f"'{numero}'" + '))'
         response = await db_session.execute(raw_query)
         for row in response:
             return row
