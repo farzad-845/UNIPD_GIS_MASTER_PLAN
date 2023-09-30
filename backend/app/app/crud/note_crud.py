@@ -38,6 +38,18 @@ class CRUDNote(CRUDBase[Note, INoteCreate, INoteUpdate]):
         for row in response:
             return row
 
+    async def make_note_public(
+            self,
+            *,
+            note: Note,
+    ) -> None:
+        db_session = super().get_db().session
+        note.is_public = True
+        db_session.add(note)
+        await db_session.commit()
+        await db_session.refresh(note)
+        return None
+
     async def update_photo(
         self,
         *,

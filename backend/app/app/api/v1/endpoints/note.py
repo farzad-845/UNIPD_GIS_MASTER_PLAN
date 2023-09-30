@@ -3,6 +3,7 @@
 
 from io import BytesIO
 from operator import and_
+from typing import Dict
 
 from app import api
 from app.deps import note_deps
@@ -99,12 +100,11 @@ async def create_note(
 
 @router.put("/{note_id}")
 async def update_note(
-        note: INoteUpdate,
         current_note: Note = Depends(note_deps.get_note_by_id),
         current_user: User = Depends(
             deps.get_current_user(required_roles=[IRoleEnum.admin, IRoleEnum.manager])
         ),
-) -> IPutResponseBase[INoteRead]:
+) -> dict[str, str]:
     """
     Updates a Note by its id
 
@@ -112,11 +112,9 @@ async def update_note(
     - admin
     - manager
     """
-    # if current_note.name == role.name and current_role.description == role.description:
-    #     raise ContentNoChangeException()
-
-    update_note = await crud.note.update(obj_current=current_note, obj_new=note)
-    return create_response(data=update_note)
+    update_note = await crud.note.get(id=current_note.id)
+    await crud.note.make_note_public(note=update_note)
+    return {"message": "Note updated successfully"}
 
 
 @router.post("/{note_id}/image")

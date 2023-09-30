@@ -9,7 +9,7 @@ from app.utils.uuid6 import UUID
 
 
 async def get_note_by_id(
-    note_id: Annotated[UUID, Path(title="The UUID id of the role")]
+    note_id: Annotated[UUID, Path(title="The UUID id of the note")]
 ) -> Note:
     note = await crud.note.get(id=note_id)
     if not note:
