@@ -34,6 +34,16 @@ async def get_zone_by_id(
     """
     return create_response(data=zone)
 
+@router.get("/search/{numero}")
+async def create_zone(
+    numero: str,
+) -> IGetResponseBase[IPrgReadWithWKT]:
+    """
+    Get a variant by particelle numero
+
+    """
+    res = await crud.prg.get_variant_by_particelle_numero(numero=numero)
+    return create_response(data=res)
 
 @router.post("", status_code=status.HTTP_201_CREATED)
 async def create_zone(

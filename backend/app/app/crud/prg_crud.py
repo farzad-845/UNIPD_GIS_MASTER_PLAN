@@ -40,6 +40,15 @@ class CRUDPrg(CRUDBase[Prg, IPrgCreate, IPrgUpdate]):
             return row
         # return response.scalar_one_or_none()
 
+    async def get_variant_by_particelle_numero(
+            self, *, numero: str, db_session: AsyncSession | None = None
+    ) -> IPrgReadWithWKT:
+        db_session = db_session or self.db.session
+        raw_query = 'SELECT * FROM "Prg" WHERE ST_Intersects("Prg".geom, (SELECT ST_SetSRID(geom, 4326) FROM "Particelle" WHERE numero=' + f"'{numero}'" + '))'
+        response = await db_session.execute(raw_query)
+        for row in response:
+            return row
+
     async def update_variant(
             self,
             obj_current: Prg,
