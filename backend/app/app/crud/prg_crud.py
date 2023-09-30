@@ -90,6 +90,8 @@ class CRUDPrg(CRUDBase[Prg, IPrgCreate, IPrgUpdate]):
 
         db_session.add(obj_current)
         if obj_new.status == IPrgStatusEnum.approved:
+            raw_query = 'UPDATE "Prg" SET geom = ST_SetSRID(geom, 4326) WHERE ST_SRID(geom) = 0;'
+            await db_session.execute(raw_query)
             raw_query = 'UPDATE "Prg" SET geom = ST_MULTI(ST_CollectionExtract(ST_Difference(geom, (SELECT ST_UNION(geom) FROM "Prg" WHERE id =' + f"'{obj_current.id}'" + ')), 3)) WHERE  ST_Intersects(geom, (SELECT geom FROM "Prg" WHERE id = ' + f"'{obj_current.id}'" + ')) and zona != \'strada\' and id != ' + f"'{obj_current.id}';"
             await db_session.execute(raw_query)
 
