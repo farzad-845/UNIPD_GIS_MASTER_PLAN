@@ -112,8 +112,7 @@ async def update_note(
     - admin
     - manager
     """
-    update_note = await crud.note.get(id=current_note.id)
-    await crud.note.make_note_public(note=update_note)
+    await crud.note.make_note_public(note=current_note)
     return {"message": "Note updated successfully"}
 
 
