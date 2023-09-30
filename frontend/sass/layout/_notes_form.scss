@@ -30,16 +30,20 @@
     }
   }
 
-  .notes__form {
+  .notes__form,
+  .user__form {
     display: flex;
     flex-direction: column;
     gap: 2rem;
 
-    .polygon__input {
+    .polygon__fieldset {
       pointer-events: none;
-      box-shadow: 0 0.2rem 0 -0.1rem $secondary-color-gray-500;
-      color: $secondary-color-gray-500;
-      font-size: 100%;
+      .polygon__input {
+        pointer-events: none;
+        box-shadow: 0 0.2rem 0 -0.1rem $secondary-color-gray-500;
+        color: $secondary-color-gray-500;
+        font-size: 100%;
+      }
     }
 
     .file__fieldset {

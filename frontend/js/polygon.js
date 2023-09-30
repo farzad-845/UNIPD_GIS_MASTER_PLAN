@@ -2,266 +2,223 @@ const addPointBtn = document.querySelector("#add-point-btn");
 const clearPointsBtn = document.querySelector("#clear-points-btn");
 const submitPointsBtn = document.querySelector("#submit-points-btn");
 
-const isAdmin = window.location.pathname.slice(1) === "admin.html";
+proj4.defs([
+  [
+    "EPSG:4326",
+    "+title=WGS 84 (long/lat) +proj=longlat +ellps=WGS84 +datum=WGS84 +units=degrees",
+  ],
+  [
+    "EPSG:3004",
+    "+proj=tmerc +lat_0=0 +lon_0=15 +k=0.9996 +x_0=2520000 +y_0=0 +ellps=intl +towgs84=-104.1,-49.1,-9.9,0.971,-2.917,0.714,-11.68 +units=m +no_defs ",
+  ],
+]);
+
+const convertPointsToMultipolygon = (points) =>
+  `MULTIPOLYGON(((${points
+    .map((point) => `${point[0]} ${point[1]}`)
+    .join(", ")}, ${points[0][0]} ${points[0][1]})))`;
 
 // if (window.location.host =="localhost:8000") APIpath = 'http://localhost:5610/API/';
 let polygon = null;
 let polygonsLayer;
 
-const polygonsData = [
-  {
-    type: "Feature",
-    properties: {
-      id: "1694095320656",
-      status: "in progress",
-    },
-    geometry: {
-      type: "Polygon",
-      coordinates: [
-        [
-          [12.969017028808596, 43.839448691918044],
-          [12.95914649963379, 43.839448691918044],
-          [12.955026626586914, 43.849167497099714],
-          [12.969274520874025, 43.849167497099714],
-          [12.983436584472658, 43.83994395594441],
-        ],
-      ],
-    },
-  },
-  {
-    type: "Feature",
-    properties: {
-      id: "1694095329368",
-      status: "in progress",
-    },
-    geometry: {
-      type: "Polygon",
-      coordinates: [
-        [
-          [12.99339294433594, 43.83765332536004],
-          [13.002490997314453, 43.840810658098256],
-          [13.013734817504885, 43.832947970495034],
-          [13.006010055541994, 43.82892335947694],
-          [12.994508743286133, 43.828613762772925],
-          [12.977170944213869, 43.83201923819433],
-        ],
-      ],
-    },
-  },
-  {
-    type: "Feature",
-    properties: {
-      id: "1694095339680",
-      status: "in progress",
-    },
-    geometry: {
-      type: "Polygon",
-      coordinates: [
-        [
-          [12.967729568481447, 43.832947970495034],
-          [12.951765060424806, 43.837777145477716],
-          [12.95167922973633, 43.83115240834065],
-          [12.960262298583984, 43.8300998123067],
-        ],
-      ],
-    },
-  },
-  {
-    type: "Feature",
-    properties: {
-      id: "1694095345360",
-      status: "in progress",
-    },
-    geometry: {
-      type: "Polygon",
-      coordinates: [
-        [
-          [12.967214584350588, 43.82966638501464],
-          [12.974596023559572, 43.828489923641655],
-          [12.977943420410158, 43.82174030240223],
-          [12.969617843627931, 43.82198800841399],
-          [12.963008880615234, 43.82235956550457],
-        ],
-      ],
-    },
-  },
-  {
-    type: "Feature",
-    properties: {
-      id: "1694095354385",
-      status: "in progress",
-    },
-    geometry: {
-      type: "Polygon",
-      coordinates: [
-        [
-          [12.97914505004883, 43.82706575516482],
-          [12.983779907226564, 43.820068259941074],
-          [12.989530563354492, 43.821492595362756],
-          [12.990303039550783, 43.82657038425128],
-          [12.983865737915039, 43.82830416446303],
-        ],
-      ],
-    },
-  },
-  {
-    type: "Feature",
-    properties: {
-      id: "1694095365569",
-      status: "in progress",
-    },
-    geometry: {
-      type: "Polygon",
-      coordinates: [
-        [
-          [12.967557907104494, 43.83734377394175],
-          [12.972106933593752, 43.83214307000281],
-          [12.982749938964846, 43.83697231012002],
-        ],
-      ],
-    },
-  },
-  {
-    type: "Feature",
-    properties: {
-      id: "1694095373345",
-      status: "in progress",
-    },
-    geometry: {
-      type: "Polygon",
-      coordinates: [
-        [
-          [12.989959716796877, 43.83814860428908],
-          [12.997941970825197, 43.84093447166389],
-          [12.988500595092775, 43.848239017245504],
-          [12.979574203491213, 43.845020175184494],
-        ],
-      ],
-    },
-  },
-  {
-    type: "Feature",
-    properties: {
-      id: "1694095383033",
-      status: "in progress",
-    },
-    geometry: {
-      type: "Polygon",
-      coordinates: [[]],
-    },
-  },
-];
+let newPolygon = [];
 
-const addNewPolygon = (status, points) => {
-  polygonsData.push({
-    type: "Feature",
-    properties: {
-      id: `${new Date().getTime()}`,
-      status: status,
-    },
-    geometry: {
-      type: "Polygon",
-      coordinates: points,
-    },
+const addNewPolygon = async (points) => {
+  console.log(points);
+  const transformedMultipolygon = [points].map((polygon) => {
+    return polygon.map((point) => {
+      return proj4("EPSG:4326", "EPSG:3004", point);
+    });
   });
+
+  const newPolyData = {
+    db_id: 0,
+    area: 0,
+    id_area: 0,
+    comparto: "string",
+    geom: convertPointsToMultipolygon(transformedMultipolygon[0]),
+  };
+
+  try {
+    const response = await axios.post(
+      "http://64.226.84.10/api/v1/zone",
+      newPolyData,
+      {
+        headers: {
+          Accept: "application/json",
+          Authorization: `Bearer ${accessToken}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    displayAlert("Area added successfully!", "success");
+    getHSRAlignmentData();
+
+    newPolygon = [];
+    if (polygonsLayer != null) map.removeLayer(polygonsLayer);
+
+    console.log("Response:", response.data);
+  } catch (error) {
+    console.error("Error:", error);
+
+    if (error.response) {
+      displayAlert(error.response?.data.detail, "error");
+
+      if (error.response.status === 401 || error.response.status === 403) {
+        window.location.href = "login.html";
+      }
+    } else {
+      displayAlert(
+        "There seems to be a problem with your network connection.",
+        "error"
+      );
+    }
+  }
 };
 
-const getLastPolygon = () => {
-  if (!polygonsData.length) {
-    addNewPolygon("in progress", [[]]);
-  }
-  return polygonsData[polygonsData.length - 1];
+const updatePolygon = async (id, data) => {
+  console.log(id);
+  // const transformedMultipolygon = [points].map((polygon) => {
+  //   return polygon.map((point) => {
+  //     return proj4("EPSG:4326", "EPSG:3004", point);
+  //   });
+  // });
+
+  // const newPolyData = {
+  //   db_id: 0,
+  //   area: 0,
+  //   id_area: 0,
+  //   comparto: "string",
+  //   geom: convertPointsToMultipolygon(transformedMultipolygon[0]),
+  // };
+
+  // try {
+  // const response = await axios.put(
+  //   `http://64.226.84.10/api/v1/zone/${id}`,
+  //   data,
+  //   {
+  //     headers: {
+  //       Accept: "application/json",
+  //       Authorization: `Bearer ${accessToken}`,
+  //       "Content-Type": "application/json",
+  //     },
+  //   }
+  // );
+
+  // displayAlert("Area added successfully!", "success");
+  // getHSRAlignmentData();
+
+  //   newPolygon = [];
+  //   if (polygonsLayer != null) map.removeLayer(polygonsLayer);
+
+  //   console.log("Response:", response.data);
+  // } catch (error) {
+  //   console.error("Error:", error);
+
+  //   if (error.response) {
+  //     displayAlert(error.response?.data.detail, "error");
+
+  //     if (error.response.status === 401 || error.response.status === 403) {
+  //       window.location.href = "login.html";
+  //     }
+  //   } else {
+  //     displayAlert(
+  //       "There seems to be a problem with your network connection.",
+  //       "error"
+  //     );
+  //   }
+  // }
 };
 
 let lastPolygon;
 
-const changePolygonStatus = (id) => {
-  const selectedPolygon = polygonsData.find(
-    (polygon) => Number(polygon.properties.id) === Number(id)
-  );
+const changePolygonStatus = async (id, currentStatus) => {
+  const selectedPolygon = polygonsData.find((polygon) => polygon.id === id);
 
-  if (
-    !selectedPolygon ||
-    selectedPolygon.properties.id ===
-      polygonsData[polygonsData.length - 1].properties.id
-  )
-    return;
+  if (!selectedPolygon) return;
 
-  switch (selectedPolygon.properties.status) {
-    case "approved":
-      selectedPolygon.properties.status = "in progress";
-      break;
+  let newState;
 
+  switch (currentStatus) {
     case "planned":
-      selectedPolygon.properties.status = "approved";
+      newState = "approved";
       break;
 
-    case "in progress":
-      selectedPolygon.properties.status = "planned";
+    case "in_progress":
+      newState = "planned";
       break;
 
     default:
       break;
   }
 
-  displayPolygons(polygonsData);
+  try {
+    const response = await axios.put(
+      `http://64.226.84.10/api/v1/zone/${id.replace("prg_pg.", "")}`,
+      {
+        status: newState,
+      },
+      {
+        headers: {
+          Accept: "application/json",
+          Authorization: `Bearer ${accessToken}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    displayAlert("Area was updated successfully!", "success");
+    getHSRAlignmentData();
+
+    console.log("Response:", response.data);
+  } catch (error) {
+    console.error("Error:", error);
+
+    if (error.response) {
+      displayAlert(error.response?.data.detail, "error");
+
+      // if (error.response.status === 401 || error.response.status === 403) {
+      //   window.location.href = "login.html";
+      // }
+    } else {
+      displayAlert(
+        "There seems to be a problem with your network connection.",
+        "error"
+      );
+    }
+  }
 };
 
-const displayPolygons = (points) => {
+const displayPolygon = (points) => {
   if (polygonsLayer != null) map.removeLayer(polygonsLayer);
 
-  polygonsLayer = L.geoJSON(points, {
-    onEachFeature: (feature, layer) =>
-      !isAdmin &&
-      layer.on("click", () => {
-        displayForm();
-        changePolygonInput(layer.feature.properties.id);
-      }),
-    style: function (feature) {
-      switch (feature.properties.status) {
-        case "in progress":
-          return { color: "#f14a16" };
-        case "planned":
-          return { color: "#1f4690" };
-        case "approved":
-          return { color: "#3e8e7e" };
-      }
+  const polygonData = {
+    type: "Feature",
+    geometry: {
+      type: "Polygon",
+      coordinates: [points],
     },
-  }).addTo(map);
+  };
 
-  isAdmin &&
-    polygonsLayer.bindPopup(
-      (layer) => {
-        return `<p class="popup__content">
-          Status:
-          <button 
-            class="popup__btn" 
-            onclick="changePolygonStatus(${layer.feature.properties.id})"
-          >${layer.feature.properties.status}
-            <i class="ti ti-chevron-right"></i>
-          </button>
-          <span class="popup__span">Click on the status to change it.</span>
-        </p>`;
-      },
-      { className: "polygon__popup" }
-    );
+  polygonsLayer = L.geoJSON(polygonData, {
+    style: { color: "#f14a16" },
+  }).addTo(group);
 };
 
 // Function to add a point to the polygonPoints array while maintaining the correct order
-const addPointToPolygon = (lng, lat) => {
-  lastPolygon = getLastPolygon().geometry.coordinates[0];
 
+const addPointToPolygon = (lng, lat) => {
   const newPoint = [lng, lat];
 
-  lastPolygon.push(newPoint);
+  newPolygon.push(newPoint);
 };
 
 const clearPoints = () => {
-  getLastPolygon().geometry.coordinates[0] = [];
+  newPolygon = [];
 
   if (polygonsLayer != null) map.removeLayer(polygonsLayer);
-
-  displayPolygons(polygonsData);
 };
 
 const addPoint = () => {
@@ -269,38 +226,27 @@ const addPoint = () => {
 
   addPointToPolygon(currentLocation.lng, currentLocation.lat);
 
-  console.log(polygonsData);
-
-  if (polygonsLayer != null) map.removeLayer(polygonsLayer);
-
-  displayPolygons(polygonsData);
+  displayPolygon(newPolygon);
 };
 
 addPointBtn.addEventListener("click", () => addPoint());
 clearPointsBtn.addEventListener("click", () => clearPoints());
 
 submitPointsBtn.addEventListener("click", () => {
-  lastPolygon = getLastPolygon().geometry.coordinates[0];
-
-  if (lastPolygon.length < 3) {
-    displayAlert("The drawn area must contain at least 3 points.");
+  if (newPolygon.length < 3) {
+    displayAlert("The drawn area must contain at least 3 points.", "error");
     return;
   }
 
-  addNewPolygon("in progress", [[]]);
-
-  console.log(polygonsData);
-  displayAlert("Area added successfully!");
+  addNewPolygon(newPolygon);
 });
 
 const displaySpecificPolygon = (id) => {
-  const selectedPolygon = polygonsData.find(
-    (polygon) => Number(polygon.properties.id) === Number(id)
-  );
-
-  if (polygonsLayer != null) map.removeLayer(polygonsLayer);
-
-  displayPolygons(selectedPolygon);
+  // const selectedPolygon = polygonsData.find(
+  //   (polygon) => Number(polygon.properties.id) === Number(id)
+  // );
+  // if (polygonsLayer != null) map.removeLayer(polygonsLayer);
+  // displayPolygons(selectedPolygon);
 };
 
-displayPolygons(polygonsData);
+// displayPolygons(polygonsData);

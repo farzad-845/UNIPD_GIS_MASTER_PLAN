@@ -1,45 +1,24 @@
-.notes__container {
+.side__container {
   position: relative;
   display: flex;
   flex-direction: column;
   gap: 1rem;
   overflow: hidden;
 
-  .notes__title {
+  .side__title {
     font-weight: 500;
-  }
-
-  .notes__button--open {
-    @extend .btn;
-    position: fixed;
-    bottom: Min(5vw, 4rem);
-    left: Min(5vw, 4rem);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 1rem;
-    padding: 1rem 1.5rem;
-    background-color: transparent;
-    color: $dark-color;
-    box-shadow: 0 0 0 0.15rem $dark-color;
-    font-size: 105%;
-    z-index: 10000;
-
-    &:hover {
-      opacity: unset;
-    }
   }
 
   .list__container {
     position: fixed;
     top: 0;
-    left: 0;
-    width: Min(90%, 40rem);
+    left: clamp(5rem, 5vw, 6rem);
+    width: Min(75%, 40rem);
     height: 100%;
     padding: Min(5vw, 1.5rem);
     box-shadow: 0 0 10rem 1rem rgba($dark-color, 0.1);
     background-color: $light-color;
-    z-index: 10000;
+    z-index: 1000;
     display: flex;
     flex-direction: column;
     gap: 1rem;
@@ -49,13 +28,13 @@
       transform: translateX(-100%);
     }
 
-    .list__header {
+    .side__header {
       display: grid;
       grid-template-columns: 1fr auto;
       align-items: center;
       gap: 1rem;
 
-      .notes__button--close {
+      .side__button--close {
         background-color: transparent;
         border: none;
         font-size: 150%;
@@ -129,6 +108,10 @@
         .item__img {
           width: Min(100%, 7rem);
           border-radius: 0.5rem;
+
+          &.item__img--hidden {
+            display: none;
+          }
         }
 
         .item__text {

@@ -24,6 +24,20 @@
     .alert__icon {
       font-size: 150%;
     }
+
+    &.alert--warning {
+      background-color: $secondary-color-yellow;
+    }
+
+    &.alert--error {
+      background-color: rgba($primary-color, 0.75);
+    }
+
+    &.alert--success {
+      background-color: rgba($secondary-color-green, 0.75);
+      color: white;
+      font-weight: 400;
+    }
   }
 
   &:hover {

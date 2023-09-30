@@ -71,6 +71,22 @@
   }
 }
 
+.name__container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: min(5vw, 3rem);
+
+  @media screen and (min-width: 992px) {
+    flex-direction: row;
+    justify-content: unsafe;
+
+    & > fieldset {
+      width: 100%;
+    }
+  }
+}
+
 .password__container {
   display: flex;
   box-shadow: 0 0.2rem 0 -0.1rem $dark-color;
@@ -128,8 +144,3 @@
     opacity: 0.85;
   }
 }
-
-// 576px for portrait phones
-// 768px for tablets
-// 992px for laptops
-// 1200px for large devices

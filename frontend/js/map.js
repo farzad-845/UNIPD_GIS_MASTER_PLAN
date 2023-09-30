@@ -3,13 +3,14 @@
 //
 // version=1.0.0&request=GetFeature&typeName=master_plan%3Aprg&outputFormat=text%2Fjavascript&format_options=callback%3AgetJson&srsName=EPSG%3A4326&callback=getJson&_=1689328522202
 // version=1.0.0&request=GetFeature&typeName=master_plan%3Aprg&maxFeatures=50&outputFormat=application%2Fjson
-const owsRootUrl = "http://localhost:8585/geoserver/master_plan_pg/ows";
+// const owsRootUrl = "http://localhost:8585/geoserver/master_plan_pg/ows";
+const owsRootUrl = "http://64.226.84.10:8080/geoserver/master_plan_pg/ows";
 // const owsRootUrl = 'https://maps.gcc.tas.gov.au/geoserver/ows';
 const defaultParameters = {
   service: "WFS",
   version: "1.0.0",
   request: "GetFeature",
-  typeName: "master_plan_pg:particelle",
+  typeName: "master_plan_pg:particelle_pg",
   outputFormat: "text/javascript",
   format_options: "callback:getJson",
   srsName: "EPSG:4326",
@@ -19,13 +20,13 @@ let WFSLayer = null;
 const parameters = L.Util.extend(defaultParameters);
 const prg_parameters = L.Util.extend({
   ...defaultParameters,
-  typeName: "master_plan_pg:prg",
+  typeName: "master_plan_pg:prg_pg",
 });
 const OWS_URL = owsRootUrl + L.Util.getParamString(parameters);
 const OWS_URL_PRG = owsRootUrl + L.Util.getParamString(prg_parameters);
 
 // map crosshair size etc:
-const crosshairPath = "lib/focus-black.svg";
+const crosshairPath = "../lib/focus-black.svg";
 const crosshairSize = 50;
 
 let simTreeData = [];
@@ -123,9 +124,9 @@ const wmsLayer = L.tileLayer.wms(
 // });
 
 const wmsLayer3 = L.tileLayer.wms(
-  "http://localhost:8585/geoserver/master_plan/wms?",
+  "http://localhost:8080/geoserver/master_plan/wms?",
   {
-    layers: "master_plan:prg",
+    layers: "master_plan_pg:prg_pg",
     format: "image/png",
     transparent: true,
     version: "1.1.0",
@@ -141,9 +142,9 @@ const overlays = {
 
 planLayer.addTo(map);
 
-const layerControl = L.control
-  .layers(baseLayers, overlays, { collapsed: true, autoZIndex: false })
-  .addTo(map);
+// const layerControl = L.control
+//   .layers(baseLayers, overlays, { collapsed: true, autoZIndex: false })
+//   .addTo(map);
 
 // Add in a crosshair for the map. From https://gis.stackexchange.com/a/90230/44746
 const crosshairIcon = L.icon({
@@ -159,41 +160,43 @@ const hash = new L.Hash(map);
 // RUN ON PAGE LOAD
 
 $(document).ready(function () {
-  setTimeout(function () {
-    sidebar.open("home");
-  }, 500);
+  // setTimeout(function () {
+  // sidebar.open("home");
+  // }, 500);
   // resetForm();
-  loadCSV();
-  fetchInputs();
+  // loadCSV();
+  // fetchInputs();
 });
 
 // ######################################
 // FUNCTIONS
 
-function loadCSV() {
-  // papa parse load csv
-  Papa.parse(LAYERS_CSV, {
-    download: true,
-    header: true,
-    skipEmptyLines: true,
-    dynamicTyping: true, // this reads numbers as numerical; set false to read everything as string
-    complete: function (results, file) {
-      loadLayers(results.data);
-    }, // end of complete
-    error: function (err, file, inputElem, reason) {
-      alert(
-        `Failed to load ${LAYERS_CSV}. Please check LAYERS_CSV in config.js`
-      );
-    },
-  });
-}
+// function loadCSV() {
+//   // papa parse load csv
+//   Papa.parse(LAYERS_CSV, {
+//     download: true,
+//     header: true,
+//     skipEmptyLines: true,
+//     dynamicTyping: true, // this reads numbers as numerical; set false to read everything as string
+//     complete: function (results, file) {
+//       loadLayers(results.data);
+//     }, // end of complete
+//     error: function (err, file, inputElem, reason) {
+//       window.alert(
+//         `Failed to load ${LAYERS_CSV}. Please check LAYERS_CSV in config.js`
+//       );
+//     },
+//   });
+// }
 
 const group = new L.featureGroup().addTo(map);
 
 function getJson(response) {
-  console.log("FFFFFF", undefined);
+  console.log(response);
+
   return response;
 }
+
 const zonaColors = {
   "B1.2": "#FF0000",
   strada: "#00FF00",
@@ -220,97 +223,221 @@ const zonaColors = {
   PARTICELLE: "#979797",
 };
 
-$.ajax({
-  jsonpCallback: "getJson",
-  type: "GET",
-  url: OWS_URL,
-  async: false,
-  dataType: "jsonp",
-  jsonp: false,
-  success: function (response) {
-    console.log(response);
-    WFSLayer = L.geoJson(response, {
-      style: function (feature) {
-        return {
-          color: zonaColors[feature.properties.livello],
-          strokeLinecap: "round",
-          strokeLinejoin: "round",
-          fillOpacity: feature.properties.livello === "STRADE" ? "0.5" : "0.2",
-          fillRule: "evenodd",
-        };
-      },
-      onEachFeature: function (feature, layer) {
-        layer.bindPopup("Number: " + feature.properties.numero);
-      },
-    }).addTo(group);
-    map.fitBounds(group.getBounds());
-  },
-  error: function (jqXHR, textStatus, errorThrown) {
-    console.log(jqXHR, textStatus, errorThrown);
-  },
-});
+let polygonsData = [];
+
+const displayPolygons = (data, isHSR = false) => {
+  console.log(data);
+  polygonsData = [...data.features];
+
+  WFSLayer = L.geoJson(data, {
+    style: function (feature) {
+      const type = feature.properties.zona || feature.properties.livello;
+      return {
+        color: zonaColors[type],
+        strokeLinecap: "round",
+        strokeLinejoin: "round",
+        fillOpacity: type === "STRADE" ? "0.5" : "0.2",
+        fillRule: "evenodd",
+      };
+    },
+    onEachFeature: function (feature, layer) {
+      // layer.bindPopup("Zone: " + feature.properties.zona);
+      if (isHSR) {
+        switch (userData?.role.name) {
+          case "manager":
+          case "admin":
+            layer.bindPopup(
+              (layer) => {
+                return `
+                <ul class="polygon__popup">
+                <li class="popup__item">
+                  <button class="popup__btn popup__btn--status ${
+                    feature.properties.status === "approved"
+                      ? "popup__btn--disabled"
+                      : ""
+                  }" onclick="changePolygonStatus('${feature.id}', '${
+                  feature.properties.status
+                }')">
+                    <i class="ti ti-checks"></i
+                    ><span>Mark as 
+                      <span class="polygon__status">${
+                        feature.properties.status === "in_progress"
+                          ? "Planned"
+                          : feature.properties.status === "planned"
+                          ? "Approved"
+                          : ""
+                      } </span>
+                    </span>
+                  </button>
+                </li>
+                <li class="popup__item">
+                  <button class="popup__btn popup__btn--edit" onclick="updatePolygon('${
+                    feature.id
+                  }')">
+                    <i class="ti ti-edit"></i><span>Edit</span>
+                  </button>
+                </li>
+                <li class="popup__item">
+                  <button class="popup__btn popup__btn--delete">
+                    <i class="ti ti-trash"></i><span>Delete</span>
+                  </button>
+                </li>
+              </ul>`;
+              },
+              { className: "polygon__popup" }
+            );
+
+            break;
+
+          case "user":
+            layer.on("click", () => {
+              displayNoteForm();
+              changePolygonInput(feature.id);
+            });
+            break;
+
+          default:
+            break;
+        }
+      }
+    },
+  }).addTo(group);
+  map.fitBounds(group.getBounds());
+};
+
+const getPolygonsData = () => {
+  $.ajax({
+    jsonpCallback: "getJson",
+    type: "GET",
+    url: OWS_URL,
+    async: false,
+    dataType: "jsonp",
+    jsonp: false,
+    success: (response) => displayPolygons(response),
+    error: function (jqXHR, textStatus, errorThrown) {
+      console.log(jqXHR, textStatus, errorThrown);
+    },
+  });
+};
+
+getPolygonsData();
 
 const kossher = [
   {
     id: "ROAD_RAILWAY_METRO_LINES_HSR_Alignment.geojson",
     pid: "Road Railway Metro",
-    name: 'HSR Alignment <span style="background-color: #fdb462; float: left; width: 20px; height: 80%; margin: 5px; "></span>',
+    name: "HSR Alignment",
     shapefile: "ROAD_RAILWAY_METRO_LINES_HSR_Alignment.geojson",
     origname: "HSR Alignment",
     type: "LineString",
   },
 ];
+
 const layers_state = {};
+
 for (let mp_layer in kossher) {
   layers_state[mp_layer.id] = false;
 }
 
-simTree({
-  el: "#tree",
-  check: true,
-  linkParent: true,
-  data: kossher,
-  onClick: function (item) {
-    console.log("1");
-  },
-  onChange: function (item) {
-    // Send Ajax request to fetch the layers and add to map
+// simTree({
+//   el: "#hsr-alignment-btn",
+//   check: true,
+//   linkParent: true,
+//   data: kossher,
+//   onClick: function (item) {
+//     console.log("1");
+//   },
+//   onChange: function (item) {
+//     // Send Ajax request to fetch the layers and add to map
+//     if (layers_state[item.id]) {
+//       layers_state[item.id] = false;
+//       map.removeLayer(WFSLayer);
+//       // map.removeLayer(wmsLayer);
+//       // map.removeLayer(wmsLayer2);
+//       // map.removeLayer(wmsLayer3);
+//     } else {
+//       layers_state[item.id] = true;
+//       $.ajax({
+//         jsonpCallback: "getJson",
+//         type: "GET",
+//         url: OWS_URL_PRG,
+//         async: false,
+//         dataType: "jsonp",
+//         jsonp: false,
+//         success: function (response) {
+//           WFSLayer = L.geoJson(response, {
+//             style: function (feature) {
+//               return {
+//                 color: zonaColors[feature.properties.zona],
+//               };
+//             },
+//             onEachFeature: function (feature, layer) {
+//               layer.bindPopup("Zone: " + feature.properties.zona);
+//             },
+//           }).addTo(group);
+//           map.fitBounds(group.getBounds());
+//         },
+//         error: function (jqXHR, textStatus, errorThrown) {
+//           console.log(jqXHR, textStatus, errorThrown);
+//         },
+//       });
+//       console.log("2");
+//       // wmsLayer3.addTo(planLayer);
+//     }
+//   },
+// });
 
-    if (layers_state[item.id]) {
-      layers_state[item.id] = false;
-      // map.removeLayer(wmsLayer);
-      // map.removeLayer(wmsLayer2);
-      // map.removeLayer(wmsLayer3);
-    } else {
-      layers_state[item.id] = true;
-      $.ajax({
-        jsonpCallback: "getJson",
-        type: "GET",
-        url: OWS_URL_PRG,
-        async: false,
-        dataType: "jsonp",
-        jsonp: false,
-        success: function (response) {
-          WFSLayer = L.geoJson(response, {
-            style: function (feature) {
-              return {
-                color: zonaColors[feature.properties.zona],
-              };
-            },
-            onEachFeature: function (feature, layer) {
-              layer.bindPopup("Zone: " + feature.properties.zona);
-            },
-          }).addTo(group);
-          map.fitBounds(group.getBounds());
-        },
-        error: function (jqXHR, textStatus, errorThrown) {
-          console.log(jqXHR, textStatus, errorThrown);
-        },
-      });
-      console.log("2");
-      // wmsLayer3.addTo(planLayer);
-    }
-  },
+const getHSRAlignmentData = () => {
+  return new Promise((resolve, reject) => {
+    $.ajax({
+      jsonpCallback: "getJson",
+      type: "GET",
+      url: OWS_URL_PRG,
+      async: false,
+      dataType: "jsonp",
+      jsonp: false,
+      success: (response) => {
+        console.log(response);
+
+        if (userData?.role.name === "user") {
+          response = {
+            ...response,
+            features: response.features.filter(
+              (feat) => feat.properties.status === "approved"
+            ),
+          };
+        }
+
+        displayPolygons(response, true);
+
+        resolve();
+      },
+      error: function (jqXHR, textStatus, errorThrown) {
+        console.log(jqXHR, textStatus, errorThrown);
+        reject(errorThrown);
+      },
+    });
+  });
+};
+
+const HSRBtn = document.querySelector("#hsr-alignment-btn");
+let isHSRBtnToggled = false;
+
+HSRBtn.addEventListener("click", function () {
+  isHSRBtnToggled = !isHSRBtnToggled;
+
+  if (isHSRBtnToggled) {
+    getHSRAlignmentData()
+      .then(() => {
+        HSRBtn.classList.add("hsr__btn--on");
+        HSRBtn.innerHTML = '<i class="ti ti-toggle-right"></i>';
+      })
+      .catch((error) => console.error("Error: ", error));
+  } else {
+    map.removeLayer(WFSLayer);
+    HSRBtn.classList.remove("hsr__btn--on");
+    HSRBtn.innerHTML = '<i class="ti ti-toggle-left"></i>';
+  }
 });
 
 function loadLayers(data) {

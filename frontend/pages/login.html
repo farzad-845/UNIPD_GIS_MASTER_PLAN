@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css"
@@ -24,13 +25,13 @@
       <h1 class="logo"><span class="logo__span">Master</span>Plan</h1>
       <h2 class="login__title">Login to Your Account</h2>
 
-      <form action="" class="login__form">
+      <form action="" id="login-form" class="login__form">
         <fieldset class="form__fieldset text__fieldset">
-          <label for="username" class="form__label">Username</label>
+          <label for="email" class="form__label">Email</label>
           <input
-            type="text"
-            name="username"
-            id="username"
+            type="email"
+            name="email"
+            id="email"
             class="input form__input"
           />
         </fieldset>
@@ -51,6 +52,7 @@
         </fieldset>
 
         <a href="" class="form__forget">Forgot password?</a>
+
         <button
           type="submit"
           id="submit-btn"
@@ -66,6 +68,16 @@
       </p>
     </main>
 
+    <div class="alert__container alert__container--hidden">
+      <div class="alert">
+        <i class="ti ti-alert-triangle alert__icon"></i>
+        <p class="alert__text"></p>
+      </div>
+    </div>
+
+    <script src="../js/api.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/alert.js"></script>
     <script src="../js/login.js"></script>
   </body>
 </html>

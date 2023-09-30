@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css"
@@ -24,18 +25,32 @@
       <h1 class="logo"><span class="logo__span">Master</span>Plan</h1>
       <h2 class="login__title">Create an a Account</h2>
 
-      <form action="" class="login__form">
-        <fieldset class="form__fieldset text__fieldset">
-          <label for="username" class="form__label"
-            >Username <span class="form__required">*</span></label
-          >
-          <input
-            type="text"
-            name="username"
-            id="username"
-            class="input form__input"
-          />
-        </fieldset>
+      <form action="" id="register-form" class="login__form">
+        <div class="name__container">
+          <fieldset class="form__fieldset text__fieldset">
+            <label for="firstName" class="form__label"
+              >First Name <span class="form__required">*</span></label
+            >
+            <input
+              type="text"
+              name="firstName"
+              id="firstName"
+              class="input form__input"
+            />
+          </fieldset>
+
+          <fieldset class="form__fieldset text__fieldset">
+            <label for="lastName" class="form__label"
+              >Last Name <span class="form__required">*</span></label
+            >
+            <input
+              type="text"
+              name="lastName"
+              id="lastName"
+              class="input form__input"
+            />
+          </fieldset>
+        </div>
 
         <fieldset class="form__fieldset text__fieldset">
           <label for="email" class="form__label"
@@ -101,6 +116,16 @@
       </p>
     </main>
 
+    <div class="alert__container alert__container--hidden">
+      <div class="alert">
+        <i class="ti ti-alert-triangle alert__icon"></i>
+        <p class="alert__text"></p>
+      </div>
+    </div>
+
+    <script src="../js/api.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/alert.js"></script>
     <script src="../js/login.js"></script>
   </body>
 </html>

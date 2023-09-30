@@ -4,7 +4,12 @@ const alert = document.querySelector(".alert");
 let timeout;
 
 const displayAlert = (msg, type = "warning") => {
+  alert.classList.remove("alert--error");
+  alert.classList.remove("alert--success");
+
   timeout = null;
+
+  alert.classList.add(`alert--${type}`);
 
   alertContainer.classList.remove("alert__container--hidden");
   alert.querySelector(".alert__text").innerText = msg;

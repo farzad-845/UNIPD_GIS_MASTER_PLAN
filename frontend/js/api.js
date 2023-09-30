@@ -1,3 +1,2 @@
 // api.js - for all citizens inputs related functions
-
-const APIpath = "https://server2.nikhilvj.co.in/draftmpd41_backend/API/";
+const APIpath = "http://64.226.84.10/api/v1";
