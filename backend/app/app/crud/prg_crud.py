@@ -26,6 +26,10 @@ class CRUDPrg(CRUDBase[Prg, IPrgCreate, IPrgUpdate]):
         db_obj.status = IPrgStatusEnum.in_progress
         db_obj.user_id = current_user.id
         db_session.add(db_obj)
+
+        raw_query = 'UPDATE "Prg" SET geom = ST_SetSRID(geom, 4326) WHERE ST_SRID(geom) = 0;'
+        await db_session.execute(raw_query)
+
         await db_session.commit()
         await db_session.refresh(db_obj)
         return db_obj
