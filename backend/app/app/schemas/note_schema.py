@@ -2,6 +2,7 @@ from app.models.note_model import NoteBase
 from app.schemas.image_media_schema import IImageMediaReadCombined
 from app.utils.partial import optional
 from uuid import UUID
+from datetime import datetime
 
 
 class INoteCreate(NoteBase):
@@ -17,6 +18,7 @@ class INoteUpdate(NoteBase):
 class INoteRead(NoteBase):
     id: UUID
     image: IImageMediaReadCombined | None
+    created_at: datetime | None
 
 
 class INoteReadWithWKT(NoteBase):

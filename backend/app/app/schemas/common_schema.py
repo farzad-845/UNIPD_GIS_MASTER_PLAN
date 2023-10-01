@@ -31,6 +31,7 @@ class IPrgTypeEnum(str, Enum):
     industrial = "industrial"
     residential = "residential"
     public_green = "public green"
+    agricultural = "agricultural"
     strada = "strada"
     B12 = "B1.2"
     P2_es = "P2_es"
