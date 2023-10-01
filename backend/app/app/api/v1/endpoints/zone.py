@@ -73,7 +73,7 @@ async def update_zone(
     zone: IPrgUpdate,
     current_zone: Prg = Depends(zone_deps.get_zone_by_id_update),
     current_user: User = Depends(
-        deps.get_current_user(required_roles=[IRoleEnum.admin])
+        deps.get_current_user(required_roles=[IRoleEnum.admin, IRoleEnum.manager])
     ),
 ) -> IPutResponseBase[IPrgRead]:
     """
