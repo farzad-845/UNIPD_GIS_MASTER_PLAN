@@ -1,6 +1,3 @@
-let roles = {};
-let users = {};
-
 const getRoles = async () => {
   try {
     const response = await axios.get(`${APIpath}/role`, {
@@ -12,8 +9,6 @@ const getRoles = async () => {
     roles = [...response.data.data.items].reduce((acc, curr) => {
       return { ...acc, [curr.name]: curr };
     }, {});
-
-    console.log(roles);
   } catch (error) {
     console.error(error);
 

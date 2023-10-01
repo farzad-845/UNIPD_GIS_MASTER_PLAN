@@ -25,7 +25,6 @@ let polygonsLayer;
 let newPolygon = [];
 
 const addNewPolygon = async (points) => {
-  console.log(points);
   const transformedMultipolygon = [points].map((polygon) => {
     return polygon.map((point) => {
       return proj4("EPSG:4326", "EPSG:3004", point);
@@ -78,88 +77,17 @@ const addNewPolygon = async (points) => {
   }
 };
 
-const updatePolygon = async (id, data) => {
-  console.log(id);
-  // const transformedMultipolygon = [points].map((polygon) => {
-  //   return polygon.map((point) => {
-  //     return proj4("EPSG:4326", "EPSG:3004", point);
-  //   });
-  // });
-
-  // const newPolyData = {
-  //   db_id: 0,
-  //   area: 0,
-  //   id_area: 0,
-  //   comparto: "string",
-  //   geom: convertPointsToMultipolygon(transformedMultipolygon[0]),
-  // };
-
-  // try {
-  // const response = await axios.put(
-  //   `http://64.226.84.10/api/v1/zone/${id}`,
-  //   data,
-  //   {
-  //     headers: {
-  //       Accept: "application/json",
-  //       Authorization: `Bearer ${accessToken}`,
-  //       "Content-Type": "application/json",
-  //     },
-  //   }
-  // );
-
-  // displayAlert("Area added successfully!", "success");
-  // getHSRAlignmentData();
-
-  //   newPolygon = [];
-  //   if (polygonsLayer != null) map.removeLayer(polygonsLayer);
-
-  //   console.log("Response:", response.data);
-  // } catch (error) {
-  //   console.error("Error:", error);
-
-  //   if (error.response) {
-  //     displayAlert(error.response?.data.detail, "error");
-
-  //     if (error.response.status === 401 || error.response.status === 403) {
-  //       window.location.href = "login.html";
-  //     }
-  //   } else {
-  //     displayAlert(
-  //       "There seems to be a problem with your network connection.",
-  //       "error"
-  //     );
-  //   }
-  // }
-};
-
 let lastPolygon;
 
-const changePolygonStatus = async (id, currentStatus) => {
+const updatePolygon = async (id, newData) => {
   const selectedPolygon = polygonsData.find((polygon) => polygon.id === id);
 
   if (!selectedPolygon) return;
 
-  let newState;
-
-  switch (currentStatus) {
-    case "planned":
-      newState = "approved";
-      break;
-
-    case "in_progress":
-      newState = "planned";
-      break;
-
-    default:
-      break;
-  }
-
   try {
     const response = await axios.put(
       `http://64.226.84.10/api/v1/zone/${id.replace("prg_pg.", "")}`,
-      {
-        status: newState,
-      },
+      newData,
       {
         headers: {
           Accept: "application/json",
@@ -229,24 +157,23 @@ const addPoint = () => {
   displayPolygon(newPolygon);
 };
 
-addPointBtn.addEventListener("click", () => addPoint());
-clearPointsBtn.addEventListener("click", () => clearPoints());
+addPointBtn?.addEventListener("click", () => addPoint());
+clearPointsBtn?.addEventListener("click", () => clearPoints());
 
-submitPointsBtn.addEventListener("click", () => {
+submitPointsBtn?.addEventListener("click", () => {
   if (newPolygon.length < 3) {
     displayAlert("The drawn area must contain at least 3 points.", "error");
     return;
   }
 
-  addNewPolygon(newPolygon);
+  userData?.role.name !== "user"
+    ? addNewPolygon(newPolygon)
+    : displayNoteForm();
 });
 
 const displaySpecificPolygon = (id) => {
-  // const selectedPolygon = polygonsData.find(
-  //   (polygon) => Number(polygon.properties.id) === Number(id)
-  // );
-  // if (polygonsLayer != null) map.removeLayer(polygonsLayer);
-  // displayPolygons(selectedPolygon);
+  const selectedPolygon = polygonsData.find(
+    (polygon) => polygon.id === `prg_pg.${id}`
+  );
+  displayPolygons(selectedPolygon, true);
 };
-
-// displayPolygons(polygonsData);

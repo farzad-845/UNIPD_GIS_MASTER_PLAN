@@ -276,12 +276,13 @@ input {
   height: 100%;
 }
 
-.polygon__popup {
+.dropdown__list, .dropdown__list .dropdown__item.dropdown__item--sublist .dropdown__sublist, .dropdown__list .dropdown__item.dropdown__item--sublist .dropdown__sublist .dropdown__item--sublist.status__item .dropdown__sublist,
+.dropdown__list .dropdown__item.dropdown__item--sublist .dropdown__sublist .dropdown__item--sublist.category__item .dropdown__sublist {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  padding: min(5vw, 1rem);
+  padding: min(3vw, 0.75rem) min(5vw, 1rem);
   z-index: 1000;
   display: flex;
   flex-direction: column;
@@ -290,11 +291,55 @@ input {
   font-family: "Roboto", cursive, "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   border-radius: min(5vw, 1rem);
   background-color: #fefefe;
+  box-shadow: 0 0 1rem 0 rgba(204, 209, 228, 0.75);
 }
-.polygon__popup .popup__item:hover {
+.dropdown__list .dropdown__item.dropdown__item--active .dropdown__btn, .dropdown__list .dropdown__item.dropdown__item--sublist .dropdown__sublist .dropdown__item.status__item--active .dropdown__btn,
+.dropdown__list .dropdown__item.dropdown__item--sublist .dropdown__sublist .dropdown__item.category__item--active .dropdown__btn, .dropdown__list .dropdown__item.dropdown__item--active .dropdown__item.dropdown__item--sublist .dropdown__sublist .status__item .status__btn, .dropdown__list .dropdown__item.dropdown__item--sublist .dropdown__sublist .dropdown__item.status__item--active .dropdown__item.dropdown__item--sublist .dropdown__sublist .status__item .status__btn,
+.dropdown__list .dropdown__item.dropdown__item--sublist .dropdown__sublist .dropdown__item.category__item--active .dropdown__item.dropdown__item--sublist .dropdown__sublist .status__item .status__btn, .dropdown__list .dropdown__item.dropdown__item--sublist .dropdown__sublist .status__item .dropdown__item.dropdown__item--active .status__btn, .dropdown__list .dropdown__item.dropdown__item--sublist .dropdown__sublist .status__item .dropdown__item.status__item--active .status__btn,
+.dropdown__list .dropdown__item.dropdown__item--sublist .dropdown__sublist .status__item .dropdown__item.category__item--active .status__btn,
+.dropdown__list .dropdown__item.dropdown__item--active .dropdown__item.dropdown__item--sublist .dropdown__sublist .status__item .category__btn,
+.dropdown__list .dropdown__item.dropdown__item--sublist .dropdown__sublist .dropdown__item.status__item--active .dropdown__item.dropdown__item--sublist .dropdown__sublist .status__item .category__btn,
+.dropdown__list .dropdown__item.dropdown__item--sublist .dropdown__sublist .dropdown__item.category__item--active .dropdown__item.dropdown__item--sublist .dropdown__sublist .status__item .category__btn,
+.dropdown__list .dropdown__item.dropdown__item--sublist .dropdown__sublist .status__item .dropdown__item.dropdown__item--active .category__btn,
+.dropdown__list .dropdown__item.dropdown__item--sublist .dropdown__sublist .status__item .dropdown__item.status__item--active .category__btn,
+.dropdown__list .dropdown__item.dropdown__item--sublist .dropdown__sublist .status__item .dropdown__item.category__item--active .category__btn,
+.dropdown__list .dropdown__item.dropdown__item--active .dropdown__item.dropdown__item--sublist .dropdown__sublist .category__item .status__btn,
+.dropdown__list .dropdown__item.dropdown__item--sublist .dropdown__sublist .dropdown__item.status__item--active .dropdown__item.dropdown__item--sublist .dropdown__sublist .category__item .status__btn,
+.dropdown__list .dropdown__item.dropdown__item--sublist .dropdown__sublist .dropdown__item.category__item--active .dropdown__item.dropdown__item--sublist .dropdown__sublist .category__item .status__btn,
+.dropdown__list .dropdown__item.dropdown__item--sublist .dropdown__sublist .category__item .dropdown__item.dropdown__item--active .status__btn,
+.dropdown__list .dropdown__item.dropdown__item--sublist .dropdown__sublist .category__item .dropdown__item.status__item--active .status__btn,
+.dropdown__list .dropdown__item.dropdown__item--sublist .dropdown__sublist .category__item .dropdown__item.category__item--active .status__btn,
+.dropdown__list .dropdown__item.dropdown__item--active .dropdown__item.dropdown__item--sublist .dropdown__sublist .category__item .category__btn,
+.dropdown__list .dropdown__item.dropdown__item--sublist .dropdown__sublist .dropdown__item.status__item--active .dropdown__item.dropdown__item--sublist .dropdown__sublist .category__item .category__btn,
+.dropdown__list .dropdown__item.dropdown__item--sublist .dropdown__sublist .dropdown__item.category__item--active .dropdown__item.dropdown__item--sublist .dropdown__sublist .category__item .category__btn,
+.dropdown__list .dropdown__item.dropdown__item--sublist .dropdown__sublist .category__item .dropdown__item.dropdown__item--active .category__btn,
+.dropdown__list .dropdown__item.dropdown__item--sublist .dropdown__sublist .category__item .dropdown__item.status__item--active .category__btn,
+.dropdown__list .dropdown__item.dropdown__item--sublist .dropdown__sublist .category__item .dropdown__item.category__item--active .category__btn, .dropdown__list .dropdown__item.dropdown__item--sublist .dropdown__sublist .dropdown__item--active.status__item .dropdown__btn, .dropdown__list .dropdown__item.dropdown__item--sublist .dropdown__sublist .status__item.status__item--active .dropdown__btn,
+.dropdown__list .dropdown__item.dropdown__item--sublist .dropdown__sublist .status__item.category__item--active .dropdown__btn, .dropdown__list .dropdown__item.dropdown__item--sublist .dropdown__sublist .dropdown__item--active.status__item .status__btn, .dropdown__list .dropdown__item.dropdown__item--sublist .dropdown__sublist .status__item.status__item--active .status__btn,
+.dropdown__list .dropdown__item.dropdown__item--sublist .dropdown__sublist .status__item.category__item--active .status__btn,
+.dropdown__list .dropdown__item.dropdown__item--sublist .dropdown__sublist .dropdown__item--active.status__item .category__btn,
+.dropdown__list .dropdown__item.dropdown__item--sublist .dropdown__sublist .status__item.status__item--active .category__btn,
+.dropdown__list .dropdown__item.dropdown__item--sublist .dropdown__sublist .status__item.category__item--active .category__btn,
+.dropdown__list .dropdown__item.dropdown__item--sublist .dropdown__sublist .dropdown__item--active.category__item .dropdown__btn,
+.dropdown__list .dropdown__item.dropdown__item--sublist .dropdown__sublist .category__item.status__item--active .dropdown__btn,
+.dropdown__list .dropdown__item.dropdown__item--sublist .dropdown__sublist .category__item.category__item--active .dropdown__btn,
+.dropdown__list .dropdown__item.dropdown__item--sublist .dropdown__sublist .dropdown__item--active.category__item .status__btn,
+.dropdown__list .dropdown__item.dropdown__item--sublist .dropdown__sublist .category__item.status__item--active .status__btn,
+.dropdown__list .dropdown__item.dropdown__item--sublist .dropdown__sublist .category__item.category__item--active .status__btn,
+.dropdown__list .dropdown__item.dropdown__item--sublist .dropdown__sublist .dropdown__item--active.category__item .category__btn,
+.dropdown__list .dropdown__item.dropdown__item--sublist .dropdown__sublist .category__item.status__item--active .category__btn,
+.dropdown__list .dropdown__item.dropdown__item--sublist .dropdown__sublist .category__item.category__item--active .category__btn {
+  color: #1f4690;
+}
+.dropdown__list .dropdown__item:hover, .dropdown__list .dropdown__item.dropdown__item--sublist .dropdown__sublist .status__item:hover,
+.dropdown__list .dropdown__item.dropdown__item--sublist .dropdown__sublist .category__item:hover, .dropdown__list .dropdown__item.dropdown__item--sublist .dropdown__sublist .dropdown__item:hover {
   background-color: rgba(204, 209, 228, 0.15);
 }
-.polygon__popup .popup__item .popup__btn {
+.dropdown__list .dropdown__item .dropdown__btn, .dropdown__list .dropdown__item.dropdown__item--sublist .dropdown__sublist .status__item .status__btn,
+.dropdown__list .dropdown__item.dropdown__item--sublist .dropdown__sublist .status__item .category__btn,
+.dropdown__list .dropdown__item.dropdown__item--sublist .dropdown__sublist .category__item .status__btn,
+.dropdown__list .dropdown__item.dropdown__item--sublist .dropdown__sublist .category__item .category__btn, .dropdown__list .dropdown__item.dropdown__item--sublist .dropdown__sublist .status__item .dropdown__btn,
+.dropdown__list .dropdown__item.dropdown__item--sublist .dropdown__sublist .category__item .dropdown__btn, .dropdown__list .dropdown__item.dropdown__item--sublist .dropdown__sublist .dropdown__item .dropdown__btn {
   display: grid;
   grid-template-columns: auto 1fr;
   align-items: center;
@@ -305,20 +350,63 @@ input {
   border: none;
   text-align: left;
   text-wrap: nowrap;
+  text-transform: capitalize;
 }
-.polygon__popup .popup__item .popup__btn.popup__btn--status {
-  color: #3e8e7e;
+.dropdown__list .dropdown__item .dropdown__btn.popup__btn--status, .dropdown__list .dropdown__item.dropdown__item--sublist .dropdown__sublist .status__item .popup__btn--status.status__btn,
+.dropdown__list .dropdown__item.dropdown__item--sublist .dropdown__sublist .status__item .popup__btn--status.category__btn,
+.dropdown__list .dropdown__item.dropdown__item--sublist .dropdown__sublist .category__item .popup__btn--status.status__btn,
+.dropdown__list .dropdown__item.dropdown__item--sublist .dropdown__sublist .category__item .popup__btn--status.category__btn, .dropdown__list .dropdown__item.dropdown__item--sublist .dropdown__sublist .status__item .dropdown__btn.popup__btn--status,
+.dropdown__list .dropdown__item.dropdown__item--sublist .dropdown__sublist .category__item .dropdown__btn.popup__btn--status {
+  grid-template-columns: 1fr auto;
 }
-.polygon__popup .popup__item .popup__btn.popup__btn--delete {
+.dropdown__list .dropdown__item .dropdown__btn.popup__btn--delete, .dropdown__list .dropdown__item.dropdown__item--sublist .dropdown__sublist .status__item .popup__btn--delete.status__btn,
+.dropdown__list .dropdown__item.dropdown__item--sublist .dropdown__sublist .status__item .popup__btn--delete.category__btn,
+.dropdown__list .dropdown__item.dropdown__item--sublist .dropdown__sublist .category__item .popup__btn--delete.status__btn,
+.dropdown__list .dropdown__item.dropdown__item--sublist .dropdown__sublist .category__item .popup__btn--delete.category__btn, .dropdown__list .dropdown__item.dropdown__item--sublist .dropdown__sublist .status__item .dropdown__btn.popup__btn--delete,
+.dropdown__list .dropdown__item.dropdown__item--sublist .dropdown__sublist .category__item .dropdown__btn.popup__btn--delete {
   color: #f24a72;
 }
-.polygon__popup .popup__item .popup__btn.popup__btn--disabled {
+.dropdown__list .dropdown__item .dropdown__btn.popup__btn--disabled, .dropdown__list .dropdown__item.dropdown__item--sublist .dropdown__sublist .status__item .popup__btn--disabled.status__btn,
+.dropdown__list .dropdown__item.dropdown__item--sublist .dropdown__sublist .status__item .popup__btn--disabled.category__btn,
+.dropdown__list .dropdown__item.dropdown__item--sublist .dropdown__sublist .category__item .popup__btn--disabled.status__btn,
+.dropdown__list .dropdown__item.dropdown__item--sublist .dropdown__sublist .category__item .popup__btn--disabled.category__btn, .dropdown__list .dropdown__item.dropdown__item--sublist .dropdown__sublist .status__item .dropdown__btn.popup__btn--disabled,
+.dropdown__list .dropdown__item.dropdown__item--sublist .dropdown__sublist .category__item .dropdown__btn.popup__btn--disabled {
   display: none;
 }
-.polygon__popup .popup__item:not(:last-child) {
-  box-shadow: 0 0.15rem 0 -0.1rem rgba(204, 209, 228, 0.25);
+.dropdown__list .dropdown__item:not(:last-child), .dropdown__list .dropdown__item.dropdown__item--sublist .dropdown__sublist .status__item:not(:last-child),
+.dropdown__list .dropdown__item.dropdown__item--sublist .dropdown__sublist .category__item:not(:last-child), .dropdown__list .dropdown__item.dropdown__item--sublist .dropdown__sublist .dropdown__item:not(:last-child) {
+  box-shadow: 0 0.175rem 0 -0.1rem rgba(204, 209, 228, 0.25);
 }
-
+.dropdown__list .dropdown__item.dropdown__item--sublist, .dropdown__list .dropdown__item.dropdown__item--sublist .dropdown__sublist .dropdown__item--sublist.status__item,
+.dropdown__list .dropdown__item.dropdown__item--sublist .dropdown__sublist .dropdown__item--sublist.category__item, .dropdown__list .dropdown__item.dropdown__item--sublist .dropdown__sublist .dropdown__item.dropdown__item--sublist {
+  position: relative;
+}
+.dropdown__list .dropdown__item.dropdown__item--sublist:focus-within .dropdown__sublist, .dropdown__list .dropdown__item.dropdown__item--sublist .dropdown__sublist .dropdown__item--sublist.status__item:focus-within .dropdown__sublist,
+.dropdown__list .dropdown__item.dropdown__item--sublist .dropdown__sublist .dropdown__item--sublist.category__item:focus-within .dropdown__sublist, .dropdown__list .dropdown__item.dropdown__item--sublist:hover .dropdown__sublist, .dropdown__list .dropdown__item.dropdown__item--sublist .dropdown__sublist .dropdown__item--sublist.status__item:hover .dropdown__sublist,
+.dropdown__list .dropdown__item.dropdown__item--sublist .dropdown__sublist .dropdown__item--sublist.category__item:hover .dropdown__sublist {
+  display: flex;
+}
+.dropdown__list .dropdown__item.dropdown__item--sublist .dropdown__sublist, .dropdown__list .dropdown__item.dropdown__item--sublist .dropdown__sublist .dropdown__item--sublist.status__item .dropdown__sublist,
+.dropdown__list .dropdown__item.dropdown__item--sublist .dropdown__sublist .dropdown__item--sublist.category__item .dropdown__sublist {
+  display: none;
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: unset;
+  width: max-content;
+  transform: translate(95%);
+}
+.dropdown__list .dropdown__item.dropdown__item--sublist .dropdown__sublist::after, .dropdown__list .dropdown__item.dropdown__item--sublist .dropdown__sublist .dropdown__item--sublist.status__item .dropdown__sublist::after,
+.dropdown__list .dropdown__item.dropdown__item--sublist .dropdown__sublist .dropdown__item--sublist.category__item .dropdown__sublist::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1rem;
+  aspect-ratio: 1;
+  transform: translate(-50%, 150%) rotate(45deg);
+  background-color: #fefefe;
+}
 .side__container {
   position: relative;
   display: flex;
@@ -359,6 +447,27 @@ input {
   font-size: 150%;
   transform: rotateZ(180deg);
 }
+.side__container .list__container .side__header .side__tabs {
+  grid-column-start: 1;
+  grid-row: span 2;
+  display: flex;
+  gap: min(3vw, 1rem);
+}
+.side__container .list__container .side__header .side__tabs .side__tab {
+  width: 100%;
+  padding: min(3vw, 0.5rem);
+  background-color: transparent;
+  border: none;
+  border-radius: 5rem;
+  box-shadow: 0 0 0 0.1rem rgba(34, 34, 34, 0.5);
+  transition: width 200ms ease-in-out;
+}
+.side__container .list__container .side__header .side__tabs .side__tab.side__tab--active {
+  width: 200%;
+  font-weight: 500;
+  background-color: rgba(241, 74, 22, 0.2);
+  box-shadow: 0 0 0 0.2rem #f14a16;
+}
 .side__container .list__container .side__header .list__count {
   color: #898aa6;
 }
@@ -379,17 +488,26 @@ input {
   border-radius: 0.5rem;
   cursor: pointer;
   box-shadow: rgba(137, 138, 166, 0.15) 2.4px 2.4px 6.2px;
-  transition: box-shadow 200ms ease-in-out, background-color 200ms ease-in-out;
+  transition: box-shadow 200ms ease-in-out, background-color 200ms ease-in-out, opacity 200ms ease-in-out, gap 200ms ease-in-out;
 }
 .side__container .list__container .notes__list .note__item:hover {
   box-shadow: rgba(137, 138, 166, 0.25) 2.4px 2.4px 6.2px;
 }
 .side__container .list__container .notes__list .note__item.note__item--visible {
-  background-color: rgba(34, 34, 34, 0.035);
+  gap: 4rem;
+  box-shadow: rgba(137, 138, 166, 0.5) 2.4px 2.4px 6.2px;
+}
+.side__container .list__container .notes__list .note__item.note__item--visible .item__img {
+  width: 100%;
+  max-width: 100%;
+}
+.side__container .list__container .notes__list .note__item.note__item--invisible {
+  opacity: 0.45;
 }
 .side__container .list__container .notes__list .note__item .item__header {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  justify-items: flex-end;
   align-items: center;
   gap: 1rem;
   font-size: 95%;
@@ -411,22 +529,23 @@ input {
 .side__container .list__container .notes__list .note__item .item__header .item__user span:hover {
   color: #222222;
 }
+.side__container .list__container .notes__list .note__item .item__header .item__date {
+  grid-column: span 2;
+  color: #898aa6;
+}
 .side__container .list__container .notes__list .note__item .item__img {
   width: min(100%, 7rem);
-  border-radius: 0.5rem;
-}
-.side__container .list__container .notes__list .note__item .item__img.item__img--hidden {
-  display: none;
+  object-fit: cover;
+  border-radius: 0.25rem;
+  transition: width 200ms ease-in-out;
 }
 .side__container .list__container .notes__list .note__item .item__text {
   text-align: justify;
   color: #222222;
 }
 .side__container .list__container .notes__list .note__item footer {
-  display: grid;
-  grid-template-columns: 1.5fr 2fr;
-  align-items: center;
-  gap: 1rem;
+  display: flex;
+  justify-content: flex-end;
 }
 .side__container .list__container .notes__list .note__item footer .item__btn {
   width: 100%;
@@ -437,19 +556,21 @@ input {
   text-transform: capitalize;
   transition: background-color 200ms ease-in-out;
 }
-.side__container .list__container .notes__list .note__item footer .item__btn.item__btn--discard {
-  color: #f24a72;
-  box-shadow: 0 0 0 0.1rem #f24a72;
-}
-.side__container .list__container .notes__list .note__item footer .item__btn.item__btn--discard:hover {
-  background-color: rgba(242, 74, 114, 0.05);
-}
 .side__container .list__container .notes__list .note__item footer .item__btn.item__btn--approve {
-  color: #3e8e7e;
-  box-shadow: 0 0 0 0.1rem #3e8e7e;
+  width: 55%;
+  color: rgba(62, 142, 126, 0.85);
+  box-shadow: 0 0 0 0.1rem rgba(62, 142, 126, 0.85);
 }
 .side__container .list__container .notes__list .note__item footer .item__btn.item__btn--approve:hover {
   background-color: rgba(62, 142, 126, 0.05);
+}
+.side__container .list__container .notes__list .note__item .item__status {
+  display: flex;
+  align-items: center;
+  justify-content: right;
+  gap: 0.5rem;
+  font-weight: 500;
+  color: #3e8e7e;
 }
 .side__container .list__container .notes__list .note__item--comment {
   color: #1f4690;
@@ -737,64 +858,64 @@ input {
 
 @keyframes move-around {
   0% {
-    background-position: 59% 24%;
+    background-position: 9% 41%;
   }
   5% {
-    background-position: 54% 86%;
+    background-position: 38% 10%;
   }
   10% {
-    background-position: 45% 11%;
+    background-position: 39% 64%;
   }
   15% {
-    background-position: 61% 50%;
+    background-position: 53% 93%;
   }
   20% {
-    background-position: 39% 59%;
+    background-position: 28% 42%;
   }
   25% {
-    background-position: 16% 92%;
+    background-position: 55% 79%;
   }
   30% {
-    background-position: 14% 57%;
+    background-position: 36% 40%;
   }
   35% {
-    background-position: 88% 46%;
+    background-position: 60% 14%;
   }
   40% {
-    background-position: 8% 14%;
+    background-position: 31% 51%;
   }
   45% {
-    background-position: 57% 73%;
+    background-position: 40% 54%;
   }
   50% {
-    background-position: 60% 63%;
+    background-position: 69% 52%;
   }
   55% {
-    background-position: 4% 86%;
+    background-position: 12% 33%;
   }
   60% {
-    background-position: 85% 63%;
+    background-position: 85% 71%;
   }
   65% {
-    background-position: 100% 86%;
+    background-position: 65% 43%;
   }
   70% {
-    background-position: 32% 82%;
+    background-position: 27% 39%;
   }
   75% {
-    background-position: 52% 70%;
+    background-position: 31% 20%;
   }
   80% {
-    background-position: 43% 35%;
+    background-position: 40% 77%;
   }
   85% {
-    background-position: 67% 11%;
+    background-position: 50% 54%;
   }
   90% {
-    background-position: 57% 28%;
+    background-position: 75% 95%;
   }
   95% {
-    background-position: 84% 14%;
+    background-position: 90% 81%;
   }
 }
 .login {

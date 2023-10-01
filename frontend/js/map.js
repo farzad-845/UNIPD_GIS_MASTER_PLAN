@@ -16,7 +16,7 @@ const defaultParameters = {
   srsName: "EPSG:4326",
 };
 
-let WFSLayer = null;
+let WFSLayers = [];
 const parameters = L.Util.extend(defaultParameters);
 const prg_parameters = L.Util.extend({
   ...defaultParameters,
@@ -221,15 +221,21 @@ const zonaColors = {
   "B2.3": "#0000FF",
   STRADE: "#000000",
   PARTICELLE: "#979797",
+  residential: "#F05454",
+  agricultural: "#38817A",
+  "public green": "#A3DE83",
+  commercial: "#400082",
+  industrial: "#30475E",
 };
 
 let polygonsData = [];
 
 const displayPolygons = (data, isHSR = false) => {
-  console.log(data);
-  polygonsData = [...data.features];
+  if (WFSLayers[1]) {
+    map.removeLayer(WFSLayers[1]);
+  }
 
-  WFSLayer = L.geoJson(data, {
+  WFSLayers[isHSR ? 1 : 0] = L.geoJson(data, {
     style: function (feature) {
       const type = feature.properties.zona || feature.properties.livello;
       return {
@@ -247,42 +253,12 @@ const displayPolygons = (data, isHSR = false) => {
           case "manager":
           case "admin":
             layer.bindPopup(
-              (layer) => {
-                return `
-                <ul class="polygon__popup">
-                <li class="popup__item">
-                  <button class="popup__btn popup__btn--status ${
-                    feature.properties.status === "approved"
-                      ? "popup__btn--disabled"
-                      : ""
-                  }" onclick="changePolygonStatus('${feature.id}', '${
+              () => {
+                return createPolyPopup(
+                  feature.id,
+                  feature.properties.zona,
                   feature.properties.status
-                }')">
-                    <i class="ti ti-checks"></i
-                    ><span>Mark as 
-                      <span class="polygon__status">${
-                        feature.properties.status === "in_progress"
-                          ? "Planned"
-                          : feature.properties.status === "planned"
-                          ? "Approved"
-                          : ""
-                      } </span>
-                    </span>
-                  </button>
-                </li>
-                <li class="popup__item">
-                  <button class="popup__btn popup__btn--edit" onclick="updatePolygon('${
-                    feature.id
-                  }')">
-                    <i class="ti ti-edit"></i><span>Edit</span>
-                  </button>
-                </li>
-                <li class="popup__item">
-                  <button class="popup__btn popup__btn--delete">
-                    <i class="ti ti-trash"></i><span>Delete</span>
-                  </button>
-                </li>
-              </ul>`;
+                );
               },
               { className: "polygon__popup" }
             );
@@ -306,21 +282,34 @@ const displayPolygons = (data, isHSR = false) => {
 };
 
 const getPolygonsData = () => {
-  $.ajax({
-    jsonpCallback: "getJson",
-    type: "GET",
-    url: OWS_URL,
-    async: false,
-    dataType: "jsonp",
-    jsonp: false,
-    success: (response) => displayPolygons(response),
-    error: function (jqXHR, textStatus, errorThrown) {
-      console.log(jqXHR, textStatus, errorThrown);
-    },
+  return new Promise((resolve, reject) => {
+    $.ajax({
+      jsonpCallback: "getJson",
+      type: "GET",
+      url: OWS_URL,
+      async: false,
+      dataType: "jsonp",
+      jsonp: false,
+      success: (response) => {
+        polygonsData = response.features;
+        displayPolygons(response);
+        resolve();
+      },
+      error: function (jqXHR, textStatus, errorThrown) {
+        console.log(jqXHR, textStatus, errorThrown);
+        reject(errorThrown);
+      },
+    });
   });
 };
 
-getPolygonsData();
+document.addEventListener("DOMContentLoaded", () => {
+  if (userData?.role.name === "user") {
+    getPolygonsData().then(() => getHSRAlignmentData());
+  } else {
+    getPolygonsData();
+  }
+});
 
 const kossher = [
   {
@@ -408,6 +397,7 @@ const getHSRAlignmentData = () => {
           };
         }
 
+        polygonsData = response.features;
         displayPolygons(response, true);
 
         resolve();
@@ -423,7 +413,7 @@ const getHSRAlignmentData = () => {
 const HSRBtn = document.querySelector("#hsr-alignment-btn");
 let isHSRBtnToggled = false;
 
-HSRBtn.addEventListener("click", function () {
+HSRBtn?.addEventListener("click", function () {
   isHSRBtnToggled = !isHSRBtnToggled;
 
   if (isHSRBtnToggled) {
@@ -434,14 +424,13 @@ HSRBtn.addEventListener("click", function () {
       })
       .catch((error) => console.error("Error: ", error));
   } else {
-    map.removeLayer(WFSLayer);
+    map.removeLayer(WFSLayers[1]);
     HSRBtn.classList.remove("hsr__btn--on");
     HSRBtn.innerHTML = '<i class="ti ti-toggle-left"></i>';
   }
 });
 
 function loadLayers(data) {
-  // console.log(data);
   const groupsList = [];
   simTreeData = [];
   data.forEach((r) => {

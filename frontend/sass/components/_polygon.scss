@@ -1,9 +1,9 @@
-.polygon__popup {
+.dropdown__list {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  padding: Min(5vw, 1rem);
+  padding: Min(3vw, 0.75rem) Min(5vw, 1rem);
   z-index: 1000;
   display: flex;
   flex-direction: column;
@@ -12,13 +12,20 @@
   font-family: $font-family;
   border-radius: Min(5vw, 1rem);
   background-color: $light-color;
+  box-shadow: 0 0 1rem 0 rgba($secondary-color-gray-400, 0.75);
 
-  .popup__item {
+  .dropdown__item {
+    &.dropdown__item--active {
+      .dropdown__btn {
+        color: $secondary-color-blue;
+      }
+    }
+
     &:hover {
       background-color: rgba($secondary-color-gray-400, 0.15);
     }
 
-    .popup__btn {
+    .dropdown__btn {
       display: grid;
       grid-template-columns: auto 1fr;
       align-items: center;
@@ -29,9 +36,10 @@
       border: none;
       text-align: left;
       text-wrap: nowrap;
+      text-transform: capitalize;
 
       &.popup__btn--status {
-        color: $secondary-color-green;
+        grid-template-columns: 1fr auto;
       }
 
       &.popup__btn--delete {
@@ -44,7 +52,54 @@
     }
 
     &:not(:last-child) {
-      box-shadow: 0 0.15rem 0 -0.1rem rgba($secondary-color-gray-400, 0.25);
+      box-shadow: 0 0.175rem 0 -0.1rem rgba($secondary-color-gray-400, 0.25);
+    }
+
+    &.dropdown__item--sublist {
+      position: relative;
+
+      &:focus-within,
+      &:hover {
+        .dropdown__sublist {
+          display: flex;
+        }
+      }
+
+      .dropdown__sublist {
+        @extend .dropdown__list;
+        display: none;
+        position: absolute;
+        top: 0;
+        right: 0;
+        left: unset;
+        width: max-content;
+        transform: translate(95%);
+
+        &::after {
+          content: "";
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 1rem;
+          aspect-ratio: 1;
+          transform: translate(-50%, 150%) rotate(45deg);
+          background-color: $light-color;
+        }
+
+        .status__item,
+        .category__item {
+          @extend .dropdown__item;
+
+          .status__btn,
+          .category__btn {
+            @extend .dropdown__btn;
+          }
+
+          &--active {
+            @extend .dropdown__item--active;
+          }
+        }
+      }
     }
   }
 }

@@ -51,8 +51,8 @@
     <header class="header">
       <ul class="header__list">
         <li class="list__item">
-          <button id="hsr-alignment-btn" class="item__btn">
-            <i class="ti ti-toggle-left"></i>
+          <button class="item__btn notes__button--open">
+            <i class="ti ti-message-2"></i>
           </button>
         </li>
     </header>
@@ -129,6 +129,32 @@
       </form>
     </section>
 
+    <section class="side__container notes__container">
+      <div class="list__container list__container--notes list__container--hidden">
+        <header class="side__header">
+          <h3 class="notes__title">Citizen Inputs</h3>
+          <button class="side__button--close">
+            <i class="ti ti-chevron-right"></i>
+          </button>
+          <p class="list__count">
+            Total inputs: <span class="count__number">0</span>
+          </p>
+          <div class="side__tabs">
+            <button
+              class="side__tab side__tab--active"
+              onclick="getUserInputs()"
+            >
+              All
+            </button>
+            <button class="side__tab" onclick="getUserInputs(true)">
+              Users
+            </button>
+          </div>
+        </header>
+        <ul id="notes-list" class="notes__list"></ul>
+      </div>
+    </section>
+
     <div class="alert__container alert__container--hidden">
       <div class="alert">
         <i class="ti ti-alert-triangle alert__icon"></i>
@@ -136,15 +162,67 @@
       </div>
     </div>
 
+    <section class="menu__container">
+      <button id="menu-open-btn" class="menu__btn">
+        <object
+          data="../assets/images/pencil_plus_icon.svg"
+          width="32"
+          height="32"
+          class="btn__icon"
+        ></object>
+      </button>
+
+      <ul class="menu__list menu__list--closed">
+        <li class="menu__item">
+          <button id="add-point-btn" class="item__btn">
+            <object
+              data="../assets/images/plus_icon.svg"
+              width="32"
+              height="32"
+              class="btn__icon"
+            ></object>
+          </button>
+        </li>
+        <li class="menu__item">
+          <button id="clear-points-btn" class="item__btn">
+            <object
+              data="../assets/images/eraser_icon.svg"
+              width="32"
+              height="32"
+              class="btn__icon"
+            ></object>
+          </button>
+        </li>
+        <li class="menu__item">
+          <button id="submit-points-btn" class="item__btn">
+            <object
+              data="../assets/images/check_icon.svg"
+              width="32"
+              height="32"
+              class="btn__icon"
+            ></object>
+          </button>
+        </li>
+
+        <li class="menu__item close__btn">
+          <button id="menu-close-btn" class="item__btn">
+            <i class="ti ti-chevron-right"></i>
+          </button>
+        </li>
+      </ul>
+    </section>
+
     <div id="map" class="map sidebar-map"></div>
 
     <script src="../config.js"></script>
-    <script src="../js/map.js?n=4"></script>
     <script src="../js/alert.js"></script>
     <script src="../js/api.js?n=3"></script>
     <script src="../js/auth.js"></script>
+    <script src="../js/map.js?n=4"></script>
     <script src="../js/polygon.js"></script>
+    <script src="../js/menu.js"></script>
     <script src="../js/noteForm.js"></script>
+    <script src="../js/notesList.js"></script>
     <script src="../js/attachment.js"></script>
   </body>
 </html>

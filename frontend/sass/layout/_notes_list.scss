@@ -41,6 +41,30 @@
         transform: rotateZ(180deg);
       }
 
+      .side__tabs {
+        grid-column-start: 1;
+        grid-row: span 2;
+        display: flex;
+        gap: Min(3vw, 1rem);
+
+        .side__tab {
+          width: 100%;
+          padding: Min(3vw, 0.5rem);
+          background-color: transparent;
+          border: none;
+          border-radius: 5rem;
+          box-shadow: 0 0 0 0.1rem rgba($dark-color, 0.5);
+          transition: width 200ms ease-in-out;
+
+          &.side__tab--active {
+            width: 200%;
+            font-weight: 500;
+            background-color: rgba($primary-color, 0.2);
+            box-shadow: 0 0 0 0.2rem $primary-color;
+          }
+        }
+      }
+
       .list__count {
         color: $secondary-color-gray-500;
       }
@@ -66,19 +90,31 @@
         cursor: pointer;
         box-shadow: rgba($secondary-color-gray-500, 0.15) 2.4px 2.4px 6.2px;
         transition: box-shadow 200ms ease-in-out,
-          background-color 200ms ease-in-out;
+          background-color 200ms ease-in-out, opacity 200ms ease-in-out,
+          gap 200ms ease-in-out;
 
         &:hover {
           box-shadow: rgba($secondary-color-gray-500, 0.25) 2.4px 2.4px 6.2px;
         }
 
         &.note__item--visible {
-          background-color: rgba($dark-color, 0.035);
+          gap: 4rem;
+          box-shadow: rgba($secondary-color-gray-500, 0.5) 2.4px 2.4px 6.2px;
+
+          .item__img {
+            width: 100%;
+            max-width: 100%;
+          }
+        }
+
+        &.note__item--invisible {
+          opacity: 0.45;
         }
 
         .item__header {
-          display: flex;
-          justify-content: space-between;
+          display: grid;
+          grid-template-columns: auto 1fr;
+          justify-items: flex-end;
           align-items: center;
           gap: 1rem;
           font-size: 95%;
@@ -103,15 +139,18 @@
               }
             }
           }
+
+          .item__date {
+            grid-column: span 2;
+            color: $secondary-color-gray-500;
+          }
         }
 
         .item__img {
           width: Min(100%, 7rem);
-          border-radius: 0.5rem;
-
-          &.item__img--hidden {
-            display: none;
-          }
+          object-fit: cover;
+          border-radius: 0.25rem;
+          transition: width 200ms ease-in-out;
         }
 
         .item__text {
@@ -120,10 +159,8 @@
         }
 
         footer {
-          display: grid;
-          grid-template-columns: 1.5fr 2fr;
-          align-items: center;
-          gap: 1rem;
+          display: flex;
+          justify-content: flex-end;
 
           .item__btn {
             width: 100%;
@@ -134,24 +171,34 @@
             text-transform: capitalize;
             transition: background-color 200ms ease-in-out;
 
-            &.item__btn--discard {
-              color: $secondary-color-red;
-              box-shadow: 0 0 0 0.1rem $secondary-color-red;
+            // &.item__btn--discard {
+            //   color: rgba($secondary-color-red, 0.85);
+            //   box-shadow: 0 0 0 0.1rem rgba($secondary-color-red, 0.85);
 
-              &:hover {
-                background-color: rgba($secondary-color-red, 0.05);
-              }
-            }
+            //   &:hover {
+            //     background-color: rgba($secondary-color-red, 0.05);
+            //   }
+            // }
 
             &.item__btn--approve {
-              color: $secondary-color-green;
-              box-shadow: 0 0 0 0.1rem $secondary-color-green;
+              width: 55%;
+              color: rgba($secondary-color-green, 0.85);
+              box-shadow: 0 0 0 0.1rem rgba($secondary-color-green, 0.85);
 
               &:hover {
                 background-color: rgba($secondary-color-green, 0.05);
               }
             }
           }
+        }
+
+        .item__status {
+          display: flex;
+          align-items: center;
+          justify-content: right;
+          gap: 0.5rem;
+          font-weight: 500;
+          color: $secondary-color-green;
         }
       }
 

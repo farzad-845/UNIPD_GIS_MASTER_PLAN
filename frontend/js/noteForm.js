@@ -25,16 +25,62 @@ const enableSubmitBtn = (btn) => btn.classList.remove("btn--disabled");
 const changePolygonInput = (id) => (polygonIdInput.value = id);
 
 const submitNote = async (data) => {
-  try {
-    const response = await axios.post(`${APIpath}/note`, data, {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
+  const transformedMultipolygon = [newPolygon].map((polygon) => {
+    return polygon.map((point) => {
+      return proj4("EPSG:4326", "EPSG:3004", point);
     });
+  });
+
+  try {
+    const response = await axios.post(
+      `${APIpath}/note`,
+      {
+        ...data,
+        prg_id: data.polygon ? data.polygon?.replace("prg_pg.", "") : null,
+        grom: transformedMultipolygon[0],
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
 
     displayAlert("Your input was successfuly submitted!", "success");
     notesFormContainer.classList.add("form__container--hidden");
     console.log(response.data);
+
+    if (uploadedImg) {
+      try {
+        const response2 = await axios.post(
+          `${APIpath}/note/${response.data.data.id}/image`,
+          { image_file: uploadedImg },
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+              Authorization: `Bearer ${accessToken}`,
+            },
+          }
+        );
+
+        uploadedImg = null;
+      } catch (error) {
+        console.error(error);
+
+        if (error.response) {
+          displayAlert(error.response?.data.detail, "error");
+
+          if (error.response.status === 401 || error.response.status === 403) {
+            window.location.href = "login.html";
+          }
+        } else {
+          displayAlert(
+            "There seems to be a problem with your network connection.",
+            "error"
+          );
+        }
+      }
+    }
   } catch (error) {
     console.error(error);
 
@@ -60,9 +106,6 @@ notesForm.addEventListener("submit", (e) => {
 
   const noteData = { ...Object.fromEntries(formData) };
   noteData.prg_id = noteData.polygonIdInput;
-  console.log(polygonsData);
-
-  console.log(noteData);
 
   submitNote(noteData);
 });
@@ -79,41 +122,3 @@ descriptionInput.addEventListener("propertychange", () =>
     ? enableSubmitBtn(noteSubmitBtn)
     : disbaleSubmitBtn(noteSubmitBtn)
 );
-
-const submitInput = () => {};
-
-// const resetForm = () => {
-//   $("#category").val("");
-//   $("#message").val("");
-//   $("#name").val("");
-//   $("#email").val("");
-//   $("#mobile").val("");
-//   $("#declaration")[0].checked = false;
-//   $("#consent")[0].checked = false;
-// };
-
-// const fetchInputs = () => {
-//   let payload = {};
-//   $("#fetchInputs_status").html("Loading Citizens Inputs..");
-//   $.ajax({
-//     url: `${APIpath}listInputs`,
-//     // xhrFields: {
-//     //     withCredentials: true
-//     // },
-//     type: "POST",
-//     data: JSON.stringify(payload),
-//     cache: false,
-//     processData: false, // tell jQuery not to process the data
-//     contentType: false, // tell jQuery not to set contentType
-//     success: function (return_data) {
-//       // console.log(return_data);
-//       let data = JSON.parse(return_data);
-//       mapInputs(data);
-//     },
-//     error: function (jqXHR, exception) {
-//       // console.log('error:',jqXHR.responseText);
-//       let response = JSON.parse(jqXHR.responseText);
-//       $(".submitStatus").html(response.message);
-//     },
-//   });
-// };

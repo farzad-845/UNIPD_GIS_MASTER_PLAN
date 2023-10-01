@@ -1,13 +1,15 @@
 const attachmentInput = document.querySelector("#attachment");
 const attachmentBtn = document.querySelector("#attachment-btn");
 
+let uploadedImg;
+
 attachmentBtn.addEventListener("click", () => attachmentInput.click());
 
-attachmentInput.addEventListener("change", (event) => {
-  const selectedFile = event.target.files[0];
+attachmentInput.addEventListener("change", (e) => {
+  uploadedImg = e.target.files[0];
 
-  if (selectedFile) {
-    console.log("Selected file:", selectedFile);
+  if (uploadedImg) {
+    console.log("Selected File: ", uploadedImg);
   } else {
     console.log("No file selected");
   }

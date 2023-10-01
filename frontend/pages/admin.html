@@ -86,6 +86,17 @@
           <p class="list__count">
             Total inputs: <span class="count__number">0</span>
           </p>
+          <div class="side__tabs">
+            <button
+              class="side__tab side__tab--active"
+              onclick="getUserInputs()"
+            >
+              All
+            </button>
+            <button class="side__tab" onclick="getUserInputs(true)">
+              Users
+            </button>
+          </div>
         </header>
         <ul id="notes-list" class="notes__list"></ul>
       </div>
@@ -358,6 +369,7 @@
     <script src="../js/map.js?n=4"></script>
     <script src="../js/alert.js"></script>
     <script src="../js/polygon.js"></script>
+    <script src="../js/popup.js"></script>
     <script src="../js/noteForm.js"></script>
     <script src="../js/attachment.js"></script>
     <script src="../js/menu.js"></script>
