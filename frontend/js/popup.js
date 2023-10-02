@@ -5,7 +5,13 @@ const categoryList = [
   "commercial",
   "industrial",
 ];
-const statusList = ["in_progress", "planned", "approved"];
+const statusList = [
+  "in_progress",
+  "planned",
+  "approved",
+  "permitted",
+  "rejected",
+];
 
 const createAdminPolyPopup = (id, activeCategory, activeStatus) => `
     <ul class="dropdown__list polygon__popup">

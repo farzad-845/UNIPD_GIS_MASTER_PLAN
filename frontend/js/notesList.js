@@ -3,10 +3,15 @@ const notesListContainer = document.querySelector(".list__container--notes");
 const notesCloseBtn = notesListContainer.querySelector(".side__button--close");
 const notesList = notesListContainer.querySelector("#notes-list");
 const notesCount = notesListContainer.querySelector(".count__number");
+const yearDropdownContainer =
+  notesListContainer.querySelector(".year__drpodown");
+const yearDropdown = notesListContainer.querySelector(".form__dropdown");
 
 const sideTabs = notesListContainer.querySelectorAll(".side__tab");
 
+let isSelectedZoneToggled = false;
 let selectedPolygonForNotes = null;
+let selectedFilterYear = null;
 
 const convertDateToString = (date) => {
   const options = {
@@ -33,6 +38,7 @@ notesOpenBtn.addEventListener("click", () => {
     notesListContainer.classList.remove("list__container--hidden");
     [...sideTabs].map((t) => t.classList.remove("side__tab--active"));
     sideTabs[0].classList.add("side__tab--active");
+    isSelectedZoneToggled = false;
   } else {
     notesListContainer.classList.add("list__container--hidden");
   }
@@ -42,65 +48,7 @@ notesCloseBtn.addEventListener("click", () => {
   notesListContainer.classList.add("list__container--hidden");
 });
 
-// const citizenInputs = [
-//   {
-//     user: "John",
-//     type: "comment",
-//     id: "1694095320656",
-//     content: `Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ullam
-//         dolorem explicabo cum non quia incidunt quae delectus praesentium
-//         cupiditate dicta!`,
-//   },
-//   {
-//     user: "Sarah",
-//     type: "comment",
-//     id: "1694095329368",
-//     content: `Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ullam
-//         dolorem explicabo cum non quia incidunt quae delectus praesentium
-//         cupiditate dicta!`,
-//     attachment: "../assets/images/attachment.jpg",
-//   },
-//   {
-//     user: "Mike",
-//     type: "report",
-//     id: "1694095339680",
-//     content: `Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ullam
-//         dolorem explicabo cum non quia incidunt quae delectus praesentium
-//         cupiditate dicta!`,
-//   },
-//   {
-//     user: "Marco",
-//     type: "tip",
-//     id: "1694095345360",
-//     content: `Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ullam
-//         dolorem explicabo cum non quia incidunt quae delectus praesentium
-//         cupiditate dicta!`,
-//   },
-//   {
-//     user: "Maria",
-//     type: "comment",
-//     id: "1694095354385",
-//     content: `Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ullam
-//         dolorem explicabo cum non quia incidunt quae delectus praesentium
-//         cupiditate dicta!`,
-//   },
-//   {
-//     user: "felani",
-//     type: "tip",
-//     id: "1694095373345",
-//     content: `Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ullam
-//         dolorem explicabo cum non quia incidunt quae delectus praesentium
-//         cupiditate dicta!`,
-//   },
-//   {
-//     user: "felani",
-//     type: "report",
-//     id: "1694095383033",
-//     content: `Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ullam
-//         dolorem explicabo cum non quia incidunt quae delectus praesentium
-//         cupiditate dicta!`,
-//   },
-// ];
+let notes = [];
 
 const getUserInputs = async (isPRG = false) => {
   try {
@@ -115,10 +63,13 @@ const getUserInputs = async (isPRG = false) => {
 
     console.log(response);
 
-    const notes = isPRG ? response.data.data.items : response.data;
+    notes = isPRG ? response.data.data.items : response.data;
 
-    displayInputs(notes);
-    notesCount.innerHTML = `${notes.length}`;
+    if (selectedFilterYear) {
+      filterByDate(selectedFilterYear);
+    } else {
+      displayInputs(notes);
+    }
   } catch (error) {
     console.error(error);
     console.log(error.response.status);
@@ -209,7 +160,7 @@ const createInputItem = (itemInfo) => {
       });
       newItem.classList.add("note__item--visible");
       if (itemInfo.geom) {
-        displayPolygon(convertMultipolygonToCoordinates(itemInfo.wkt))
+        displayPolygon(convertMultipolygonToCoordinates(itemInfo.wkt));
       } else {
         displaySpecificPolygon(prg_id);
       }
@@ -224,7 +175,7 @@ const createInputItem = (itemInfo) => {
 
   const approveBtn = newItem.querySelector(".item__btn--approve");
 
-  let note_id = id || itemInfo.note_id
+  let note_id = id || itemInfo.note_id;
   approveBtn?.addEventListener("click", () => approveNote(note_id));
 
   notesList.append(newItem);
@@ -264,14 +215,20 @@ const approveNote = async (id) => {
 };
 
 const displayInputs = (citizenInputs) => {
+  console.log("ccc", citizenInputs);
   notesList.innerHTML = "";
   citizenInputs.map((item) => createInputItem(item));
+
+  notesCount.innerHTML = citizenInputs.length;
 };
 
-[...sideTabs].map((tab) =>
+[...sideTabs].map((tab, index) =>
   tab.addEventListener("click", () => {
     [...sideTabs].map((t) => t.classList.remove("side__tab--active"));
     tab.classList.add("side__tab--active");
+
+    isSelectedZoneToggled = index === 2;
+    selectedPolygonForNotes = index !== 2 && null;
   })
 );
 
@@ -286,9 +243,6 @@ const changeNotesTab = async (tab) => {
     case "polygon":
       [...sideTabs].map((t) => t.classList.remove("side__tab--active"));
       sideTabs[2].classList.add("side__tab--active");
-      notesList.innerHTML = `<span class="list--empty"
-      >Nothing to display at the moment.<br />Please choose a Zone to view its notes.</span
-    >`;
 
       if (selectedPolygonForNotes) {
         try {
@@ -303,9 +257,25 @@ const changeNotesTab = async (tab) => {
             }
           );
 
-          if (response.data.data.items.length) {
-            displayInputs(response.data.data.items);
-            displaySpecificPolygon(response.data.data.items[0]?.prg_id);
+          notes = [...response.data.data.items];
+
+          if (notes.length) {
+            if (selectedFilterYear) {
+              const filteredNotes = notes.filter(
+                (note) =>
+                  selectedFilterYear == new Date(note.created_at).getFullYear()
+              );
+
+              filteredNotes.length
+                ? displayInputs(filteredNotes)
+                : (notesList.innerHTML = `<span class="list--empty">
+                There have been no submissions for the year  ${selectedFilterYear}.
+                </span>`);
+            } else {
+              displayInputs(notes);
+            }
+
+            displaySpecificPolygon(notes[0]?.prg_id);
 
             const currentNotes = notesList.innerHTML;
 
@@ -348,11 +318,67 @@ const changeNotesTab = async (tab) => {
             );
           }
         }
+      } else {
+        notes = [];
+        displayInputs(notes);
+        notesList.innerHTML = `<span class="list--empty"
+        >Nothing to display at the moment.<br />Please choose a Zone to view its notes.</span
+      >`;
       }
 
       break;
 
     default:
       break;
+  }
+};
+
+document.addEventListener("DOMContentLoaded", () => {
+  const startYear = 1950;
+  const endYear = new Date().getFullYear();
+
+  const yearsArray = Array.from(
+    { length: endYear - startYear + 1 },
+    (_, index) => startYear + index
+  ).reverse();
+
+  yearsArray.map((year) => {
+    const yearOption = document.createElement("option");
+    yearOption.value = year;
+    yearOption.innerHTML = year;
+
+    yearDropdown.appendChild(yearOption);
+  });
+});
+
+yearDropdown.addEventListener("change", () => {
+  filterByDate(yearDropdown.value);
+});
+
+const filterByDate = (year) => {
+  selectedFilterYear = year;
+
+  let filteredNotes;
+
+  if (isSelectedZoneToggled && !selectedPolygonForNotes) return;
+
+  if (year) {
+    if (selectedPolygonForNotes) {
+      changeNotesTab("polygon");
+      return;
+    }
+    filteredNotes = notes.filter(
+      (note) => year == new Date(note.created_at).getFullYear()
+    );
+
+    if (filteredNotes.length) {
+      displayInputs(filteredNotes);
+    } else {
+      notesList.innerHTML = `<span class="list--empty">
+      There have been no submissions for the year  ${year}.
+      </span>`;
+    }
+
+    notesCount.innerHTML = filteredNotes.length;
   }
 };

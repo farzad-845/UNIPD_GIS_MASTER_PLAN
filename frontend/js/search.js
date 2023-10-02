@@ -32,6 +32,8 @@ const findByNumero = (numero) => {
     style: { color: "#f14a16" },
   }).addTo(group);
 
+  console.log(foundArea);
+
   if (foundArea) {
     const polygonBounds = polygonsLayer.getBounds();
 

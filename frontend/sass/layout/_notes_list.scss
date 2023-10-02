@@ -70,6 +70,22 @@
       .list__count {
         color: $secondary-color-gray-500;
       }
+
+      .year__drpodown {
+        grid-column: span 2;
+        width: max-content;
+        margin: 0.5rem 0;
+        text-wrap: nowrap;
+
+        .dropdown__fieldset {
+          flex-direction: row;
+          align-items: center;
+
+          .form__dropdown {
+            padding: 0.5rem;
+          }
+        }
+      }
     }
 
     .notes__list,
