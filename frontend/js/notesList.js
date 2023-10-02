@@ -208,7 +208,11 @@ const createInputItem = (itemInfo) => {
         item !== newItem && item.classList.add("note__item--invisible");
       });
       newItem.classList.add("note__item--visible");
-      displaySpecificPolygon(prg_id);
+      if (itemInfo.geom) {
+        displayPolygon(convertMultipolygonToCoordinates(itemInfo.wkt))
+      } else {
+        displaySpecificPolygon(prg_id);
+      }
     }
   });
 

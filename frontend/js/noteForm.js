@@ -25,18 +25,12 @@ const disbaleSubmitBtn = (btn) => btn.classList.add("btn--disabled");
 const enableSubmitBtn = (btn) => btn.classList.remove("btn--disabled");
 
 const submitNote = async (data) => {
-  const transformedMultipolygon = [newPolygon].map((polygon) => {
-    return polygon.map((point) => {
-      return proj4("EPSG:4326", "EPSG:3004", point);
-    });
-  });
-
   try {
     let body = {
         ...data,
     }
-    if (transformedMultipolygon[0].length > 0) {
-      body.geom = convertPointsToMultipolygon(transformedMultipolygon[0]);
+    if (newPolygon) {
+      body.geom = convertPointsToMultipolygon(newPolygon);
     } else {
       body.prg_id = data.polygon ? data.polygon?.replace("prg_pg.", "") : null
     }
