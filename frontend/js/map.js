@@ -268,7 +268,10 @@ const displayPolygons = (data, isHSR = false) => {
           case "user":
             layer.bindPopup(
               () => {
-                return createUserPolyPopup(feature.id);
+                return createUserPolyPopup(
+                    feature.id,
+                    feature.properties.zona,
+                );
               },
               { className: "polygon__popup" }
             );

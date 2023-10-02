@@ -135,30 +135,12 @@ const displayPolygon = (points) => {
   }).addTo(group);
 };
 
-const displayMultiPolygon = (points) => {
-  if (polygonsLayer != null) map.removeLayer(polygonsLayer);
-
-  const polygonData = {
-    type: "Feature",
-    geometry: {
-      type: "MultiPolygon",
-      coordinates: [points],
-    },
-  };
-
-  polygonsLayer = L.geoJSON(polygonData, {
-    style: { color: "#f14a16" },
-  }).addTo(group);
-};
-
-
 function convertMultipolygonToCoordinates(multipolygonString) {
   let cleanedString = multipolygonString.replace(/^MULTIPOLYGON\(\(\(/, '').replace(/\)\)\)$/, '');
   let polygonStrings = cleanedString.split(',');
   let coordinates = [];
   for (let i = 0; i < polygonStrings.length; i++) {
     let polygonString = polygonStrings[i].trim();
-    let polygonCoordinates = [];
     let coordinatePairs = polygonString.split(',');
     for (let j = 0; j < coordinatePairs.length; j++) {
       let coordinatePair = coordinatePairs[j].trim().split(' ');
@@ -166,7 +148,6 @@ function convertMultipolygonToCoordinates(multipolygonString) {
       let longitude = parseFloat(coordinatePair[1]);
       coordinates.push([latitude, longitude]);
     }
-    // coordinates.push(polygonCoordinates);
   }
   return coordinates
 }

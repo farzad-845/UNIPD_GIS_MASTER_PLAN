@@ -88,20 +88,25 @@ const createAdminPolyPopup = (id, activeCategory, activeStatus) => `
       </li>
     </ul>`;
 
-const createUserPolyPopup = (id) => {
+const createUserPolyPopup = (id, zona) => {
   selectedPolygonID = id;
 
   return `
     <ul class="dropdown__list polygon__popup">
       <li class="dropdown__item popup__item">
+        <button class="dropdown__btn popup__btn"">
+            <i class="ti ti-home"></i><span>'${zona}'</span>
+        </button>
+      </li>
+      <li class="dropdown__item popup__item">
         <button class="dropdown__btn popup__btn" onclick="displayNoteForm()">
             <i class="ti ti-plus"></i><span>Add Note</span>
         </button>
-        </li>
-        <li class="dropdown__item popup__item">
+      </li>
+      <li class="dropdown__item popup__item">
             <button class="dropdown__btn popup__btn" onclick="getPolyNotes('${id}')">
                 <i class="ti ti-notes"></i><span>Show Notes</span>
             </button>
-        </li>
+      </li>
     </ul>`;
 };
