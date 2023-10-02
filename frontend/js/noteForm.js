@@ -10,19 +10,19 @@ let selectedPolygonID;
 const displayNoteForm = () => {
   notesForm.reset();
   notesFormContainer.classList.remove("form__container--hidden");
+  polygonIdInput.value = selectedPolygonID;
 };
 
 [...noteFormCanceleBtns].map((btn) =>
-  btn.addEventListener("click", () =>
-    notesFormContainer.classList.add("form__container--hidden")
-  )
+  btn.addEventListener("click", () => {
+    selectedPolygonID = null;
+    notesFormContainer.classList.add("form__container--hidden");
+  })
 );
 
 const disbaleSubmitBtn = (btn) => btn.classList.add("btn--disabled");
 
 const enableSubmitBtn = (btn) => btn.classList.remove("btn--disabled");
-
-const changePolygonInput = (id) => (polygonIdInput.value = id);
 
 const submitNote = async (data) => {
   const transformedMultipolygon = [newPolygon].map((polygon) => {

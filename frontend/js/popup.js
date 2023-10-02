@@ -7,7 +7,7 @@ const categoryList = [
 ];
 const statusList = ["in_progress", "planned", "approved"];
 
-const createPolyPopup = (id, activeCategory, activeStatus) => `
+const createAdminPolyPopup = (id, activeCategory, activeStatus) => `
     <ul class="dropdown__list polygon__popup">
       <li
         class="dropdown__item dropdown__item--sublist popup__item popup__item--category"
@@ -42,7 +42,7 @@ const createPolyPopup = (id, activeCategory, activeStatus) => `
         class="dropdown__item dropdown__item--sublist popup__item popup__item--status"
       >
         <button
-          class="dropdown__btn dropdown__btn popup__btn popup__btn--status"
+          class="dropdown__btn popup__btn popup__btn--status"
           onclick=""
         >
           <span>Status </span>
@@ -72,6 +72,11 @@ const createPolyPopup = (id, activeCategory, activeStatus) => `
         </ul>
       </li>
       <li class="dropdown__item popup__item">
+        <button class="dropdown__btn popup__btn popup__btn--edit" onclick="getPolyNotes('${id}')">
+            <i class="ti ti-notes"></i><span>Show Notes</span>
+        </button>
+        </li>
+      <li class="dropdown__item popup__item">
         <button class="dropdown__btn popup__btn popup__btn--edit" onclick="updatePolygon('${id}')">
           <i class="ti ti-edit"></i><span>Edit</span>
         </button>
@@ -82,3 +87,21 @@ const createPolyPopup = (id, activeCategory, activeStatus) => `
         </button>
       </li>
     </ul>`;
+
+const createUserPolyPopup = (id) => {
+  selectedPolygonID = id;
+
+  return `
+    <ul class="dropdown__list polygon__popup">
+      <li class="dropdown__item popup__item">
+        <button class="dropdown__btn popup__btn" onclick="displayNoteForm()">
+            <i class="ti ti-plus"></i><span>Add Note</span>
+        </button>
+        </li>
+        <li class="dropdown__item popup__item">
+            <button class="dropdown__btn popup__btn" onclick="getPolyNotes('${id}')">
+                <i class="ti ti-notes"></i><span>Show Notes</span>
+            </button>
+        </li>
+    </ul>`;
+};

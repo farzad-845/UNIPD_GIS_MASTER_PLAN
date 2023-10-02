@@ -49,15 +49,17 @@
 
         .side__tab {
           width: 100%;
-          padding: Min(3vw, 0.5rem);
+          padding: Min(3vw, 0.5rem) Min(3vw, 0.75rem);
           background-color: transparent;
           border: none;
           border-radius: 5rem;
           box-shadow: 0 0 0 0.1rem rgba($dark-color, 0.5);
           transition: width 200ms ease-in-out;
+          text-wrap: nowrap;
+          font-size: 90%;
 
           &.side__tab--active {
-            width: 200%;
+            width: 300%;
             font-weight: 500;
             background-color: rgba($primary-color, 0.2);
             box-shadow: 0 0 0 0.2rem $primary-color;
@@ -70,12 +72,55 @@
       }
     }
 
-    .notes__list {
+    .notes__list,
+    .search__list {
+      height: 100%;
       display: flex;
       flex-direction: column;
       gap: 1.5rem;
       overflow: auto;
       padding-right: Min(5vw, 1rem);
+
+      .list--empty {
+        display: grid;
+        place-items: center;
+        height: 100%;
+        color: $secondary-color-gray-500;
+        text-align: center;
+      }
+
+      .list__header {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+        color: $secondary-color-gray-500;
+        margin: 1rem 0;
+
+        p {
+          display: flex;
+          flex-direction: column;
+
+          span {
+            font-weight: 500;
+          }
+        }
+
+        .notes__btn--cancel {
+          width: max-content;
+          display: grid;
+          grid-template-columns: auto 1fr;
+          gap: Min(3vw, 1rem);
+          align-items: center;
+          padding: 0.5rem 1.5rem;
+          background-color: transparent;
+          color: $primary-color;
+          border: none;
+          border-radius: 0.5rem;
+          box-shadow: 0 0 0 0.1rem $primary-color;
+          opacity: 0.75;
+        }
+      }
 
       .note__item {
         $type: "comment";

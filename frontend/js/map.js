@@ -77,7 +77,7 @@ const map = new L.Map("map", {
   // minZoom: MINZOOM,
   // maxBounds: BOUNDS,
   // maxBoundsViscosity: MAXBOUNDSVISCOSITY
-});
+}).setView({ lat: 43.8441, lng: 13.0194 }, 16);
 
 // const sidebar = L.control.sidebar("sidebar").addTo(map);
 
@@ -228,6 +228,7 @@ const zonaColors = {
   industrial: "#30475E",
 };
 
+let particelleData = [];
 let polygonsData = [];
 
 const displayPolygons = (data, isHSR = false) => {
@@ -254,7 +255,7 @@ const displayPolygons = (data, isHSR = false) => {
           case "admin":
             layer.bindPopup(
               () => {
-                return createPolyPopup(
+                return createAdminPolyPopup(
                   feature.id,
                   feature.properties.zona,
                   feature.properties.status
@@ -262,14 +263,15 @@ const displayPolygons = (data, isHSR = false) => {
               },
               { className: "polygon__popup" }
             );
-
             break;
 
           case "user":
-            layer.on("click", () => {
-              displayNoteForm();
-              changePolygonInput(feature.id);
-            });
+            layer.bindPopup(
+              () => {
+                return createUserPolyPopup(feature.id);
+              },
+              { className: "polygon__popup" }
+            );
             break;
 
           default:
@@ -278,7 +280,9 @@ const displayPolygons = (data, isHSR = false) => {
       }
     },
   }).addTo(group);
-  map.fitBounds(group.getBounds());
+  // map.fitBounds(group.getBounds());
+
+  map.setView({ lat: 43.8441, lng: 13.0194 }, 16);
 };
 
 const getPolygonsData = () => {
@@ -291,7 +295,7 @@ const getPolygonsData = () => {
       dataType: "jsonp",
       jsonp: false,
       success: (response) => {
-        polygonsData = response.features;
+        particelleData = response.features;
         displayPolygons(response);
         resolve();
       },
@@ -417,6 +421,8 @@ HSRBtn?.addEventListener("click", function () {
   isHSRBtnToggled = !isHSRBtnToggled;
 
   if (isHSRBtnToggled) {
+    if (polygonsLayer) map.removeLayer(polygonsLayer);
+
     getHSRAlignmentData()
       .then(() => {
         HSRBtn.classList.add("hsr__btn--on");

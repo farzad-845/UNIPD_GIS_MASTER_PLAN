@@ -46,16 +46,63 @@
     <script src="../lib/tabulator.min.js" type="text/javascript"></script>
     <script src="../lib/leaflet-hash.min.js"></script>
     <script src="../lib/simTree.js"></script>
+
+    <script src="https://unpkg.com/leaflet-easyprint/dist/bundle.js"></script>
+
   </head>
   <body>
+    <div id="map" class="map"></div>
+
     <header class="header">
       <ul class="header__list">
         <li class="list__item">
           <button class="item__btn notes__button--open">
             <i class="ti ti-message-2"></i>
           </button>
+          <div class="item__tooltip">Show User Inputs</div>
+        </li>
+        <li class="list__item search__button--open">
+          <button id="search-btn" class="item__btn">
+            <i class="ti ti-search"></i>
+          </button>
+          <div class="item__tooltip">Search</div>
+        </li>
+        <li class="list__item">
+          <button id="print-btn" class="item__btn CurrentSize">
+            <i class="ti ti-printer"></i>
+          </button>
+          <div class="item__tooltip">Print</div>
         </li>
     </header>
+
+    <section class="side__container search__container">
+      <div
+        class="list__container list__container--search list__container--hidden"
+      >
+        <header class="side__header">
+          <h3 class="side__title">Search</h3>
+          <button class="side__button--close">
+            <i class="ti ti-chevron-right"></i>
+          </button>
+        </header>
+
+        <fieldset class="form__fieldset text__fieldset">
+          <input
+            type="number"
+            name="first_name"
+            id="firstName"
+            class="form__input search__input"
+            placeholder="Enter Polygon Numero"
+          />
+        </fieldset>
+
+        <ul id="search-result" class="search__list">
+          <span class="list--empty">
+            Type the area numero to start searching
+          </span>
+        </ul>
+      </div>
+    </section>
 
     <section
       class="form__container form__container--note form__container--hidden"
@@ -103,15 +150,22 @@
           <label for="attachment" class="form__label"
             >attachment <span class="form__optional">(optional)</span></label
           >
+          <button type="button" id="attachment-btn" class="btn file__btn">
+            Upload
+          </button>
           <input
             id="attachment"
             type="file"
             name="attachment"
             class="file__input"
           />
-          <button type="button" id="attachment-btn" class="btn file__btn">
-            Upload
-          </button>
+
+          <div class="file__display file__display--hidden">
+            <img src="" alt="uploaded image" class="display__img">
+            <button type="button" class="file__cancel">
+              <i class="ti ti-x"></i>
+            </button>
+          </div>
         </fieldset>
 
         <div class="form__btns">
@@ -149,9 +203,14 @@
             <button class="side__tab" onclick="getUserInputs(true)">
               Users
             </button>
+            <button class="side__tab" onclick="changeNotesTab('polygon')">
+              Selected Zone
+            </button>
           </div>
         </header>
-        <ul id="notes-list" class="notes__list"></ul>
+        <ul id="notes-list" class="notes__list">
+          
+        </ul>
       </div>
     </section>
 
@@ -212,17 +271,19 @@
       </ul>
     </section>
 
-    <div id="map" class="map sidebar-map"></div>
 
     <script src="../config.js"></script>
     <script src="../js/alert.js"></script>
     <script src="../js/api.js?n=3"></script>
     <script src="../js/auth.js"></script>
     <script src="../js/map.js?n=4"></script>
+    <script src="../js/popup.js"></script>
     <script src="../js/polygon.js"></script>
     <script src="../js/menu.js"></script>
     <script src="../js/noteForm.js"></script>
     <script src="../js/notesList.js"></script>
     <script src="../js/attachment.js"></script>
+    <script src="../js/search.js"></script>
+    <script src="../js/print.js"></script>
   </body>
 </html>

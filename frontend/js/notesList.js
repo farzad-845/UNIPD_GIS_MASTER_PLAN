@@ -6,6 +6,8 @@ const notesCount = notesListContainer.querySelector(".count__number");
 
 const sideTabs = notesListContainer.querySelectorAll(".side__tab");
 
+let selectedPolygonForNotes = null;
+
 const convertDateToString = (date) => {
   const options = {
     year: "numeric",
@@ -25,8 +27,15 @@ notesOpenBtn.addEventListener("click", () => {
       item !== notesListContainer &&
       item.classList.add("list__container--hidden")
   );
-  notesListContainer.classList.toggle("list__container--hidden");
-  getUserInputs();
+
+  if (notesListContainer.classList.contains("list__container--hidden")) {
+    getUserInputs();
+    notesListContainer.classList.remove("list__container--hidden");
+    [...sideTabs].map((t) => t.classList.remove("side__tab--active"));
+    sideTabs[0].classList.add("side__tab--active");
+  } else {
+    notesListContainer.classList.add("list__container--hidden");
+  }
 });
 
 notesCloseBtn.addEventListener("click", () => {
@@ -96,7 +105,7 @@ notesCloseBtn.addEventListener("click", () => {
 const getUserInputs = async (isPRG = false) => {
   try {
     const response = await axios.get(
-      `${APIpath}/note/${isPRG ? "prg" : ""}?page=1&size=50`,
+      `${APIpath}/note/${isPRG ? "prg" : ""}?page=1&size=100`,
       {
         headers: {
           Authorization: `Bearer ${accessToken}`,
@@ -260,3 +269,85 @@ const displayInputs = (citizenInputs) => {
     tab.classList.add("side__tab--active");
   })
 );
+
+const getPolyNotes = async (id) => {
+  selectedPolygonForNotes = id.replace("prg_pg.", "");
+  notesListContainer.classList.remove("list__container--hidden");
+  changeNotesTab("polygon");
+};
+
+const changeNotesTab = async (tab) => {
+  switch (tab) {
+    case "polygon":
+      [...sideTabs].map((t) => t.classList.remove("side__tab--active"));
+      sideTabs[2].classList.add("side__tab--active");
+      notesList.innerHTML = `<span class="list--empty"
+      >Nothing to display at the moment.<br />Please choose a Zone to view its notes.</span
+    >`;
+
+      if (selectedPolygonForNotes) {
+        try {
+          const response = await axios.get(
+            `http://64.226.84.10/api/v1/note/zone/${selectedPolygonForNotes}`,
+            {
+              headers: {
+                Accept: "application/json",
+                Authorization: `Bearer ${accessToken}`,
+                "Content-Type": "application/json",
+              },
+            }
+          );
+
+          if (response.data.data.items.length) {
+            displayInputs(response.data.data.items);
+            displaySpecificPolygon(response.data.data.items[0]?.prg_id);
+
+            const currentNotes = notesList.innerHTML;
+
+            notesList.innerHTML =
+              `<header class="list__header"><p>Submitted notes for <span>Zone "${selectedPolygonForNotes}"</span></p>
+              <button id="polygon-notes-cancel" class="notes__btn--cancel">
+                <i class="ti ti-x"></i>
+                <span>Cancel</span>
+              </button>
+              </header>` + currentNotes;
+          } else {
+            notesList.innerHTML = `<span class="list--empty">
+              No notes have been submitted for this zone yet.<br />Feel free to add your own!
+            </span>`;
+          }
+
+          notesListContainer
+            .querySelector("#polygon-notes-cancel")
+            ?.addEventListener("click", () => {
+              selectedPolygonForNotes = null;
+              changeNotesTab("polygon");
+              displayPolygons(polygonsData, true);
+            });
+        } catch (error) {
+          console.error("Error:", error);
+
+          if (error.response) {
+            displayAlert(error.response?.data.detail, "error");
+
+            if (
+              error.response.status === 401 ||
+              error.response.status === 403
+            ) {
+              window.location.href = "login.html";
+            }
+          } else {
+            displayAlert(
+              "There seems to be a problem with your network connection.",
+              "error"
+            );
+          }
+        }
+      }
+
+      break;
+
+    default:
+      break;
+  }
+};

@@ -38,7 +38,8 @@
       text-wrap: nowrap;
       text-transform: capitalize;
 
-      &.popup__btn--status {
+      &.popup__btn--status,
+      &.popup__btn--category {
         grid-template-columns: 1fr auto;
       }
 
