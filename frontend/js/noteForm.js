@@ -32,18 +32,23 @@ const submitNote = async (data) => {
   });
 
   try {
-    const response = await axios.post(
-      `${APIpath}/note`,
-      {
+    let body = {
         ...data,
-        prg_id: data.polygon ? data.polygon?.replace("prg_pg.", "") : null,
-        grom: transformedMultipolygon[0],
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      }
+    }
+    if (transformedMultipolygon[0].length > 0) {
+      body.geom = convertPointsToMultipolygon(transformedMultipolygon[0]);
+    } else {
+      body.prg_id = data.polygon ? data.polygon?.replace("prg_pg.", "") : null
+    }
+
+    const response = await axios.post(
+        `${APIpath}/note`,
+        body,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
     );
 
     displayAlert("Your input was successfuly submitted!", "success");
@@ -53,14 +58,14 @@ const submitNote = async (data) => {
     if (uploadedImg) {
       try {
         const response2 = await axios.post(
-          `${APIpath}/note/${response.data.data.id}/image`,
-          { image_file: uploadedImg },
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-              Authorization: `Bearer ${accessToken}`,
-            },
-          }
+            `${APIpath}/note/${response.data.data.id}/image`,
+            {image_file: uploadedImg},
+            {
+              headers: {
+                "Content-Type": "multipart/form-data",
+                Authorization: `Bearer ${accessToken}`,
+              },
+            }
         );
 
         uploadedImg = null;
@@ -75,8 +80,8 @@ const submitNote = async (data) => {
           }
         } else {
           displayAlert(
-            "There seems to be a problem with your network connection.",
-            "error"
+              "There seems to be a problem with your network connection.",
+              "error"
           );
         }
       }
@@ -92,8 +97,8 @@ const submitNote = async (data) => {
       }
     } else {
       displayAlert(
-        "There seems to be a problem with your network connection.",
-        "error"
+          "There seems to be a problem with your network connection.",
+          "error"
       );
     }
   }

@@ -220,7 +220,8 @@ const createInputItem = (itemInfo) => {
 
   const approveBtn = newItem.querySelector(".item__btn--approve");
 
-  approveBtn?.addEventListener("click", () => approveNote(id));
+  let note_id = id || itemInfo.note_id
+  approveBtn?.addEventListener("click", () => approveNote(note_id));
 
   notesList.append(newItem);
 };
