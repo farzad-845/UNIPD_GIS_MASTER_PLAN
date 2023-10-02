@@ -18,9 +18,9 @@ class CRUDNote(CRUDBase[Note, INoteCreate, INoteUpdate]):
     ):
         db_session = db_session or self.db.session
         if not is_admin:
-            raw_query = 'SELECT "Note".id AS note_id, "Note".*, "Media".*, "ImageMedia".*, ST_AsText("Note".geom) AS wkt FROM "Note" LEFT JOIN "ImageMedia" ON "Note".image_id = "ImageMedia".id LEFT JOIN "Media" ON "ImageMedia".media_id = "Media".id WHERE "Note".geom IS NOT NULL AND is_public IS TRUE;'
+            raw_query = 'SELECT "Note".id AS note_id, "Media".*, "ImageMedia".*, "Note".*, ST_AsText("Note".geom) AS wkt FROM "Note" LEFT JOIN "ImageMedia" ON "Note".image_id = "ImageMedia".id LEFT JOIN "Media" ON "ImageMedia".media_id = "Media".id WHERE "Note".geom IS NOT NULL AND is_public IS TRUE;'
         else:
-            raw_query = 'SELECT "Note".id AS note_id, "Note".*, "Media".*, "ImageMedia".*, ST_AsText("Note".geom) AS wkt FROM "Note" LEFT JOIN "ImageMedia" ON "Note".image_id = "ImageMedia".id LEFT JOIN "Media" ON "ImageMedia".media_id = "Media".id WHERE "Note".geom IS NOT NULL;'
+            raw_query = 'SELECT "Note".id AS note_id, "Media".*, "ImageMedia".*, "Note".*, ST_AsText("Note".geom) AS wkt FROM "Note" LEFT JOIN "ImageMedia" ON "Note".image_id = "ImageMedia".id LEFT JOIN "Media" ON "ImageMedia".media_id = "Media".id WHERE "Note".geom IS NOT NULL;'
         response = await db_session.execute(raw_query)
         return [
             {**dict(row), 'path': minio.presigned_get_object(
