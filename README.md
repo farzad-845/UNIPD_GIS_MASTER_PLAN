@@ -11,7 +11,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/farzad-845/UNIPD_GIS_MASTER_PLAN">
-    <img src="static/logo.png" alt="Logo" width="100" height="121">
+    <img src="report/res/web/both-map-data.png" alt="Logo">
   </a>
 </div>
 
