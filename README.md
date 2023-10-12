@@ -69,8 +69,23 @@ App
 ├── pyproject.toml
 ├── poetry.lock
 ```
+
+### Components Schema
+<div align="center">
+  <a href="https://github.com/farzad-845/UNIPD_GIS_MASTER_PLAN">
+    <img src="report/res/components_schema.png" alt="Logo" width="408" height="370">
+  </a>
+</div>
+
 ### Models
 After adding models to the `models` folder you should create crud and schema for them in the `crud` and `schemas` folder respectively.
+
+### Database Schema
+<div align="center">
+  <a href="https://github.com/farzad-845/UNIPD_GIS_MASTER_PLAN">
+    <img src="report/res/db_schema.png" alt="Logo" width="408" height="305">
+  </a>
+</div>
 
 ### Crud & Schemas
 We have `base_crud.py` that contains the base crud operations that we can use for all models like `get_all`, `get_by_id`, `create`, `update`, `delete` and ... .
