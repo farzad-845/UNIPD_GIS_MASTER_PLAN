@@ -73,7 +73,7 @@ App
 ### Components Schema
 <div align="center">
   <a href="https://github.com/farzad-845/UNIPD_GIS_MASTER_PLAN">
-    <img src="report/res/components_schema.png" alt="Logo" width="408" height="370">
+    <img src="report/res/components_schema.png" alt="Logo" width="816" height="740">
   </a>
 </div>
 
@@ -83,7 +83,7 @@ After adding models to the `models` folder you should create crud and schema for
 ### Database Schema
 <div align="center">
   <a href="https://github.com/farzad-845/UNIPD_GIS_MASTER_PLAN">
-    <img src="report/res/db_schema.png" alt="Logo" width="408" height="305">
+    <img src="report/res/db_schema.png" alt="Logo" width="816" height="610">
   </a>
 </div>
 
