@@ -11,7 +11,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/farzad-845/UNIPD_GIS_MASTER_PLAN">
-    <img src="static/logo.png" alt="Logo" width="100" height="121">
+    <img src="report/res/web/both-map-data.png" alt="Logo" width="465" height="569">
   </a>
 </div>
 
@@ -34,6 +34,8 @@
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
+The primary objective of this project is to develop an advanced Geographic Information System (GIS) application tailored for the management and uti- lization of the Master Plan of the Italian province of Fano with a population of approximately 250,000 inhabitants, Fano’s Master Plan serves as a crucial blueprint for urban and territorial development. This project seeks to address the specific needs of planners and the general public, offering them a platform that facilitates the creation, maintenance, and accessibility of plan variants, thus fostering efficient urban planning and informed decision-making.
+
 ## Project Structure
 
 ### Main Structure
